@@ -2,8 +2,12 @@ package com.herokuapp.GameState;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Rectangle2D;
+import com.herokuapp.Panels.GamePanel;
 import com.herokuapp.TileMaps.Background;
 
 
@@ -37,7 +41,7 @@ public class MenuState extends GameState {
       titleColor = new Color(128, 0, 0);
       titleFont = new Font("Arial", Font.PLAIN, 100);
 
-      font = new Font("Arial", Font.PLAIN, 25);
+      font = new Font("Arial", Font.PLAIN, 50);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -50,18 +54,26 @@ public class MenuState extends GameState {
     bg.update();
   }
 
+  public void drawCenteredString(Graphics g, String text, int y) {
+    Graphics2D g2d = (Graphics2D) g;
+    FontMetrics fm = g2d.getFontMetrics();
+    Rectangle2D r = fm.getStringBounds(text, g2d);
+    int x = (GamePanel.WIDTH - (int) r.getWidth()) / 2;
+    g.drawString(text, x, y);
+  }
+
   public void draw(Graphics2D g) {
     // draw background
     bg.draw(g);
 
-
     // draw title
     g.setColor(titleColor);
     g.setFont(titleFont);
-    g.drawString("Pokemon Retro", 145, 50);
+    drawCenteredString(g, "Pokemon Retro", 200);
 
     // draw menu options
     g.setFont(font);
+
     for (int i = 0; i < options.length; i++) {
       if (i == currentChoice) {
         g.setColor(Color.GREEN);
@@ -69,9 +81,12 @@ public class MenuState extends GameState {
         g.setColor(Color.RED);
       }
 
-      g.drawString(options[i], 145, 145 + i * 20);
+      // g.drawString(options[i], 145, 145 + i * 20);
+      drawCenteredString(g, options[i], 600 + i * 50);
     }
   }
+
+
 
   private void select() {
     if (currentChoice == 0) {
