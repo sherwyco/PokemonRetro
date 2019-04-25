@@ -31,13 +31,13 @@ public class MenuState extends GameState {
     this.gsm = gsm;
 
     try {
-      bg = new Background("/Backgrounds/grassbg1.gif", 1);
+      bg = new Background("/Backgrounds/menu_background.jpg", 100);
       bg.setVector(-0.1, 0);
 
       titleColor = new Color(128, 0, 0);
-      titleFont = new Font("Arial", Font.PLAIN, 28);
+      titleFont = new Font("Arial", Font.PLAIN, 100);
 
-      font = new Font("Arial", Font.PLAIN, 12);
+      font = new Font("Arial", Font.PLAIN, 25);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -54,10 +54,11 @@ public class MenuState extends GameState {
     // draw background
     bg.draw(g);
 
+
     // draw title
     g.setColor(titleColor);
     g.setFont(titleFont);
-    g.drawString("Pokemon Retro", 100, 70);
+    g.drawString("Pokemon Retro", 145, 50);
 
     // draw menu options
     g.setFont(font);
@@ -68,7 +69,7 @@ public class MenuState extends GameState {
         g.setColor(Color.RED);
       }
 
-      g.drawString(options[i], 145, 140 + i * 20);
+      g.drawString(options[i], 145, 145 + i * 20);
     }
   }
 

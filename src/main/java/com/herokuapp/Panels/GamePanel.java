@@ -23,9 +23,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
   int screenHeight = screenSize.height;
   int screenWidth = screenSize.width;
 
-  // dimensions
-  public static final int WIDTH = 320;
-  public static final int HEIGHT = 240;
+
+  // dimensions of the image
+  public static final int WIDTH = 1920;
+  public static final int HEIGHT = 1080;
 
   // game thread
   private Thread thread;
