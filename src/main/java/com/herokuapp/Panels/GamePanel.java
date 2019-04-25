@@ -12,7 +12,7 @@ import com.herokuapp.GameState.GameStateManager;
 
 /**
  * 
- * @author sherwinwyco
+ * @author sherwin wyco
  *
  */
 @SuppressWarnings("serial")
@@ -22,7 +22,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
   Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
   int screenHeight = screenSize.height;
   int screenWidth = screenSize.width;
-
 
   // dimensions of the image
   public static final int WIDTH = 1920;
@@ -114,6 +113,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     g2.drawImage(image, 0, 0, screenWidth, screenHeight, null);
     g2.dispose();
   }
+
 
   public void keyTyped(KeyEvent key) {}
 
