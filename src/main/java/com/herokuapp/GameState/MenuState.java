@@ -11,11 +11,6 @@ import com.herokuapp.Panels.GamePanel;
 import com.herokuapp.TileMaps.Background;
 
 
-/**
- * 
- * @author sherwinwyco
- *
- */
 public class MenuState extends GameState {
 
   private Background bg;

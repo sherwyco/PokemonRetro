@@ -5,12 +5,6 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import com.herokuapp.Panels.GamePanel;
 
-/**
- * 
- * @author sherwin wyco
- *
- */
-
 public class Background {
 
 

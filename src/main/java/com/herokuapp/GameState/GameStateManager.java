@@ -3,11 +3,7 @@ package com.herokuapp.GameState;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-/**
- * 
- * @author sherwin wyco
- *
- */
+
 public class GameStateManager {
 
   private ArrayList<GameState> gameStates;

@@ -10,11 +10,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 import com.herokuapp.GameState.GameStateManager;
 
-/**
- * 
- * @author sherwin wyco
- *
- */
+
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel implements Runnable, KeyListener {
 
