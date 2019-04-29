@@ -8,8 +8,7 @@ import java.sql.SQLException;
 public class CreateDatabase {
 
   public static void main(String[] args) {
-    String currentDir = System.getProperty("user.dir") + "/";
-    System.out.println(currentDir);
+    createNewDatabase("test.db");
   }
 
   /**
