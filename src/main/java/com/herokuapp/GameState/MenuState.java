@@ -9,11 +9,13 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import com.herokuapp.Panels.GamePanel;
 import com.herokuapp.TileMaps.Background;
+import com.herokuapp.sprite.SpriteAnimated;
 
 
 public class MenuState extends GameState {
 
   private Background bg;
+  private SpriteAnimated lugia;
 
   private int currentChoice = 0;
   private String[] options = {"Start", "Help", "Quit"};
@@ -33,6 +35,10 @@ public class MenuState extends GameState {
       bg = new Background("/Backgrounds/menu_background.jpg", 1);
       bg.setVector(-.5, 0);
 
+      lugia = new SpriteAnimated(1000, 200, 1, 10, 10,
+          "src/main/resources/sprites/LugiaSpritesheet.png");
+
+
       titleColor = new Color(128, 0, 0);
       titleFont = new Font("Arial", Font.PLAIN, 100);
 
@@ -47,6 +53,11 @@ public class MenuState extends GameState {
 
   public void update() {
     bg.update();
+    lugia.update();
+    lugia.moveLeft(3);
+    if (lugia.getX() < -300) {
+      lugia.setX(2300);
+    }
   }
 
   public void drawCenteredString(Graphics g, String text, int y) {
@@ -60,7 +71,7 @@ public class MenuState extends GameState {
   public void draw(Graphics2D g) {
     // draw background
     bg.draw(g);
-
+    lugia.draw(g);
     // draw title
     g.setColor(titleColor);
     g.setFont(titleFont);
@@ -87,6 +98,7 @@ public class MenuState extends GameState {
     if (currentChoice == 0) {
       // start
       System.out.println("start the game");
+      gsm.setState(1);
     }
     if (currentChoice == 1) {
       // help
