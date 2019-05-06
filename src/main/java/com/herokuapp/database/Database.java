@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Database {
 
@@ -15,6 +16,29 @@ public class Database {
 
   public static void main(String[] args) {
     createNewDatabase();
+    createNewTable();
+  }
+
+  /**
+   * Create a new table in the test database
+   *
+   */
+  public static void createNewTable() {
+    // SQL statement for creating a new table
+    String sql = "CREATE TABLE IF NOT EXISTS Player (\n" + " Id integer PRIMARY KEY,\n"
+        + " Username text NOT NULL,\n" + " Password text NOT NULL, \n"
+        + " nickname text NOT NULL \n" + ");";
+
+    try (Connection conn = DriverManager.getConnection(url);
+        Statement stmt = conn.createStatement()) {
+      // create a new table
+      stmt.execute(sql);
+      stmt.close();
+      conn.close();
+      System.out.println("table created!");
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+    }
   }
 
 
