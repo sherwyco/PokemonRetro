@@ -17,6 +17,31 @@ public class Database {
   public static void main(String[] args) {
     createNewDatabase();
     createNewTable();
+    insertData("admin", "adminpass", "adminator");
+  }
+
+
+  public static void insertData(String username, String password, String nickname) {
+    Connection c = null;
+    Statement stmt = null;
+
+    String sql = "INSERT INTO PlayerData (Username, Password, Nickname) VALUES ('" + username
+        + "', '" + password + "', '" + nickname + "')";
+    System.out.println(sql);
+    try {
+      Class.forName("org.sqlite.JDBC");
+      c = DriverManager.getConnection(url);
+      c.setAutoCommit(false);
+      stmt = c.createStatement();
+      stmt.executeUpdate(sql);
+      stmt.close();
+      c.commit();
+      c.close();
+      System.out.println("inserted Data");
+    } catch (Exception e) {
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+      System.exit(0);
+    }
   }
 
   /**
@@ -25,9 +50,9 @@ public class Database {
    */
   public static void createNewTable() {
     // SQL statement for creating a new table
-    String sql = "CREATE TABLE IF NOT EXISTS Player (\n" + " Id integer PRIMARY KEY,\n"
-        + " Username text NOT NULL,\n" + " Password text NOT NULL, \n"
-        + " nickname text NOT NULL \n" + ");";
+    String sql = "CREATE TABLE IF NOT EXISTS PlayerData (\n" + " Id integer PRIMARY KEY,\n"
+        + " Username text NOT NULL UNIQUE,\n" + " Password text NOT NULL, \n"
+        + " Nickname text NOT NULL UNIQUE \n" + ");";
 
     try (Connection conn = DriverManager.getConnection(url);
         Statement stmt = conn.createStatement()) {
@@ -54,6 +79,7 @@ public class Database {
         System.out.println("The driver name is " + meta.getDriverName());
         System.out.println("A new database has been created.");
       }
+      conn.close();
 
     } catch (SQLException e) {
       System.out.println(e.getMessage());
