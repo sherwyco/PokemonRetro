@@ -11,39 +11,15 @@ public class Database {
   private static String currentDir = System.getProperty("user.dir") + "/";
 
   // db path
-  private static String url = "jdbc:sqlite:" + currentDir + "test.db";
+  private static String url = "jdbc:sqlite:" + currentDir + "pokemon.db";
 
   public static void main(String[] args) {
-    connect();
-  }
-
-  /**
-   * Connect to a sample database
-   */
-  public static void connect() {
-    Connection conn = null;
-    try {
-      // create a connection to the database
-      conn = DriverManager.getConnection(url);
-
-      System.out.println("Connection to SQLite has been established.");
-
-    } catch (SQLException e) {
-      System.out.println(e.getMessage());
-    } finally {
-      try {
-        if (conn != null) {
-          conn.close();
-        }
-      } catch (SQLException ex) {
-        System.out.println(ex.getMessage());
-      }
-    }
+    createNewDatabase();
   }
 
 
   /**
-   * create a sample database
+   * Connect to a database. If database is not found, it will create the database.
    *
    * @param fileName the database file name
    */
