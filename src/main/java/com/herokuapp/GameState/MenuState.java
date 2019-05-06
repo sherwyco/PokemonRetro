@@ -98,7 +98,7 @@ public class MenuState extends GameState {
     if (currentChoice == 0) {
       // start
       System.out.println("start the game");
-      gsm.setState(1);
+      gsm.setState(GameStateManager.DemoMapState);
     }
     if (currentChoice == 1) {
       // help
