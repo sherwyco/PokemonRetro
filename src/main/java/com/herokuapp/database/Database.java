@@ -3,6 +3,7 @@ package com.herokuapp.database;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -23,21 +24,26 @@ public class Database {
    * @param username
    * @throws SQLException
    */
-  public static void fetchAllData() {
-    Connection conn = null;
-    Statement stmt = null;
-
-    String sql = "Select * from PlayerData";
+  public static String fetchAllData() {
+    StringBuilder result = new StringBuilder();
     try {
-      conn = DriverManager.getConnection(url);
+      Connection conn = DriverManager.getConnection(url);
+      Statement stmt = conn.createStatement();
+      ResultSet rs;
 
+      rs = stmt.executeQuery("SELECT * FROM PlayerData");
+      result.append("user id: " + rs.getString(1));
+      result.append("\nusername: " + rs.getString(2));
+      result.append("\npassword: " + rs.getString(3));
 
+      System.out.println(result);
       stmt.close();
       conn.close();
     } catch (Exception e) {
-      System.err.println(e.getClass().getName() + ": " + e.getMessage());
-      System.exit(-1);
+      System.err.println("Got an exception! ");
+      System.err.println(e.getMessage());
     }
+    return result.toString();
 
   }
 
