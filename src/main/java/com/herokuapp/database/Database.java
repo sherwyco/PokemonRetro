@@ -15,9 +15,30 @@ public class Database {
   private static String url = "jdbc:sqlite:" + currentDir + "pokemon.db";
 
   public static void main(String[] args) {
-    createNewDatabase();
-    createNewTable();
-    insertData("admin", "adminpass", "adminator");
+    fetchAllData();
+  }
+
+  /**
+   * 
+   * @param username
+   * @throws SQLException
+   */
+  public static void fetchAllData() {
+    Connection conn = null;
+    Statement stmt = null;
+
+    String sql = "Select * from PlayerData";
+    try {
+      conn = DriverManager.getConnection(url);
+
+
+      stmt.close();
+      conn.close();
+    } catch (Exception e) {
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+      System.exit(-1);
+    }
+
   }
 
 
@@ -29,7 +50,6 @@ public class Database {
         + "', '" + password + "', '" + nickname + "')";
     System.out.println(sql);
     try {
-      Class.forName("org.sqlite.JDBC");
       c = DriverManager.getConnection(url);
       c.setAutoCommit(false);
       stmt = c.createStatement();
