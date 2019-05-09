@@ -1,6 +1,7 @@
 package com.herokuapp.player;
 
 import java.awt.Graphics;
+
 import java.util.Random;
 import com.herokuapp.HUD.Notification;
 import com.herokuapp.TileMaps.Tilemap;
@@ -22,6 +23,11 @@ public class Player {
   final int SPRITE_CATCH_UP_SPEED = 2;
   Tilemap level;
 
+
+  // turn to attack
+  private boolean turnToAttack = false;
+  
+  
   Spritesheet spritesheet;
   Animation down;
   Animation up;
@@ -29,6 +35,7 @@ public class Player {
   boolean isMoving = false;
   int pose = 0;
   Animation[] anims = new Animation[4];
+
 
   // placeholder system to spawn pokemon
   Notification test = null;
@@ -48,6 +55,17 @@ public class Player {
     spriteY = y;
     Camera.x = x;
     Camera.y = y;
+
+    turnToAttack = false;
+  }
+
+  public boolean isTurnToAttack() {
+    return turnToAttack;
+  }
+
+  public void setTurnToAttack(boolean turnToAttack) {
+    this.turnToAttack = turnToAttack;
+
   }
 
   public void findPokemon() {
@@ -64,6 +82,7 @@ public class Player {
 
   public boolean hasEncounteredPokemon() {
     return hasEncounteredPokemon;
+
   }
 
   public void moveUp() {
@@ -128,6 +147,7 @@ public class Player {
   }
 
   public void draw(Graphics g) {
+
     if (test != null && hasEncounteredPokemon) {
       test.draw(g);
     }
@@ -173,5 +193,4 @@ public class Player {
     // System.out.println(x + " | " + spriteX); logical position and visual position
     moveDelay--;
   }
-
 }
