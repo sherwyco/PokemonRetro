@@ -34,6 +34,7 @@ public class DemoMapState extends GameState {
   boolean S_pressed = false;
   boolean W_pressed = false;
   boolean space_pressed = false;
+  boolean enter_pressed = false;
 
   public DemoMapState(GameStateManager gsm) {
     init();
@@ -73,6 +74,9 @@ public class DemoMapState extends GameState {
       player.moveDown();
     if (D_pressed)
       player.moveRight();
+    if (enter_pressed && player.hasEncounteredPokemon())
+      System.out.println("go to battle state nowww");
+    // GSM switch to battle state pass in pokemon found as parameter
   }
 
 
@@ -109,6 +113,8 @@ public class DemoMapState extends GameState {
       W_pressed = true;
     if (k == KeyEvent.VK_SPACE)
       space_pressed = true;
+    if (k == KeyEvent.VK_ENTER)
+      enter_pressed = true;
   }
 
 
@@ -134,6 +140,8 @@ public class DemoMapState extends GameState {
       W_pressed = false;
     if (k == KeyEvent.VK_SPACE)
       space_pressed = false;
+    if (k == KeyEvent.VK_ENTER)
+      enter_pressed = false;
   }
 
 

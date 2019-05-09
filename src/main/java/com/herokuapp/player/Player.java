@@ -1,13 +1,15 @@
 package com.herokuapp.player;
 
 import java.awt.Graphics;
+
+import java.util.Random;
+import com.herokuapp.HUD.Notification;
 import com.herokuapp.TileMaps.Tilemap;
 import com.herokuapp.misc.GlobalVariables;
 import com.herokuapp.sprite.Animation;
 import com.herokuapp.sprite.Spritesheet;
 
 public class Player {
-
   int x; // actual position
   int y;
   int spriteX; // visual position
@@ -22,10 +24,10 @@ public class Player {
   Tilemap level;
 
 
-
   // turn to attack
   private boolean turnToAttack = false;
-
+  
+  
   Spritesheet spritesheet;
   Animation down;
   Animation up;
@@ -33,6 +35,12 @@ public class Player {
   boolean isMoving = false;
   int pose = 0;
   Animation[] anims = new Animation[4];
+
+
+  // placeholder system to spawn pokemon
+  Notification test = null;
+  Random random = new Random();
+  boolean hasEncounteredPokemon = false;
 
   public Player(int x, int y) {
     spritesheet = new Spritesheet(x, y, 15, 22, 6, 4, 15,
@@ -47,6 +55,7 @@ public class Player {
     spriteY = y;
     Camera.x = x;
     Camera.y = y;
+
     turnToAttack = false;
   }
 
@@ -56,6 +65,24 @@ public class Player {
 
   public void setTurnToAttack(boolean turnToAttack) {
     this.turnToAttack = turnToAttack;
+
+  }
+
+  public void findPokemon() {
+    hasEncounteredPokemon = false;
+    if (level.tiles[xTile()][yTile()].hasPokemon) {
+      int hi = random.nextInt(4);
+      System.out.println(hi);
+      if (hi <= 1) {
+        test = new Notification();
+        hasEncounteredPokemon = true;
+      }
+    }
+  }
+
+  public boolean hasEncounteredPokemon() {
+    return hasEncounteredPokemon;
+
   }
 
   public void moveUp() {
@@ -65,6 +92,7 @@ public class Player {
       if (!level.tiles[xTile()][yTile() - 1].hasCollision) {
         y -= tileSize;
         isMoving = true;
+        findPokemon();
       }
     }
   }
@@ -77,6 +105,7 @@ public class Player {
       if (!level.tiles[xTile()][yTile() + 1].hasCollision) {
         y += tileSize;
         isMoving = true;
+        findPokemon();
       }
     }
   }
@@ -88,6 +117,7 @@ public class Player {
       if (!level.tiles[xTile() - 1][yTile()].hasCollision) {
         x -= tileSize;
         isMoving = true;
+        findPokemon();
       }
     }
   }
@@ -99,6 +129,7 @@ public class Player {
       if (!level.tiles[xTile() + 1][yTile()].hasCollision) {
         x += tileSize;
         isMoving = true;
+        findPokemon();
       }
     }
   }
@@ -116,7 +147,13 @@ public class Player {
   }
 
   public void draw(Graphics g) {
-    // spritesheet.draw(g);
+
+    if (test != null && hasEncounteredPokemon) {
+      test.draw(g);
+    }
+
+    // visual position and camera position catch up to logical position for smooth grid based
+    // movement
     if (spriteX < x) {
       spriteX += SPRITE_CATCH_UP_SPEED;
       Camera.x += SPRITE_CATCH_UP_SPEED;
@@ -134,9 +171,6 @@ public class Player {
       Camera.y -= SPRITE_CATCH_UP_SPEED;
     }
 
-    // linear interpolation does not work right unless sprite coordinates are doubles/floats
-    // spriteX = (spriteX * (1.0 - .05) + (this.x * .05));
-    // spriteY = (spriteY * (1.0 - .05) + (this.y * .05));
     if (isMoving) {
       g.drawImage(anims[pose].getCurrentImage(),
           ((int) spriteX - width * GlobalVariables.GAME_SCALE / 2) - (int) Camera.x
@@ -159,7 +193,4 @@ public class Player {
     // System.out.println(x + " | " + spriteX); logical position and visual position
     moveDelay--;
   }
-
-
-
 }
