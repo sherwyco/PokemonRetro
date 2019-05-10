@@ -21,7 +21,7 @@ public class DemoMapState extends GameState {
 
 
   // spawn player halfway into tile + spawn location
-  Player player = new Player(16 + 640, 22 + 320);
+  Player player = new Player(50, 30);
   TilemapUtility tilemapUtility = new TilemapUtility();
   Tilemap tilemap;
 
@@ -52,7 +52,6 @@ public class DemoMapState extends GameState {
     }
 
     player.setLevel(tilemap);
-
 
   }
 
@@ -92,6 +91,7 @@ public class DemoMapState extends GameState {
     tilemap.drawSpritesAbove(g, player.getY());
     player.draw(g);
     tilemap.drawSpritesBelow(g, player.getY());
+    player.drawHUD(g);
   }
 
 
