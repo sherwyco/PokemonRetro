@@ -43,7 +43,7 @@ public class DemoMapState extends GameState {
 
 
     try {
-      tilemap = tilemapUtility.loadMap("src/main/resources/tilemaps/tilemaptest.txt");
+      tilemap = tilemapUtility.loadMap("src/main/resources/tilemaps/tilemap1.txt");
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -64,6 +64,7 @@ public class DemoMapState extends GameState {
   @Override
   public void update() {
     // TODO Auto-generated method stub
+    player.update();
     if (W_pressed)
       player.moveUp();
     if (A_pressed)
@@ -83,7 +84,9 @@ public class DemoMapState extends GameState {
   public void draw(Graphics2D g) {
     // TODO Auto-generated method stub
     tilemap.draw(g);
+    tilemap.drawSpritesAbove(g, player.getY());
     player.draw(g);
+    tilemap.drawSpritesBelow(g, player.getY());
   }
 
 
