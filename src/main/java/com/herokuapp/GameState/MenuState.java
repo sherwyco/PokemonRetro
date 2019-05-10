@@ -18,7 +18,7 @@ public class MenuState extends GameState {
   private SpriteAnimated lugia;
 
   private int currentChoice = 0;
-  private String[] options = {"Start", "Help", "Quit"};
+  private String[] options = {"Start", "Help", "Quit", "Battle"};
   private int len = options.length;
   private Color titleColor;
   private Font titleFont;
@@ -98,7 +98,7 @@ public class MenuState extends GameState {
     if (currentChoice == 0) {
       // start
       System.out.println("start the game");
-      gsm.setState(1);
+      gsm.setState(GameStateManager.DemoMapState);
     }
     if (currentChoice == 1) {
       // help
@@ -106,6 +106,10 @@ public class MenuState extends GameState {
     if (currentChoice == 2) {
       // quit
       System.exit(0);
+    }
+    if (currentChoice == 3) {
+      gsm.setState(GameStateManager.BattleState);
+
     }
   }
 

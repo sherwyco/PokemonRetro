@@ -1,11 +1,13 @@
 package com.herokuapp.GameState;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import com.herokuapp.Panels.GamePanel;
 import com.herokuapp.TileMaps.Tilemap;
 import com.herokuapp.TileMaps.TilemapUtility;
-import com.herokuapp.player.Player;
+import com.herokuapp.player.Player;;
 
 public class DemoMapState extends GameState {
   // screen size 1920x1080
@@ -82,7 +84,10 @@ public class DemoMapState extends GameState {
 
   @Override
   public void draw(Graphics2D g) {
-    // TODO Auto-generated method stub
+    // clear screen
+    g.setColor(Color.WHITE);
+    g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
+
     tilemap.draw(g);
     tilemap.drawSpritesAbove(g, player.getY());
     player.draw(g);
