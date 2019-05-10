@@ -3,16 +3,17 @@ package com.herokuapp.TileMaps;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.LinkedList;
+import com.herokuapp.sprite.SpriteSingle;
 
 public class Tilemap {
   public Tile[][] tiles;
-  private LinkedList sprites;
+  private LinkedList<SpriteSingle> sprites;
   int width;
   int height;
 
   public Tilemap(int width, int height) {
     tiles = new Tile[width][height];
-    sprites = new LinkedList();
+    sprites = new LinkedList<SpriteSingle>();
     this.width = width;
     this.height = height;
   }
@@ -36,6 +37,9 @@ public class Tilemap {
     tiles[x][y] = tile;
   }
 
+  public void addSprite(SpriteSingle sprite) {
+    sprites.add(sprite);
+  }
   // public Iterator getSprites() {
   // return sprites.iterator();
   // }
@@ -50,6 +54,23 @@ public class Tilemap {
         if (tiles[x][y] != null) {
           tiles[x][y].draw(g);
         }
+      }
+    }
+  }
+
+  public void drawSpritesBelow(Graphics g, int playerHeight) {
+    for (int i = 0; i < sprites.size(); i++) {
+      if (playerHeight < sprites.get(i).getY()) {
+        sprites.get(i).draw(g);
+        System.out.println("Tree " + i + ": " + sprites.get(i).getY());
+      }
+    }
+  }
+
+  public void drawSpritesAbove(Graphics g, int playerHeight) {
+    for (int i = 0; i < sprites.size(); i++) {
+      if (playerHeight > sprites.get(i).getY()) {
+        sprites.get(i).draw(g);
       }
     }
   }

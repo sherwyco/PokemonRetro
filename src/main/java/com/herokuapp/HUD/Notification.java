@@ -14,18 +14,8 @@ public class Notification {
   // placeholder system to spawn pokemon
   String[] pokemonz = {"charmander", "charmander", "charmander", "charmander", "charmander",
       "charmander", "charmander", "charmander", "charmander", "charmander", "charmander",
-      "charmander", "charmander", "charmander", "charmander", "charmander", "charmander",
-      "charmander", "charmander", "charmander", "charmander", "charmander", "charmander",
-      "charmander", "charmander", "charmander", "charmander", "charmander", "charmander",
-      "charmander", "charmander", "charmander", "charmander", "charmander", "charmander",
-      "charmander", "charmander", "charmander", "charmander", "charmander", "charmander",
-      "charmander", "charmander", "charmander", "charmander", "charmander", "charmander",
-      "charmander", "charmander", "charmander", "charmander", "charmander", "charmander",
-      "charmander", "charmander", "charmander", "charmander", "charmander", "charmander",
-      "charmander", "charmander", "charmander", "charmander", "charmander", "charmander",
-      "charmander", "charmander", "charmander", "charmander", "charmander", "charmander",
       "charmander", "jolteon", "rayquaza", "gigalith", "lucario", "lugia", "zeraora",
-      "Superdreadnought Rail Cannon Gustav Max"};
+      "Superdreadnought Rail Cannon Gustav Max"}; // the last one is a yugioh card
   Random random = new Random();
   String foundPokemon;
   // ------------------------------------
