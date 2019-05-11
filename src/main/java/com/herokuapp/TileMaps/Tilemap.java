@@ -2,18 +2,18 @@ package com.herokuapp.TileMaps;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import com.herokuapp.sprite.SpriteSingle;
 
 public class Tilemap {
   public Tile[][] tiles;
-  private LinkedList<SpriteSingle> sprites;
+  private ArrayList<SpriteSingle> sprites;
   int width;
   int height;
 
   public Tilemap(int width, int height) {
     tiles = new Tile[width][height];
-    sprites = new LinkedList<SpriteSingle>();
+    sprites = new ArrayList<SpriteSingle>();
     this.width = width;
     this.height = height;
   }
