@@ -38,7 +38,8 @@ public class Database {
   private final static String MovesTable =
       "CREATE TABLE IF NOT EXISTS AttackMoves (" + "MoveId integer PRIMARY KEY , \n"
           + "Name text NOT NULL UNIQUE, \n" + "Type text NOT NULL, \n" // move type
-          + "Damage integer NOT NULL)"; // damage move
+          + "Damage integer NOT NULL, \n"
+          + "Accuracy integer NOT NULL)"; //1-100 value only. when attacking accuracy/100 for the chance
 
 
   // create table PlayerPokemon which holds all the players pokemons
@@ -60,12 +61,12 @@ public class Database {
 
 
   public static void main(String[] args) {
-    // createNewTable(PlayerTable);
-    // createNewTable(PlayerData);
-    // createNewTable(PokedexTable); //all pokemons will be stored here
-    // createNewTable(MovesTable); //all moves will be stored here
-    // createNewTable(PokemonMovesTable); //pokemons with their move will be stored here
-    // createNewTable(PlayerPokemonTable); //player's pokemon will be stored here
+     createNewTable(PlayerTable);
+     createNewTable(PlayerData);
+     createNewTable(PokedexTable); //all pokemons will be stored here
+     createNewTable(MovesTable); //all moves will be stored here
+     createNewTable(PokemonMovesTable); //pokemons with their move will be stored here
+     createNewTable(PlayerPokemonTable); //player's pokemon will be stored here
     createUser("admin", "HelloWorld123", "adminator");
 
   }
@@ -95,7 +96,28 @@ public class Database {
 
   }
 
+  public static void insertPokemons(String pokemonName, String password, String nickname) {
+    Connection c = null;
+    Statement stmt = null;
 
+    String sql = "INSERT INTO Players (Username, Password, Nickname) VALUES ('" + username + "', '"
+        + password + "', '" + nickname + "')";
+    System.out.println(sql);
+    try {
+      c = DriverManager.getConnection(url);
+      c.setAutoCommit(false);
+      stmt = c.createStatement();
+      stmt.executeUpdate(sql);
+      stmt.close();
+      c.commit();
+      c.close();
+      System.out.println("inserted Data");
+    } catch (Exception e) {
+      System.err.println(e.getClass().getName() + ": " + e.getMessage());
+      System.exit(0);
+    }
+  }
+  
   public static void createUser(String username, String password, String nickname) {
     Connection c = null;
     Statement stmt = null;
@@ -118,10 +140,10 @@ public class Database {
     }
   }
 
-  /**
-   * Create a new table in the test database
-   *
-   */
+/**
+ * This will create a new table on the database Pokemon_db
+ * @param sql SQL query to be used for the creation of database.
+ */
   public static void createNewTable(String sql) {
 
     try (Connection conn = DriverManager.getConnection(url);
