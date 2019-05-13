@@ -74,7 +74,7 @@ public class SpriteSingle {
     // System.out.println(fileName);
     // System.out.println(x);
     g.drawImage(img, x - Camera.x + GlobalVariables.screenWidth / 2 + offsetX,
-        getY() - Camera.y + GlobalVariables.screenHeight / 2 + offsetY, width, height, null);
+        y - Camera.y + GlobalVariables.screenHeight / 2 + offsetY, width, height, null);
   }
 
   public int getY() {

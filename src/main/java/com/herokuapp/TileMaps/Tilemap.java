@@ -62,7 +62,6 @@ public class Tilemap {
     for (int i = 0; i < sprites.size(); i++) {
       if (playerHeight < sprites.get(i).getY()) {
         sprites.get(i).draw(g);
-        System.out.println("Tree " + i + ": " + sprites.get(i).getY());
       }
     }
   }

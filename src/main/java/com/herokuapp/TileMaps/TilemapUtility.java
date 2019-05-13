@@ -69,8 +69,8 @@ public class TilemapUtility {
           newMap.setTile(x, y, grass);
         }
         if (ch == 'B') {
-          Tile grass =
-              new Tile(x * 32, y * 32, "src/main/resources/sprites/tallgrass.png", false, true);
+          Tile_TallGrass grass = new Tile_TallGrass(x * 32, y * 32,
+              "src/main/resources/sprites/PokemonGrassAnimation.png", false);
           newMap.setTile(x, y, grass);
         }
 
