@@ -81,6 +81,7 @@ public class Player {
       if (!level.tiles[xTile()][yTile() - 1].hasCollision) {
         y -= tileSize;
         isMoving = true;
+        level.tiles[xTile()][yTile()].steppedOn();
         findPokemon();
       }
     }
@@ -94,6 +95,7 @@ public class Player {
       if (!level.tiles[xTile()][yTile() + 1].hasCollision) {
         y += tileSize;
         isMoving = true;
+        level.tiles[xTile()][yTile()].steppedOn();
         findPokemon();
       }
     }
@@ -106,6 +108,7 @@ public class Player {
       if (!level.tiles[xTile() - 1][yTile()].hasCollision) {
         x -= tileSize;
         isMoving = true;
+        level.tiles[xTile()][yTile()].steppedOn();
         findPokemon();
       }
     }
@@ -118,6 +121,7 @@ public class Player {
       if (!level.tiles[xTile() + 1][yTile()].hasCollision) {
         x += tileSize;
         isMoving = true;
+        level.tiles[xTile()][yTile()].steppedOn();
         findPokemon();
       }
     }

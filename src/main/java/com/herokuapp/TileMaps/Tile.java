@@ -1,6 +1,7 @@
 package com.herokuapp.TileMaps;
 
 import java.awt.Graphics;
+import com.herokuapp.misc.GlobalVariables;
 import com.herokuapp.sprite.SpriteSingle;
 
 public class Tile {
@@ -16,7 +17,8 @@ public class Tile {
     this.y = y;
     this.filename = filename;
     this.hasCollision = hasCollision;
-    sprite = new SpriteSingle(x, y, 32, 32, filename);
+    sprite = new SpriteSingle(x, y, 16 * GlobalVariables.GAME_SCALE,
+        16 * GlobalVariables.GAME_SCALE, filename);
   }
 
   public Tile(int x, int y, String filename, boolean hasCollision, boolean hasPokemon) {
@@ -24,12 +26,17 @@ public class Tile {
     this.y = y;
     this.filename = filename;
     this.hasCollision = hasCollision;
-    sprite = new SpriteSingle(x, y, 32, 32, filename);
+    sprite = new SpriteSingle(x, y, 16 * GlobalVariables.GAME_SCALE, GlobalVariables.GAME_SCALE,
+        filename);
     this.hasPokemon = hasPokemon;
   }
 
   public boolean hasCollision() {
     return hasCollision;
+  }
+
+  public void steppedOn() {
+    System.out.println("stepped on");
   }
 
   public void draw(Graphics g) {

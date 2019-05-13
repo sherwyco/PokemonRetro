@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import com.herokuapp.misc.GlobalVariables;
+import com.herokuapp.player.Camera;
 
 public class SpriteAnimated {
   int x;
@@ -19,16 +21,19 @@ public class SpriteAnimated {
   int currentFrame = 0;
   BufferedImage spritesheet;
   BufferedImage[] sprites;
-  int delay = 10;
-  int currentDelay = delay;
+  int delay;
+  int currentDelay;
 
   // count not currently used
-  public SpriteAnimated(int x, int y, int rows, int columns, int count, String fileName) {
+  public SpriteAnimated(int x, int y, int rows, int columns, int count, int delay,
+      String fileName) {
     this.x = x;
     this.y = y;
     this.rows = rows;
     this.columns = columns;
     this.count = count;
+    this.delay = delay;
+    currentDelay = delay;
 
     try {
       spritesheet = ImageIO.read(new File(fileName));
@@ -89,10 +94,7 @@ public class SpriteAnimated {
 
   public void update() {
     if (currentDelay <= 0) {
-      currentDelay = 7;
-      // if (currentFrame == 5) {
-      // delay = 50;
-      // }
+      currentDelay = delay;
       currentFrame++;
       if (currentFrame > rows * columns - 1) {
         currentFrame = 0;
@@ -102,7 +104,21 @@ public class SpriteAnimated {
 
   }
 
+  public void drawSpecificFrame(Graphics g, int frame) {
+    g.drawImage(sprites[frame], x - Camera.x + GlobalVariables.screenWidth / 2,
+        y - Camera.y + GlobalVariables.screenHeight / 2, (int) (width * scaleX),
+        (int) (height * scaleY), null);
+  }
+
   public void draw(Graphics g) {
+
+    g.drawImage(sprites[currentFrame], x - Camera.x + GlobalVariables.screenWidth / 2,
+        y - Camera.y + GlobalVariables.screenHeight / 2, (int) (width * scaleX),
+        (int) (height * scaleY), null);
+
+  }
+
+  public void drawScreenSpace(Graphics g) {
 
     g.drawImage(sprites[currentFrame], x, y, (int) (width * scaleX), (int) (height * scaleY), null);
 
