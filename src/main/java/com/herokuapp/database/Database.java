@@ -104,7 +104,6 @@ public class Database {
     insertMove("Smokescreen", "normal", 0, 100);
     insertMove("Ember", "fire", 40, 100);
     insertMove("Heat Wave", "fire", 95, 90);
-    insertMove("Tackle", "normal", 40, 100);
     insertMove("Tail Whip", "normal", 0, 100);
     insertMove("Bubble", "water", 40, 100);
     insertMove("Water Gun", "water", 40, 100);
@@ -242,7 +241,6 @@ public class Database {
     insertMovePokemon(20, 10);
     insertMovePokemon(20, 35);
     insertMovePokemon(20, 26);
-    insertMovePokemon(20, 10);
 
     // spearow
     insertMovePokemon(21, 22);
@@ -261,15 +259,15 @@ public class Database {
     insertMovePokemon(23, 31);
 
     // arbok
-    insertMovePokemon(23, 32);
-    insertMovePokemon(23, 21);
-    insertMovePokemon(23, 31);
-    insertMovePokemon(23, 25);
+    insertMovePokemon(24, 32);
+    insertMovePokemon(24, 21);
+    insertMovePokemon(24, 31);
+    insertMovePokemon(24, 25);
 
     // pikachu
-    insertMovePokemon(24, 1);
-    insertMovePokemon(24, 26);
-    insertMovePokemon(24, 38);
+    insertMovePokemon(25, 1);
+    insertMovePokemon(25, 26);
+    insertMovePokemon(25, 38);
 
     // raichu
     insertMovePokemon(26, 1);
