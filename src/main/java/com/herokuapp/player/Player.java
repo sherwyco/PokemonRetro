@@ -1,7 +1,11 @@
 package com.herokuapp.player;
 
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
+import javax.imageio.ImageIO;
 import com.herokuapp.HUD.Notification;
 import com.herokuapp.TileMaps.Tilemap;
 import com.herokuapp.misc.GlobalVariables;
@@ -20,7 +24,20 @@ public class Player {
   final int INITIAL_MOVE_DELAY = 12;
   final int SPRITE_CATCH_UP_SPEED = 2;
   Tilemap level;
+  private String[] hostAttacks = {"WATER", "FIRE", "WIND"};
+  private String[] enemyAttacks = {"ELECTRIC", "ICE", "GRASS"};
+  private String[] Pokemons = {"Pikachu", "Dragonite", "Snorlax", "Charizard"};
 
+
+  private Pokemon[] pokemons =
+      {new Pokemon(getPokemonImage("jolteon"), "Jolteon", hostAttacks, "Water", 20),
+          new Pokemon(getPokemonImage("jolteon"), "Picachu", hostAttacks, "Electric", 20),
+          new Pokemon(getPokemonImage("charmander"), "charmander", hostAttacks, "Fire", 20)};
+
+
+
+  // turn to attack
+  private boolean turnToAttack = false;
   Spritesheet spritesheet;
   Animation down;
   Animation up;
@@ -41,12 +58,34 @@ public class Player {
     anims[1] = new Animation(spritesheet, 1, 4, 10);
     anims[2] = new Animation(spritesheet, 2, 4, 10);
     anims[3] = new Animation(spritesheet, 3, 4, 10);
+
+    this.x = x;
+    this.y = y;
+    spriteX = x;
+    spriteY = y;
+    Camera.x = x;
+    Camera.y = y;
+
+    turnToAttack = false;
+
+
+
+  }
+
+  public boolean isTurnToAttack() {
+    return turnToAttack;
+  }
+
+  public void setTurnToAttack(boolean turnToAttack) {
+    this.turnToAttack = turnToAttack;
+
     this.x = x * 16 * GlobalVariables.GAME_SCALE + 16;
     this.y = y * 16 * GlobalVariables.GAME_SCALE + 22;
     spriteX = this.x;
     spriteY = this.y;
     Camera.x = this.x;
     Camera.y = this.y;
+
   }
 
   public void findPokemon() {
@@ -101,8 +140,19 @@ public class Player {
     }
   }
 
+  public BufferedImage getPokemonImage(String pokemon) {
+    BufferedImage img = null;
+    try {
+      img = ImageIO.read(new File("src/main/resources/Pokemon/" + pokemon + ".png"));
+    } catch (IOException e) {
+
+      e.printStackTrace();
+    }
+    return img;
+  }
+
   public void moveLeft() {
-    // x -= speed;
+
     if (!isMoving) {
       pose = 2;
       if (!level.tiles[xTile() - 1][yTile()].hasCollision) {
