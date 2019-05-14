@@ -60,7 +60,7 @@ public class Tilemap {
 
   public void drawSpritesBelow(Graphics g, int playerHeight) {
     for (int i = 0; i < sprites.size(); i++) {
-      if (playerHeight < sprites.get(i).getY()) {
+      if (playerHeight <= sprites.get(i).getY()) {
         sprites.get(i).draw(g);
       }
     }
@@ -77,3 +77,4 @@ public class Tilemap {
 
 
 }
+
