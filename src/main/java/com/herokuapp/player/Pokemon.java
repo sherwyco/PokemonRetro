@@ -1,13 +1,17 @@
 package com.herokuapp.player;
 
+import java.awt.image.BufferedImage;
+
 public class Pokemon {
   private String name, type, current_move;
   private String[] moves;
   public int health;
+  private BufferedImage image;
 
 
-  public Pokemon(String name, String[] moves, String type, int health) {
 
+  public Pokemon(BufferedImage image, String name, String[] moves, String type, int health) {
+    this.image = image;
     this.name = name;
     this.type = type;
     this.moves = moves;
@@ -15,6 +19,15 @@ public class Pokemon {
     this.health = health;
   }
 
+  public BufferedImage getImage() {
+    return image;
+  }
+
+
+
+  public void setImage(BufferedImage image) {
+    this.image = image;
+  }
 
 
   public String getName() {

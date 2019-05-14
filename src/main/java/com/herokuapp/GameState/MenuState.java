@@ -110,6 +110,7 @@ public class MenuState extends GameState {
     if (currentChoice == 3) {
       gsm.setState(GameStateManager.BattleState);
 
+
     }
   }
 
