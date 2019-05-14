@@ -122,6 +122,12 @@ public class TilemapUtility {
           newMap.addSprite(sprite);
         }
 
+        if (ch == 'C') {
+          Tile grass =
+              new Tile_LevelChange(x * 32, y * 32, "src/main/resources/sprites/border.png", false);
+          newMap.setTile(x, y, grass);
+        }
+
 
 
       }

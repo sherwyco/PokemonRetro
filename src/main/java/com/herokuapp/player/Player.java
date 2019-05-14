@@ -58,13 +58,12 @@ public class Player {
     anims[1] = new Animation(spritesheet, 1, 4, 10);
     anims[2] = new Animation(spritesheet, 2, 4, 10);
     anims[3] = new Animation(spritesheet, 3, 4, 10);
-
-    this.x = x;
-    this.y = y;
-    spriteX = x;
-    spriteY = y;
-    Camera.x = x;
-    Camera.y = y;
+    this.x = x * 16 * GlobalVariables.GAME_SCALE + 16;
+    this.y = y * 16 * GlobalVariables.GAME_SCALE + 22;
+    spriteX = this.x;
+    spriteY = this.y;
+    Camera.x = this.x;
+    Camera.y = this.y;
 
     turnToAttack = false;
 
