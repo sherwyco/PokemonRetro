@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import com.herokuapp.misc.GlobalVariables;
+import com.herokuapp.sprite.SpriteSingle;
 
 public class TilemapUtility {
   // private LinkedList tiles = new LinkedList();
@@ -27,7 +29,7 @@ public class TilemapUtility {
       }
     }
 
-    // create Tile Engine
+    // create Tile Map
     height = lines.size();
     Tilemap newMap = new Tilemap(width, height);
     for (int y = 0; y < height; y++) {
@@ -67,8 +69,8 @@ public class TilemapUtility {
           newMap.setTile(x, y, grass);
         }
         if (ch == 'B') {
-          Tile grass =
-              new Tile(x * 32, y * 32, "src/main/resources/sprites/tallgrass.png", false, true);
+          Tile_TallGrass grass = new Tile_TallGrass(x * 32, y * 32,
+              "src/main/resources/sprites/PokemonGrassAnimation.png", false);
           newMap.setTile(x, y, grass);
         }
 
@@ -109,6 +111,15 @@ public class TilemapUtility {
           Tile grass =
               new Tile(x * 32, y * 32, "src/main/resources/sprites/sand-center.png", false);
           newMap.setTile(x, y, grass);
+        }
+
+        if (ch == 'T') {
+          Tile grass = new Tile(x * 32, y * 32, "src/main/resources/sprites/grass.png", true);
+          newMap.setTile(x, y, grass);
+          SpriteSingle sprite = new SpriteSingle(x * 32, y * 32, 16 * GlobalVariables.GAME_SCALE,
+              33 * GlobalVariables.GAME_SCALE, 0, -1 * 16 * GlobalVariables.GAME_SCALE,
+              "src/main/resources/sprites/tree.png");
+          newMap.addSprite(sprite);
         }
 
 

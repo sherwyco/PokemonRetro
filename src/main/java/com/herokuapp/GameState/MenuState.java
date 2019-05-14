@@ -35,7 +35,7 @@ public class MenuState extends GameState {
       bg = new Background("/Backgrounds/menu_background.jpg", 1);
       bg.setVector(-.5, 0);
 
-      lugia = new SpriteAnimated(1000, 200, 1, 10, 10,
+      lugia = new SpriteAnimated(1000, 200, 1, 10, 10, 7,
           "src/main/resources/sprites/LugiaSpritesheet.png");
 
 
@@ -71,7 +71,7 @@ public class MenuState extends GameState {
   public void draw(Graphics2D g) {
     // draw background
     bg.draw(g);
-    lugia.draw(g);
+    lugia.drawScreenSpace(g);
     // draw title
     g.setColor(titleColor);
     g.setFont(titleFont);

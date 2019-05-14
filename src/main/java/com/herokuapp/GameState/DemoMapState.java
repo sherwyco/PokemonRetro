@@ -21,7 +21,7 @@ public class DemoMapState extends GameState {
 
 
   // spawn player halfway into tile + spawn location
-  Player player = new Player(16 + 640, 22 + 320);
+  Player player = new Player(50, 30);
   TilemapUtility tilemapUtility = new TilemapUtility();
   Tilemap tilemap;
 
@@ -45,14 +45,13 @@ public class DemoMapState extends GameState {
 
 
     try {
-      tilemap = tilemapUtility.loadMap("src/main/resources/tilemaps/tilemaptest.txt");
+      tilemap = tilemapUtility.loadMap("src/main/resources/tilemaps/tilemap1.txt");
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
 
     player.setLevel(tilemap);
-
 
   }
 
@@ -66,6 +65,7 @@ public class DemoMapState extends GameState {
   @Override
   public void update() {
     // TODO Auto-generated method stub
+    player.update();
     if (W_pressed)
       player.moveUp();
     if (A_pressed)
@@ -88,7 +88,10 @@ public class DemoMapState extends GameState {
     g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
 
     tilemap.draw(g);
+    tilemap.drawSpritesAbove(g, player.getY());
     player.draw(g);
+    tilemap.drawSpritesBelow(g, player.getY());
+    player.drawHUD(g);
   }
 
 
