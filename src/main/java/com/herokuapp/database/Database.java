@@ -290,18 +290,42 @@ public class Database {
   }
 
 
-  public static String fetchAllData() {
+  public static String getPlayerPokemon(int playerId) {
+    StringBuilder result = new StringBuilder();
+
+    try {
+      Connection conn = DriverManager.getConnection(url);
+      Statement stmt = conn.createStatement();
+      ResultSet rs;
+
+      rs = stmt.executeQuery("SELECT * FROM PlayerPokemon");
+      result.append("user id: " + rs.getString(1));
+      result.append("\nusername: " + rs.getString(2));
+      result.append("\npassword: " + rs.getString(3));
+      result.append("\nnickname: " + rs.getString(4));
+
+      System.out.println(result);
+      stmt.close();
+      conn.close();
+    } catch (Exception e) {
+      System.err.println("Got an exception! ");
+      System.err.println(e.getMessage());
+    }
+    return result.toString();
+  }
+
+  public static String getUsers() {
     StringBuilder result = new StringBuilder();
     try {
       Connection conn = DriverManager.getConnection(url);
       Statement stmt = conn.createStatement();
       ResultSet rs;
 
-      rs = stmt.executeQuery("SELECT * FROM PlayerData");
+      rs = stmt.executeQuery("SELECT * FROM Players");
       result.append("user id: " + rs.getString(1));
       result.append("\nusername: " + rs.getString(2));
       result.append("\npassword: " + rs.getString(3));
-      result.append("\nickname: " + rs.getString(4));
+      result.append("\nnickname: " + rs.getString(4));
 
       System.out.println(result);
       stmt.close();
