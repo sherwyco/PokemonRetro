@@ -61,8 +61,8 @@ public class BattleState extends GameState {
     this.pokemon2 = rand.nextInt(3);
 
     addBackground();
-    pok1 = new Pokemon(Pokemons[pokemon1], hostAttacks, hostAttacks[0], DEFAULT_HEALTH);
-    pok2 = new Pokemon(Pokemons[pokemon2], enemyAttacks, enemyAttacks[0], DEFAULT_HEALTH);
+    // pok1 = new Pokemon(Pokemons[pokemon1], hostAttacks, hostAttacks[0], DEFAULT_HEALTH);
+    // pok2 = new Pokemon(Pokemons[pokemon2], enemyAttacks, enemyAttacks[0], DEFAULT_HEALTH);
 
 
     // pok1.setHealth(DEFAULT_HEALTH);
@@ -161,7 +161,7 @@ public class BattleState extends GameState {
       g.drawRect(GamePanel.WIDTH - 200, GamePanel.HEIGHT - 500, 100, 100);
       g.setColor(Color.black);
       if (hostTurnToAttack) {
-        pok1.setCurrent_move(hostAttacks[currentChoice]);
+        pok1.setCurrentMove(hostAttacks[currentChoice]);
         if (i == currentChoice) {
           g.setColor(Color.RED);
         } else {
@@ -171,7 +171,7 @@ public class BattleState extends GameState {
       }
       // Opponents turn
       else if (!hostTurnToAttack) {
-        pok2.setCurrent_move(hostAttacks[currentChoice]);
+        pok2.setCurrentMove(hostAttacks[currentChoice]);
         if (i == currentChoice) {
           g.setColor(Color.RED);
         } else {
