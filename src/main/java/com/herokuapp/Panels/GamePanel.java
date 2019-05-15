@@ -9,6 +9,9 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 import com.herokuapp.GameState.GameStateManager;
+import com.herokuapp.misc.Handler;
+import com.herokuapp.player.Camera;
+import com.herokuapp.utils.MouseManager;
 
 
 @SuppressWarnings("serial")
@@ -35,12 +38,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
   // game state manager
   private GameStateManager gsm;
+  private MouseManager mouseManager;
+  private Handler handler;
 
   public GamePanel() {
     super();
     setPreferredSize(new Dimension(screenWidth, screenHeight));
     setFocusable(true);
     requestFocus();
+
+    mouseManager = new MouseManager();
+
   }
 
   public void addNotify() {
@@ -53,6 +61,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
   }
 
   private void init() {
+    handler = new Handler(this);
 
     image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
     g = (Graphics2D) image.getGraphics();
@@ -119,6 +128,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
   public void keyReleased(KeyEvent key) {
     gsm.keyReleased(key.getKeyCode());
+  }
+
+  public Camera getGameCamera() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public MouseManager getMouseManager() {
+    // TODO Auto-generated method stub
+    return mouseManager;
   }
 
 }

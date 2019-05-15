@@ -33,8 +33,6 @@ public class Pokemon {
 
   }
 
-
-
   public int getAttack() {
     return attack;
   }
@@ -81,6 +79,11 @@ public class Pokemon {
     this.exp = exp;
   }
 
+
+
+  public void setImage(BufferedImage image) {
+    this.image = image;
+  }
 
 
   public String getName() {
