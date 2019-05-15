@@ -86,17 +86,17 @@ public class BattleState extends GameState {
     // System.out.println(Player.sendPokemons());
 
     addBackground();
-    pok1 = new Pokemon(getPokemonImage("jolteon"), Pokemons[pokemon1], hostAttacks, hostAttacks[0],
-        DEFAULT_HEALTH);
-    pok2 = new Pokemon(getPokemonImage("jolteon"), Pokemons[pokemon2], enemyAttacks,
-        enemyAttacks[0], DEFAULT_HEALTH);
+
+//     pok1 = new Pokemon(getPokemonImage("jolteon"), Pokemons[pokemon1], hostAttacks, hostAttacks[0],
+//         DEFAULT_HEALTH);
+//     pok2 = new Pokemon(getPokemonImage("jolteon"), Pokemons[pokemon2], enemyAttacks,
+//         enemyAttacks[0], DEFAULT_HEALTH);
     // hostpokemon = new SpriteSingle(40, 40, "src/main/resources/Pokemon/charmander.png");
 
     buttons = new UIManager(handler);
     buttons.addObject(new UIImageButton((GlobalVariables.screenWidth / 2) - 120,
         GlobalVariables.screenHeight - 570, 200, 100, "Button1", new ClickListener() {
           @Override
-
           public void onClick() {
             System.exit(0);
           }
@@ -237,7 +237,7 @@ public class BattleState extends GameState {
       drawHealthBar(g, (int) pok2.getHealth(), opponent.x - 150, GamePanel.HEIGHT - 1000);
 
       if (hostTurnToAttack) {
-        pok1.setCurrent_move(hostAttacks[currentChoice]);
+        pok1.setCurrentMove(hostAttacks[currentChoice]);
         if (i == currentChoice) {
           g.setColor(Color.RED);
         } else {
@@ -248,7 +248,7 @@ public class BattleState extends GameState {
       }
       // Opponents turn
       else if (!hostTurnToAttack) {
-        pok2.setCurrent_move(hostAttacks[currentChoice]);
+        pok2.setCurrentMove(hostAttacks[currentChoice]);
         if (i == currentChoice) {
           g.setColor(Color.RED);
         } else {
