@@ -3,7 +3,7 @@ package com.herokuapp.player;
 import java.awt.image.BufferedImage;
 
 public class Pokemon {
-  private String name, type, current_move;
+  private String name, type, current_move, defense;
   private String[] moves;
   public int health;
   private BufferedImage image;
@@ -17,7 +17,19 @@ public class Pokemon {
     this.moves = moves;
     setCurrent_move(moves[0]);
     this.health = health;
+
+
   }
+
+
+  private void setDefense(String defense) {
+    this.defense = defense;
+  }
+
+  public String getDefense() {
+    return defense;
+  }
+
 
   public BufferedImage getImage() {
     return image;

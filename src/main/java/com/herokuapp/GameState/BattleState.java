@@ -30,6 +30,16 @@ public class BattleState extends GameState {
   private Background bg;
   private SpriteAnimated lugia;
 
+  // string[] pokemonPlayers = database.getPlayerPokemon();
+  // String currpokemon = pokemonPlayers[0];
+  // String[] currPokemonAttack = database.getAttacks(pokemonPlayer[0]);
+  //
+  // for(int i = 0; i<currPokemonAttack.length; i++) {
+  //
+  // }
+
+
+
   private int currentChoice = 0, pokemon1, pokemon2;
   private String[] hostAttacks = {"WATER", "FIRE", "WIND"};
   private String[] enemyAttacks = {"ELECTRIC", "ICE", "GRASS"};
@@ -46,6 +56,7 @@ public class BattleState extends GameState {
   BufferedImage hostpokemon;
   private UIManager buttons;
   private Handler handler;
+
   // For Battle
   private static final int DEFAULT_HEALTH = 20;
 
@@ -72,6 +83,7 @@ public class BattleState extends GameState {
 
     this.pokemon1 = rand.nextInt(3);
     this.pokemon2 = rand.nextInt(3);
+    // System.out.println(Player.sendPokemons());
 
     addBackground();
     pok1 = new Pokemon(getPokemonImage("jolteon"), Pokemons[pokemon1], hostAttacks, hostAttacks[0],

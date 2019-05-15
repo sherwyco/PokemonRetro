@@ -13,6 +13,7 @@ import com.herokuapp.sprite.Animation;
 import com.herokuapp.sprite.Spritesheet;
 
 public class Player {
+  public final String username = "admin";
   int x; // actual position
   private int y;
   int spriteX; // visual position
@@ -97,6 +98,11 @@ public class Player {
         hasEncounteredPokemon = true;
       }
     }
+  }
+
+  public Pokemon[] sendPokemons() {
+    return pokemons;
+
   }
 
   public void setTile(int x, int y) {
