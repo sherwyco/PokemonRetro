@@ -290,12 +290,12 @@ public class Database {
     // insertMovePokemon(28, 37);
     // insertMovePokemon(28, 34);
     // createUser("admin", "helloworld123", "adminator");
-    // insertPlayerPokemon(1, 1, 0, 0);
-    // insertPlayerPokemon(1, 4, 0, 0);
-    // insertPlayerPokemon(1, 4, 2, 0);
+    // addCaughtPokemon(1, 1, 0, 0);
+    // addCaughtPokemon(1, 4, 0, 0);
+    // addCaughtPokemon(1, 4, 2, 0);
     // createUser("user1", "helloworld123", "usernator");
-    // insertPlayerPokemon(2, 3, 53, 53);
-    // insertPlayerPokemon(2, 6, 100, 0);
+    // addCaughtPokemon(2, 3, 53, 53);
+    // addCaughtPokemon(2, 6, 100, 0);
 
     // testing
     // System.out.println(getPokemonMoves(2));
@@ -310,6 +310,40 @@ public class Database {
     // System.out.println("name: " + p.getName() + "\btype: " + p.getType() + "\n health"
     // + p.getHealth() + "\ncurr move: " + p.getMoveName(2));
     // }
+  }
+
+
+  /**
+   * This will add the pokemon caught to the player's inventory.
+   * 
+   * @param playerId
+   * @param pokemonId
+   * @param lvl
+   * @param exp
+   */
+  public static void addCaughtPokemon(int playerId, int pokemonId, int lvl, int exp) {
+    String sql = "INSERT INTO PlayerPokemon (PlayerId, PokemonId, Level, EXP) VALUES (?, ?, ?, ?)";
+
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    try {
+      conn = DriverManager.getConnection(url);
+      pstmt = conn.prepareStatement(sql);
+
+      pstmt.setInt(1, playerId);
+      pstmt.setInt(2, pokemonId);
+      pstmt.setInt(3, lvl);
+      pstmt.setInt(4, exp);
+
+      pstmt.executeUpdate();
+      System.out.println("Pokemon has been added to player's inventory!");
+
+      pstmt.close();
+      conn.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
   }
 
   /**
@@ -407,29 +441,6 @@ public class Database {
 
   }
 
-
-  public static void insertPlayerPokemon(int playerId, int pokemonId, int lvl, int exp) {
-    Connection c = null;
-    Statement stmt = null;
-
-    String sql = String.format(
-        "INSERT INTO PlayerPokemon (PlayerId, PokemonId, Level, EXP) VALUES('%d', '%d', '%d', '%d')",
-        playerId, pokemonId, lvl, exp);
-    System.out.println(sql);
-    try {
-      c = DriverManager.getConnection(url);
-      c.setAutoCommit(false);
-      stmt = c.createStatement();
-      stmt.executeUpdate(sql);
-      stmt.close();
-      c.commit();
-      c.close();
-      System.out.println("Added Pokemon to Player's inventory!");
-    } catch (Exception e) {
-      System.err.println(e.getClass().getName() + ": " + e.getMessage());
-      System.exit(0);
-    }
-  }
 
   public static void insertMovePokemon(int PokeId, int MoveId) {
     Connection c = null;
