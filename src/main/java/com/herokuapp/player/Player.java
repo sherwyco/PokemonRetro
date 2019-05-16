@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 import javax.imageio.ImageIO;
+import com.herokuapp.GameState.GameStateManager;
 import com.herokuapp.HUD.Notification;
 import com.herokuapp.TileMaps.Tilemap;
 import com.herokuapp.misc.GlobalVariables;
@@ -25,6 +26,7 @@ public class Player {
   final int INITIAL_MOVE_DELAY = 12;
   final int SPRITE_CATCH_UP_SPEED = 2;
   Tilemap level;
+  GameStateManager gsm;
   private String[] hostAttacks = {"WATER", "FIRE", "WIND"};
   private String[] enemyAttacks = {"ELECTRIC", "ICE", "GRASS"};
   private String[] Pokemons = {"Pikachu", "Dragonite", "Snorlax", "Charizard"};
@@ -52,7 +54,8 @@ public class Player {
   Random random = new Random();
   boolean hasEncounteredPokemon = false;
 
-  public Player(int x, int y) {
+  public Player(int x, int y, GameStateManager gsm) {
+    this.gsm = gsm;
     spritesheet = new Spritesheet(x, y, 15, 22, 6, 4, 15,
         "src/main/resources/sprites/pokemonPlayerWalking.png");
     anims[0] = new Animation(spritesheet, 0, 4, 10);
@@ -118,6 +121,10 @@ public class Player {
     return hasEncounteredPokemon;
   }
 
+  public void changeLevel(int levelState) {
+    gsm.setState(levelState);
+  }
+
   public void moveUp() {
     // y -= speed;
     if (!isMoving) {
@@ -125,11 +132,12 @@ public class Player {
       if (!level.tiles[xTile()][yTile() - 1].hasCollision) {
         y -= tileSize;
         isMoving = true;
-        level.tiles[xTile()][yTile()].steppedOn();
+        level.tiles[xTile()][yTile()].steppedOn(this);
         findPokemon();
       }
     }
   }
+
 
   public void moveDown() {
     // y += speed;
@@ -139,7 +147,7 @@ public class Player {
       if (!level.tiles[xTile()][yTile() + 1].hasCollision) {
         y += tileSize;
         isMoving = true;
-        level.tiles[xTile()][yTile()].steppedOn();
+        level.tiles[xTile()][yTile()].steppedOn(this);
         findPokemon();
       }
     }
@@ -163,7 +171,7 @@ public class Player {
       if (!level.tiles[xTile() - 1][yTile()].hasCollision) {
         x -= tileSize;
         isMoving = true;
-        level.tiles[xTile()][yTile()].steppedOn();
+        level.tiles[xTile()][yTile()].steppedOn(this);
         findPokemon();
       }
     }
@@ -176,7 +184,7 @@ public class Player {
       if (!level.tiles[xTile() + 1][yTile()].hasCollision) {
         x += tileSize;
         isMoving = true;
-        level.tiles[xTile()][yTile()].steppedOn();
+        level.tiles[xTile()][yTile()].steppedOn(this);
         findPokemon();
       }
     }
