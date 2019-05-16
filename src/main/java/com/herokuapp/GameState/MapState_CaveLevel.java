@@ -9,7 +9,7 @@ import com.herokuapp.TileMaps.Tilemap;
 import com.herokuapp.TileMaps.TilemapUtility;
 import com.herokuapp.player.Player;;
 
-public class DemoMapState extends GameState {
+public class MapState_CaveLevel extends GameState {
   // screen size 1920x1080
 
 
@@ -39,7 +39,7 @@ public class DemoMapState extends GameState {
   int spawnX;
   int spawnY;
 
-  public DemoMapState(GameStateManager gsm, int spawnX, int spawnY) {
+  public MapState_CaveLevel(GameStateManager gsm, int spawnX, int spawnY) {
     this.gsm = gsm;
     this.spawnX = spawnX;
     this.spawnY = spawnY;
@@ -51,7 +51,7 @@ public class DemoMapState extends GameState {
 
 
     try {
-      tilemap = tilemapUtility.loadMap("src/main/resources/tilemaps/tilemap1.txt");
+      tilemap = tilemapUtility.loadMap("src/main/resources/tilemaps/cavemap.txt");
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

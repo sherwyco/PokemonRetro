@@ -15,14 +15,16 @@ public class GameStateManager {
   public static final int DemoMapState = 1;
   // temp
   public static final int BattleState = 2;
+  public static final int MapState1 = 3;
 
   // constructor
   public GameStateManager() {
     gameStates = new ArrayList<GameState>();
     currentState = MENUSTATE;
     gameStates.add(new MenuState(this));
-    gameStates.add(new DemoMapState(this));
+    gameStates.add(new DemoMapState(this, 50, 30));
     gameStates.add(new BattleState(this));
+    gameStates.add(new MapState_CaveLevel(this, 15, 12));
 
   }
 

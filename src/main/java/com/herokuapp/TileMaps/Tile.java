@@ -2,6 +2,7 @@ package com.herokuapp.TileMaps;
 
 import java.awt.Graphics;
 import com.herokuapp.misc.GlobalVariables;
+import com.herokuapp.player.Player;
 import com.herokuapp.sprite.SpriteSingle;
 
 public class Tile {
@@ -35,7 +36,7 @@ public class Tile {
     return hasCollision;
   }
 
-  public void steppedOn() {
+  public void steppedOn(Player player) {
     System.out.println("stepped on");
   }
 

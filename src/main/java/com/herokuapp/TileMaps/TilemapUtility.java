@@ -122,9 +122,56 @@ public class TilemapUtility {
           newMap.addSprite(sprite);
         }
 
-        if (ch == 'C') {
+
+
+        if (ch == 'q') {
           Tile grass =
-              new Tile_LevelChange(x * 32, y * 32, "src/main/resources/sprites/border.png", false);
+              new Tile(x * 32, y * 32, "src/main/resources/sprites/cave/mountain-TL.png", true);
+          newMap.setTile(x, y, grass);
+        }
+        if (ch == 'w') {
+          Tile grass =
+              new Tile(x * 32, y * 32, "src/main/resources/sprites/cave/mountain-T.png", true);
+          newMap.setTile(x, y, grass);
+        }
+        if (ch == 'e') {
+          Tile grass =
+              new Tile(x * 32, y * 32, "src/main/resources/sprites/cave/mountain-TR.png", true);
+          newMap.setTile(x, y, grass);
+        }
+        if (ch == 'r') {
+          Tile grass =
+              new Tile(x * 32, y * 32, "src/main/resources/sprites/cave/mountain-R.png", true);
+          newMap.setTile(x, y, grass);
+        }
+        if (ch == 't') {
+          Tile grass =
+              new Tile(x * 32, y * 32, "src/main/resources/sprites/cave/mountain-BR.png", true);
+          newMap.setTile(x, y, grass);
+        }
+        if (ch == 'y') {
+          Tile grass =
+              new Tile(x * 32, y * 32, "src/main/resources/sprites/cave/mountain-B.png", true);
+          newMap.setTile(x, y, grass);
+        }
+        if (ch == 'u') {
+          Tile grass =
+              new Tile(x * 32, y * 32, "src/main/resources/sprites/cave/mountain-BL.png", true);
+          newMap.setTile(x, y, grass);
+        }
+        if (ch == 'i') {
+          Tile grass =
+              new Tile(x * 32, y * 32, "src/main/resources/sprites/cave/mountain-L.png", true);
+          newMap.setTile(x, y, grass);
+        }
+        if (ch == 'o') {
+          Tile grass =
+              new Tile(x * 32, y * 32, "src/main/resources/sprites/cave/mountain-center.png", true);
+          newMap.setTile(x, y, grass);
+        }
+        if (ch == 'p') {
+          Tile grass = new Tile_LevelChange(x * 32, y * 32,
+              "src/main/resources/sprites/cave/cave-entrance.png", false, 20, 15, 3);
           newMap.setTile(x, y, grass);
         }
 
