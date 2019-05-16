@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Pokemon {
   private String name, type, current_move;
   private ArrayList<PokemonMoves> moves;
-  public int attack, defense, health, level, exp;
+  private int attack, defense, health, level, exp;
 
   /**
    * 
@@ -77,12 +77,6 @@ public class Pokemon {
 
   public void setExp(int exp) {
     this.exp = exp;
-  }
-
-
-
-  public void setImage(BufferedImage image) {
-    this.image = image;
   }
 
 

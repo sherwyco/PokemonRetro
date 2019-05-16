@@ -32,11 +32,11 @@ public class Player {
   private String[] Pokemons = {"Pikachu", "Dragonite", "Snorlax", "Charizard"};
 
 
-  private Pokemon[] pokemons =
-      {new Pokemon(getPokemonImage("jolteon"), "Jolteon", hostAttacks, "Water", 20),
-          new Pokemon(getPokemonImage("jolteon"), "Picachu", hostAttacks, "Electric", 20),
-          new Pokemon(getPokemonImage("charmander"), "charmander", hostAttacks, "Fire", 20)};
-
+  // private Pokemon[] pokemons =
+  // {new Pokemon(getPokemonImage("jolteon"), "Jolteon", hostAttacks, "Water", 20),
+  // new Pokemon(getPokemonImage("jolteon"), "Picachu", hostAttacks, "Electric", 20),
+  // new Pokemon(getPokemonImage("charmander"), "charmander", hostAttacks, "Fire", 20)};
+  //
 
 
   // turn to attack
@@ -103,10 +103,10 @@ public class Player {
     }
   }
 
-  public Pokemon[] sendPokemons() {
-    return pokemons;
-
-  }
+  // public Pokemon[] sendPokemons() {
+  // return pokemons;
+  //
+  // }
 
   public void setTile(int x, int y) {
     this.x = x * 16 * GlobalVariables.GAME_SCALE + 16;

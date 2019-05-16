@@ -9,10 +9,7 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Random;
-import javax.imageio.ImageIO;
 import com.herokuapp.Panels.GamePanel;
 import com.herokuapp.TileMaps.Background;
 import com.herokuapp.misc.GlobalVariables;
@@ -21,9 +18,9 @@ import com.herokuapp.player.Player;
 import com.herokuapp.player.Pokemon;
 import com.herokuapp.sprite.SpriteAnimated;
 import com.herokuapp.utils.ClickListener;
+import com.herokuapp.utils.ImageManager;
 import com.herokuapp.utils.UIImageButton;
 import com.herokuapp.utils.UIManager;
-
 
 public class BattleState extends GameState {
 
@@ -56,6 +53,7 @@ public class BattleState extends GameState {
   BufferedImage hostpokemon;
   private UIManager buttons;
   private Handler handler;
+  private ImageManager imageUtil;
 
   // For Battle
   private static final int DEFAULT_HEALTH = 20;
@@ -87,10 +85,11 @@ public class BattleState extends GameState {
 
     addBackground();
 
-//     pok1 = new Pokemon(getPokemonImage("jolteon"), Pokemons[pokemon1], hostAttacks, hostAttacks[0],
-//         DEFAULT_HEALTH);
-//     pok2 = new Pokemon(getPokemonImage("jolteon"), Pokemons[pokemon2], enemyAttacks,
-//         enemyAttacks[0], DEFAULT_HEALTH);
+    // pok1 = new Pokemon(getPokemonImage("jolteon"), Pokemons[pokemon1], hostAttacks,
+    // hostAttacks[0],
+    // DEFAULT_HEALTH);
+    // pok2 = new Pokemon(getPokemonImage("jolteon"), Pokemons[pokemon2], enemyAttacks,
+    // enemyAttacks[0], DEFAULT_HEALTH);
     // hostpokemon = new SpriteSingle(40, 40, "src/main/resources/Pokemon/charmander.png");
 
     buttons = new UIManager(handler);
@@ -102,6 +101,7 @@ public class BattleState extends GameState {
           }
         }));
 
+    ImageManager imageUtil = new ImageManager();
 
   }
 
@@ -160,15 +160,6 @@ public class BattleState extends GameState {
   }
 
 
-  public BufferedImage getPokemonImage(String pokemon) {
-    try {
-      hostpokemon = ImageIO.read(new File("src/main/resources/Pokemon/" + pokemon + ".png"));
-    } catch (IOException e) {
-
-      e.printStackTrace();
-    }
-    return hostpokemon;
-  }
 
   public void draw(Graphics2D g) {
     // draw background
@@ -224,8 +215,8 @@ public class BattleState extends GameState {
     for (int i = 0; i < hostAttacks.length; i++) {
       g.setColor(Color.YELLOW);
       g.drawString(Pokemons[pokemon1], host.x, host.y - 20);
-      g.drawImage(getPokemonImage("charmander"), host.x + 50, GamePanel.HEIGHT - 800, 300, 300,
-          null);
+      g.drawImage(imageUtil.getPokemonImage("charmander"), host.x + 50, GamePanel.HEIGHT - 800, 300,
+          300, null);
       drawHealthBar(g, (int) pok1.getHealth(), host.x + 50, GamePanel.HEIGHT - 1000);
       // temp for opponent
 
@@ -233,7 +224,7 @@ public class BattleState extends GameState {
       g.drawString(Pokemons[pokemon2], opponent.x - 200, opponent.y - 20);
       // g.drawRect(GamePanel.WIDTH - 200, GamePanel.HEIGHT - 500, 100, 100);
       g.setColor(Color.black);
-      g.drawImage(getPokemonImage("jolteon"), opponent.x - 300, 150, 300, 300, null);
+      g.drawImage(imageUtil.getPokemonImage("jolteon"), opponent.x - 300, 150, 300, 300, null);
       drawHealthBar(g, (int) pok2.getHealth(), opponent.x - 150, GamePanel.HEIGHT - 1000);
 
       if (hostTurnToAttack) {
@@ -266,8 +257,8 @@ public class BattleState extends GameState {
     // System.out.println(enemyHealth);
     if (hostTurnToAttack) {
       System.out.println("Before Attack: Pokemon 2, Current Health = " + pok2.getHealth());
-
-      pok2.health -= attackDamage(pok1.getCurrent_move(), pok2.getType());
+      int health = pok2.getHealth() - attackDamage(pok1.getCurrent_move(), pok2.getType());
+      pok2.setHealth(health);
       System.out.println(" Pokemon 1 Attack " + hostAttacks[currentChoice] + " Pokemon 2 health  "
           + pok2.getHealth());
       hostTurnToAttack = false;
