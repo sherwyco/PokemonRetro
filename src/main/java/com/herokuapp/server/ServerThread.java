@@ -20,6 +20,7 @@ public class ServerThread implements Runnable {
 
     listener = new ServerListener();
     server = new Server();
+    // register the class
     server.getKryo().register(Ping.class);
     server.getKryo().register(Pong.class);
     server.addListener(listener);
