@@ -20,11 +20,13 @@ public class Database {
   private static String url = "jdbc:sqlite:" + currentDir + "pokemon_db";
 
   // create table name Players
+  @SuppressWarnings("unused")
   private final static String PlayerTable = "CREATE TABLE IF NOT EXISTS Players (\n"
       + " PlayerId integer PRIMARY KEY,\n" + " Username text NOT NULL UNIQUE,\n"
       + " Password text NOT NULL, \n" + " Nickname text NOT NULL UNIQUE)";
 
   // create player info
+  @SuppressWarnings("unused")
   private final static String PlayerData = "CREATE TABLE IF NOT EXISTS PlayerData (\n"
       + "PlayerId integer, \n" + "PokeBalls integer, \n" + "GreatBalls integer, \n"
       + "UltraBalls integer, \n" + "MasterBalls integer, \n" + "Pokemons integer , \n" // amount of
@@ -34,18 +36,21 @@ public class Database {
 
 
   // create table name Pokedex
+  @SuppressWarnings("unused")
   private final static String PokedexTable = "CREATE TABLE IF NOT EXISTS Pokedex (\n"
       + "PokemonId integer PRIMARY KEY, \n" + "Name text NOT NULL UNIQUE, \n" // pokemon name
       + "Type text NOT NULL, \n" + "Attack integer NOT NULL, \n" + "Defense integer NOT NULL, \n"
       + "BaseHP integer NOT NULL)";
 
   // create table name PokemonMoves
+  @SuppressWarnings("unused")
   private final static String MovesTable =
       "CREATE TABLE IF NOT EXISTS AttackMoves (" + "MoveId integer PRIMARY KEY , \n"
           + "Name text NOT NULL UNIQUE, \n" + "Type text NOT NULL, \n" // move type
           + "Damage integer NOT NULL, \n" + "Accuracy integer NOT NULL)"; // 1-100 value only. when
 
   // create table PlayerPokemon which holds all the players pokemons
+  @SuppressWarnings("unused")
   private final static String PlayerPokemonTable =
       "CREATE TABLE IF NOT EXISTS PlayerPokemon (" + "CatchId integer PRIMARY KEY, \n"
           + "PlayerId integer, \n" + "PokemonId integer, \n" + "Level integer NOT NULL, \n"
@@ -54,6 +59,7 @@ public class Database {
           + "FOREIGN KEY (PokemonId) REFERENCES Pokedex (PokemonId) \n"
           + "ON DELETE CASCADE ON UPDATE NO ACTION)";
 
+  @SuppressWarnings("unused")
   private final static String PokemonMovesTable = "CREATE TABLE IF NOT EXISTS PokemonMoves ("
       + "PokemonId integer, \n" + "MoveId integer, \n" + "PRIMARY KEY (PokemonId, MoveId),\n"
       + "FOREIGN KEY (PokemonId) REFERENCES Pokedex (PokemonId) \n"
@@ -310,6 +316,33 @@ public class Database {
     // System.out.println("name: " + p.getName() + "\btype: " + p.getType() + "\n health"
     // + p.getHealth() + "\ncurr move: " + p.getMoveName(2));
     // }
+
+    System.out.println(connectUser("user", "helloworld123"));
+  }
+
+
+  public static Boolean connectUser(String username, String pass) {
+    String sql = String.format(
+        "SELECT CASE WHEN EXISTS ( SELECT * FROM Players WHERE Username = '%s' and Password='%s')"
+            + "\nTHEN CAST(1 AS BIT) ELSE CAST(0 AS BIT) END",
+        username, pass);
+    int result = 0;
+    try {
+      Connection conn = DriverManager.getConnection(url);
+      PreparedStatement pstmt = conn.prepareStatement(sql);
+
+      ResultSet rs = pstmt.executeQuery();
+      result = rs.getInt(1);
+
+      conn.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    if (result == 1) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 
