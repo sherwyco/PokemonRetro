@@ -21,7 +21,7 @@ import com.herokuapp.player.Player;
 import com.herokuapp.player.Pokemon;
 import com.herokuapp.sprite.SpriteAnimated;
 import com.herokuapp.utils.ClickListener;
-import com.herokuapp.utils.UIImageButton;
+import com.herokuapp.utils.MouseManager;
 import com.herokuapp.utils.UIManager;
 
 
@@ -56,6 +56,9 @@ public class BattleState extends GameState {
   BufferedImage hostpokemon;
   private UIManager buttons;
   private Handler handler;
+  private MouseManager mouse;
+  private ClickListener clicker;
+  private GamePanel gp;
 
   // For Battle
   private static final int DEFAULT_HEALTH = 20;
@@ -71,6 +74,7 @@ public class BattleState extends GameState {
   public BattleState(GameStateManager gsm) {
 
     this.gsm = gsm;
+    this.gp = new GamePanel();
 
     hostTurnToAttack = true;
     criticalAttack = false;
@@ -80,7 +84,8 @@ public class BattleState extends GameState {
     System.out.println(enemyHealth);
     this.hostHealth = DEFAULT_HEALTH;
     // opponent.setTurnToAttack(false);
-
+    mouse = new MouseManager();
+    gp.addMouseListener(mouse);
     this.pokemon1 = rand.nextInt(3);
     this.pokemon2 = rand.nextInt(3);
     // System.out.println(Player.sendPokemons());
@@ -90,17 +95,16 @@ public class BattleState extends GameState {
         DEFAULT_HEALTH);
     pok2 = new Pokemon(getPokemonImage("jolteon"), Pokemons[pokemon2], enemyAttacks,
         enemyAttacks[0], DEFAULT_HEALTH);
-    // hostpokemon = new SpriteSingle(40, 40, "src/main/resources/Pokemon/charmander.png");
 
-    buttons = new UIManager(handler);
-    buttons.addObject(new UIImageButton((GlobalVariables.screenWidth / 2) - 120,
-        GlobalVariables.screenHeight - 570, 200, 100, "Button1", new ClickListener() {
-          @Override
 
-          public void onClick() {
-            System.exit(0);
-          }
-        }));
+
+  }
+
+  public void onClick() {
+    clicker.onClick();
+  }
+
+  public void testingButton(Graphics g) {
 
 
   }
@@ -122,9 +126,12 @@ public class BattleState extends GameState {
     }
 
 
+
   }
 
   public void init() {
+
+
 
     System.out.println(enemyHealth);
 
@@ -140,7 +147,9 @@ public class BattleState extends GameState {
       lugia.setX(2300);
     }
 
-    buttons.tick();
+
+
+    System.out.println("Mouse Position X: " + mouse.getMouseX() + " Y: " + mouse.getMouseY());
 
   }
 
@@ -190,6 +199,13 @@ public class BattleState extends GameState {
 
   private void select() {
     System.out.println(enemyHealth);
+    if (enemyTurnToAttack) {
+      currentChoice = rand.nextInt(2);
+
+      switchAttacker(currentChoice);
+      return;
+    }
+
     if (currentChoice == 0) {
       // start
 
@@ -259,6 +275,8 @@ public class BattleState extends GameState {
       }
 
     }
+    testingButton(g);
+
 
   }
 
@@ -273,6 +291,7 @@ public class BattleState extends GameState {
       hostTurnToAttack = false;
       enemyTurnToAttack = true;
     } else if (enemyTurnToAttack) {
+      currentChoice = 0;
       System.out.print("Before Attack: Pokemon 1, Current Health = " + hostHealth);
       pok1.setHealth(pok1.getHealth() - attackDamage(pok2.getCurrent_move(), pok1.getType()));
       System.out.println(" Pokemon 2 Attack " + enemyAttacks[currentChoice] + " Pokemon 1 Health "
@@ -281,7 +300,7 @@ public class BattleState extends GameState {
       hostTurnToAttack = true;
       enemyTurnToAttack = false;
     }
-    currentChoice = 0;
+
 
   }
 
