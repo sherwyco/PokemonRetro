@@ -10,17 +10,12 @@ import com.herokuapp.TileMaps.TilemapUtility;
 import com.herokuapp.player.Player;;
 
 public class DemoMapState extends GameState {
+
   // screen size 1920x1080
-
-
-
   // Image image = Toolkit.getDefaultToolkit().getImage("g_rt_0.gif");
-
-
   // Animation anim = new Animation("g_dn", 5, 10);
-
-
   // spawn player halfway into tile + spawn location
+
   Player player;
   TilemapUtility tilemapUtility = new TilemapUtility();
   Tilemap tilemap;
@@ -49,16 +44,13 @@ public class DemoMapState extends GameState {
 
   public void init() {
 
-
     try {
       tilemap = tilemapUtility.loadMap("src/main/resources/tilemaps/tilemap1.txt");
     } catch (IOException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
     player = new Player(spawnX, spawnY, this.gsm);
     player.setLevel(tilemap);
-
   }
 
 
@@ -70,7 +62,6 @@ public class DemoMapState extends GameState {
 
   @Override
   public void update() {
-    // TODO Auto-generated method stub
     player.update();
     if (W_pressed)
       player.moveUp();

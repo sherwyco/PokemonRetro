@@ -138,7 +138,6 @@ public class Player {
     }
   }
 
-
   public void moveDown() {
     // y += speed;
     if (!isMoving) {
