@@ -17,7 +17,21 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
   </properties>
+  
+  <repositories>
+   <repository>
+      <id>clojars</id>
+      <url>http://clojars.org/repo/</url>
+   </repository>
+</repositories>
+  
   <dependencies>
+  <!--  Kryonet -->
+   <dependency>
+      <groupId>kryonet</groupId>
+      <artifactId>kryonet</artifactId>
+      <version>2.21</version>
+   </dependency>
   <!-- sqlite-jdbc -->
    <dependency>
       <groupId>org.xerial</groupId>
