@@ -24,8 +24,14 @@
       <url>http://clojars.org/repo/</url>
    </repository>
 </repositories>
-  
+
   <dependencies>
+    <!-- Kryo  -->
+  <dependency>
+   <groupId>com.esotericsoftware</groupId>
+   <artifactId>kryo</artifactId>
+   <version>5.0.0-RC4</version>
+</dependency>
   <!--  Kryonet -->
    <dependency>
       <groupId>kryonet</groupId>
