@@ -2,6 +2,7 @@ package com.herokuapp.server;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
@@ -47,6 +48,10 @@ public class ClientThread implements Runnable {
     }
   }
 
+  public ArrayList<DummyPlayer> getAllPlayers() {
+    return otherPlayers.getList();
+
+  }
 
   class ClientListener extends Listener {
     @Override
@@ -54,6 +59,8 @@ public class ClientThread implements Runnable {
       System.out.println("Server response: " + obj);
       if (obj instanceof PlayerList) {
         System.out.println("got playerlist from server!");
+        otherPlayers = (PlayerList) obj;
+        System.out.println("check list: " + otherPlayers);
       }
     }
 

@@ -65,8 +65,8 @@ public class ServerThread implements Runnable {
           al.add(entry.getValue());
         }
       }
-      pl.setList(al);
-      System.out.println(Arrays.toString(pl.getList().toArray()));
+      System.out.println("al: " + Arrays.toString(al.toArray()));
+      System.out.println(pl);
       c.sendUDP(pl);
     }
 
