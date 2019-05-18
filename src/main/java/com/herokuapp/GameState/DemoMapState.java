@@ -62,9 +62,8 @@ public class DemoMapState extends GameState {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    System.out.println(spawnX + ":" + spawnY);
+    System.out.println("spawnx: " + spawnX + "\nspawny: " + spawnY);
     player = new Player(spawnX, spawnY, this.gsm);
-    // send my player to server
     player.setLevel(tilemap);
   }
 
@@ -80,22 +79,41 @@ public class DemoMapState extends GameState {
     player.update();
     if (W_pressed) {
       player.moveUp();
+      UpdateCoords test = new UpdateCoords();
+      test.setX(player.getX());
+      test.setY(player.getY());
+      clientThread.client.sendUDP(test);
     }
     if (A_pressed) {
       player.moveLeft();
-
+      UpdateCoords coord = new UpdateCoords();
+      coord.setX(player.getX());
+      coord.setY(player.getY());
+      clientThread.client.sendUDP(coord);
     }
     if (S_pressed) {
       player.moveDown();
+      UpdateCoords coord = new UpdateCoords();
+      coord.setX(player.getX());
+      coord.setY(player.getY());
+      clientThread.client.sendUDP(coord);
     }
     if (D_pressed) {
       player.moveRight();
-
+      UpdateCoords coord = new UpdateCoords();
+      coord.setX(player.getX());
+      coord.setY(player.getY());
+      clientThread.client.sendUDP(coord);
     }
     if (enter_pressed && player.hasEncounteredPokemon()) {
       System.out.println("go to battle state now");
     }
-    clientThread.client.sendUDP(new UpdateCoords(spawnX, spawnY));
+    // if (otherPlayers != null) {
+    // for (DummyPlayer p : otherPlayers) {
+    // p.update();
+    // }
+    // }
+
     // clientThread.client.sendUDP(new Ping());
     // GSM switch to battle state pass in pokemon found as parameter
   }
@@ -104,9 +122,6 @@ public class DemoMapState extends GameState {
 
   @Override
   public void draw(Graphics2D g) {
-    // get all dummy players
-    otherPlayers = clientThread.getAllPlayers();
-
     // clear screen
     g.setColor(Color.WHITE);
     g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
@@ -114,9 +129,11 @@ public class DemoMapState extends GameState {
     tilemap.draw(g);
     tilemap.drawSpritesAbove(g, player.getY());
     player.draw(g);
-    for (DummyPlayer p : otherPlayers) {
-      p.draw(g);
-    }
+    // if (otherPlayers != null) {
+    // for (DummyPlayer p : otherPlayers) {
+    // p.draw(g);
+    // }
+    // }
     tilemap.drawSpritesBelow(g, player.getY());
     player.drawHUD(g);
     // render dummy players
@@ -152,7 +169,6 @@ public class DemoMapState extends GameState {
 
   @Override
   public void keyReleased(int k) {
-    // TODO Auto-generated method stub
     if (k == KeyEvent.VK_UP)
       up_pressed = false;
     if (k == KeyEvent.VK_DOWN)

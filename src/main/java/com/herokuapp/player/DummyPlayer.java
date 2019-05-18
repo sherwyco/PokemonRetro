@@ -1,7 +1,6 @@
 package com.herokuapp.player;
 
 import java.awt.Graphics;
-import com.herokuapp.TileMaps.Tilemap;
 import com.herokuapp.misc.GlobalVariables;
 import com.herokuapp.sprite.Animation;
 import com.herokuapp.sprite.Spritesheet;
@@ -13,19 +12,13 @@ public class DummyPlayer {
   private int spriteY;
   private int width = 15;
   private int height = 22;
-  private int speed = 3;
-  private String playerName = "";
   private Spritesheet spritesheet;
-  private Animation down;
-  private Animation up;
-  private Animation left;
   private boolean isMoving = false;
   private int pose = 0;
   private Animation[] anims = new Animation[4];
   private final int SPRITE_CATCH_UP_SPEED = 2;
   private int tileSize = 32;
   final int INITIAL_MOVE_DELAY = 12;
-  private Tilemap level;
 
 
   public DummyPlayer(int x, int y) {

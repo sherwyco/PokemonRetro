@@ -1,8 +1,8 @@
 package com.herokuapp.server;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicBoolean;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -18,17 +18,16 @@ public class ServerThread implements Runnable {
   private Server server;
   private Listener listener;
 
-  private ArrayList<Integer> playerId = new ArrayList<Integer>();
-  private HashMap<Integer, DummyPlayer> dummyMap = new HashMap<Integer, DummyPlayer>();
+  private HashMap<Integer, DummyPlayer> map = new HashMap<Integer, DummyPlayer>();
 
   @Override
   public void run() {
-
     listener = new ServerListener();
     server = new Server();
     // register the class
-    server.getKryo().register(UpdateCoords.class);
+    server.getKryo().register(PlayerList.class);
     server.getKryo().register(DummyPlayer.class);
+    server.getKryo().register(UpdateCoords.class);
     server.getKryo().register(Ping.class);
     server.getKryo().register(Pong.class);
     server.addListener(listener);
@@ -49,42 +48,35 @@ public class ServerThread implements Runnable {
 
   class ServerListener extends Listener {
     @Override
-    public void received(Connection c, Object o) {
-      System.out.println(o);
-      c.sendUDP(new Pong());
-      if (o instanceof Ping) {
-        System.out.println("its a ping!!");
+    public void received(Connection c, Object obj) {
+      System.out.println(obj);
+      if (obj instanceof UpdateCoords) {
+        UpdateCoords coords = (UpdateCoords) obj;
+        map.replace(c.getID(), new DummyPlayer(coords.getX(), coords.getY()));
       }
-      // int id = c.getID();
-      // if (object instanceof DummyPlayer) {
-      // // add this to the map of connected players
-      // DummyPlayer new_player = (DummyPlayer) object;
-      // dummyMap.put(id, new_player);
-      // } else if (object instanceof UpdateCoords) {
-      // UpdateCoords newCoords = (UpdateCoords) object;
-      // DummyPlayer dummy = dummyMap.get(id);
-      // dummy.setX(newCoords.x);
-      // dummy.setY(newCoords.y);
-      // dummyMap.replace(id, dummy);
-      // }
-      //
-      //
-      // ArrayList<DummyPlayer> playersToSend = new ArrayList<DummyPlayer>();
-      // for (int i = playerId.get(c.getID() + 1); i < playerId.size(); i++) {
-      // playersToSend.add(dummyMap.get(c.getID()));
-      // }
-      // c.sendUDP(playersToSend);
+      PlayerList pl = new PlayerList();
+      // ArrayList<DummyPlayer> al = new ArrayList<DummyPlayer>();
+      // // for loop
+      for (Entry<Integer, DummyPlayer> entry : map.entrySet()) {
+        if (c.getID() != entry.getKey()) {
+          System.out.println(entry.getKey() + " /" + entry.getValue());
+        }
+      }
+      // pl.setList(al);
+      c.sendUDP(pl);
     }
 
     @Override
     public void connected(Connection c) {
       System.out.println("client " + c.getID() + " has connected");
+      map.put(c.getID(), new DummyPlayer(50, 30));
+      System.out.println(map.get(c.getID()));
     }
 
     @Override
     public void disconnected(Connection c) {
       System.out.println("client " + c.getID() + " has disconnected!");
-      // remove connectedPlayers to map and arraylist
+      map.remove(c.getID());
     }
   }
 }

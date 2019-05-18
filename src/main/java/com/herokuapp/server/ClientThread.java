@@ -2,7 +2,6 @@ package com.herokuapp.server;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.ArrayList;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -17,14 +16,15 @@ public class ClientThread implements Runnable {
 
   public Client client;
   private Listener listener;
-  private ArrayList<DummyPlayer> otherPlayers = new ArrayList<DummyPlayer>();
+  public PlayerList otherPlayers = new PlayerList();
 
   @Override
   public void run() {
     listener = new ClientListener();
     client = new Client();
-    client.getKryo().register(UpdateCoords.class);
+    client.getKryo().register(PlayerList.class);
     client.getKryo().register(DummyPlayer.class);
+    client.getKryo().register(UpdateCoords.class);
     client.getKryo().register(Ping.class);
     client.getKryo().register(Pong.class);
     client.addListener(listener);
@@ -47,14 +47,13 @@ public class ClientThread implements Runnable {
   }
 
 
-  public ArrayList<DummyPlayer> getAllPlayers() {
-    return otherPlayers;
-  }
-
   class ClientListener extends Listener {
     @Override
-    public void received(Connection c, Object o) {
-      System.out.println("Server response: " + o);
+    public void received(Connection c, Object obj) {
+      System.out.println("Server response: " + obj);
+      if (obj instanceof PlayerList) {
+        System.out.println("got playerlist from server!");
+      }
     }
 
     @Override
