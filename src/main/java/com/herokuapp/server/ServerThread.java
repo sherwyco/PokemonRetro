@@ -19,6 +19,7 @@ public class ServerThread implements Runnable {
   private AtomicBoolean ready = new AtomicBoolean(false);
   private Server server;
   private Listener listener;
+  private PlayerList pl = new PlayerList();
 
   private HashMap<Integer, DummyPlayer> map = new HashMap<Integer, DummyPlayer>();
 
@@ -56,17 +57,16 @@ public class ServerThread implements Runnable {
         UpdateCoords coords = (UpdateCoords) obj;
         map.replace(c.getID(), new DummyPlayer(coords.getX(), coords.getY()));
       }
-      PlayerList pl = new PlayerList();
       ArrayList<DummyPlayer> al = new ArrayList<DummyPlayer>();
-      // // for loop
       for (Entry<Integer, DummyPlayer> entry : map.entrySet()) {
+        // only send other Player's info to clients
         if (c.getID() != entry.getKey()) {
           System.out.println(entry.getKey() + " /" + entry.getValue());
           al.add(entry.getValue());
         }
       }
       System.out.println("al: " + Arrays.toString(al.toArray()));
-      System.out.println(pl);
+      pl.setList(al);
       c.sendUDP(pl);
     }
 

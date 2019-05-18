@@ -76,6 +76,8 @@ public class DemoMapState extends GameState {
 
   @Override
   public void update() {
+    otherPlayers = clientThread.getAllPlayers();
+    System.out.println("update: " + otherPlayers);
     player.update();
     if (W_pressed) {
       player.moveUp();
@@ -108,14 +110,11 @@ public class DemoMapState extends GameState {
     if (enter_pressed && player.hasEncounteredPokemon()) {
       System.out.println("go to battle state now");
     }
-    // if (otherPlayers != null) {
-    // for (DummyPlayer p : otherPlayers) {
-    // p.update();
-    // }
-    // }
-
-    // clientThread.client.sendUDP(new Ping());
-    // GSM switch to battle state pass in pokemon found as parameter
+    if (otherPlayers != null) {
+      for (DummyPlayer p : otherPlayers) {
+        p.update();
+      }
+    }
   }
 
 
@@ -129,11 +128,11 @@ public class DemoMapState extends GameState {
     tilemap.draw(g);
     tilemap.drawSpritesAbove(g, player.getY());
     player.draw(g);
-    // if (otherPlayers != null) {
-    // for (DummyPlayer p : otherPlayers) {
-    // p.draw(g);
-    // }
-    // }
+    if (otherPlayers != null) {
+      for (DummyPlayer p : otherPlayers) {
+        p.draw(g);
+      }
+    }
     tilemap.drawSpritesBelow(g, player.getY());
     player.drawHUD(g);
     // render dummy players
@@ -190,7 +189,4 @@ public class DemoMapState extends GameState {
     if (k == KeyEvent.VK_ENTER)
       enter_pressed = false;
   }
-
-
-
 }

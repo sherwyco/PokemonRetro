@@ -34,8 +34,6 @@ public class DummyPlayer {
     spriteY = this.y;
     Camera.x = this.x;
     Camera.y = this.y;
-
-
   }
 
   public int getX() {
