@@ -1,6 +1,7 @@
 package com.herokuapp.server;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -55,14 +56,15 @@ public class ServerThread implements Runnable {
         map.replace(c.getID(), new DummyPlayer(coords.getX(), coords.getY()));
       }
       PlayerList pl = new PlayerList();
-      // ArrayList<DummyPlayer> al = new ArrayList<DummyPlayer>();
+      ArrayList<DummyPlayer> al = new ArrayList<DummyPlayer>();
       // // for loop
       for (Entry<Integer, DummyPlayer> entry : map.entrySet()) {
         if (c.getID() != entry.getKey()) {
           System.out.println(entry.getKey() + " /" + entry.getValue());
+          al.add(entry.getValue());
         }
       }
-      // pl.setList(al);
+      pl.setList(al);
       c.sendUDP(pl);
     }
 
@@ -76,6 +78,7 @@ public class ServerThread implements Runnable {
     @Override
     public void disconnected(Connection c) {
       System.out.println("client " + c.getID() + " has disconnected!");
+      System.out.println("removing : " + c.getID());
       map.remove(c.getID());
     }
   }

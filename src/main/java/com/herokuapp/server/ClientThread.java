@@ -2,6 +2,7 @@ package com.herokuapp.server;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import javax.swing.JOptionPane;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -59,6 +60,9 @@ public class ClientThread implements Runnable {
     @Override
     public void disconnected(Connection c) {
       System.out.println("Connection to server " + c.getID() + " has been lost!");
+
+      JOptionPane.showMessageDialog(null, "Server is down!", "Inane error",
+          JOptionPane.ERROR_MESSAGE);
     }
   }
 }
