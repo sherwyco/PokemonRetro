@@ -61,7 +61,7 @@ public class ClientThread implements Runnable {
     public void disconnected(Connection c) {
       System.out.println("Connection to server " + c.getID() + " has been lost!");
 
-      JOptionPane.showMessageDialog(null, "Server is down!", "Inane error",
+      JOptionPane.showMessageDialog(null, "Server is down!", "Server error",
           JOptionPane.ERROR_MESSAGE);
     }
   }

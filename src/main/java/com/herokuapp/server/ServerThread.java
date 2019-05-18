@@ -2,6 +2,7 @@ package com.herokuapp.server;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -65,6 +66,7 @@ public class ServerThread implements Runnable {
         }
       }
       pl.setList(al);
+      System.out.println(Arrays.toString(pl.getList().toArray()));
       c.sendUDP(pl);
     }
 

@@ -11,6 +11,6 @@ public class PlayerList {
   }
 
   public void setList(ArrayList<DummyPlayer> list) {
-    this.list = list;
+    this.list = (ArrayList<DummyPlayer>) list;
   }
 }
