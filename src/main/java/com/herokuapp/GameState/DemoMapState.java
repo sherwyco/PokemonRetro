@@ -11,7 +11,7 @@ import com.herokuapp.TileMaps.TilemapUtility;
 import com.herokuapp.player.DummyPlayer;
 import com.herokuapp.player.Player;
 import com.herokuapp.server.ClientThread;
-import com.herokuapp.server.Ping;
+import com.herokuapp.server.UpdateCoords;
 
 public class DemoMapState extends GameState {
 
@@ -21,7 +21,6 @@ public class DemoMapState extends GameState {
   // spawn player halfway into tile + spawn location
 
   Player player;
-  DummyPlayer player2;
   TilemapUtility tilemapUtility = new TilemapUtility();
   Tilemap tilemap;
 
@@ -96,8 +95,8 @@ public class DemoMapState extends GameState {
     if (enter_pressed && player.hasEncounteredPokemon()) {
       System.out.println("go to battle state now");
     }
-    // client.sendDummy(new DummyPlayer(spawnX, spawnY));
-    clientThread.client.sendUDP(new Ping());
+    clientThread.client.sendUDP(new UpdateCoords(spawnX, spawnY));
+    // clientThread.client.sendUDP(new Ping());
     // GSM switch to battle state pass in pokemon found as parameter
   }
 

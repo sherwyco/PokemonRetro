@@ -7,7 +7,6 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.herokuapp.player.DummyPlayer;
-import com.herokuapp.player.UpdateCoords;
 
 public class ClientThread implements Runnable {
   public final static String HOST = "127.0.0.1";
@@ -61,7 +60,6 @@ public class ClientThread implements Runnable {
     @Override
     public void disconnected(Connection c) {
       System.out.println("Connection to server " + c.getID() + " has been lost!");
-      System.exit(-1);
     }
   }
 }

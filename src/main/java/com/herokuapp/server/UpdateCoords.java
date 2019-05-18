@@ -1,4 +1,4 @@
-package com.herokuapp.player;
+package com.herokuapp.server;
 
 public class UpdateCoords {
   public int x;

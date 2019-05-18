@@ -8,7 +8,6 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.herokuapp.player.DummyPlayer;
-import com.herokuapp.player.UpdateCoords;
 
 public class ServerThread implements Runnable {
 
