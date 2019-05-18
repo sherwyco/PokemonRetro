@@ -12,12 +12,12 @@ public class Main {
     threadServer.setName("Server");
     threadServer.start();
 
-    Thread threadClient = new Thread(new ClientThread());
-    threadClient.setName("Client");
-    threadClient.setDaemon(true);
-    while (!server.isReady()) {
-      Thread.yield();
-    }
-    threadClient.start();
+    // Thread threadClient = new Thread(new ClientThread());
+    // threadClient.setName("Client");
+    // threadClient.setDaemon(true);
+    // while (!server.isReady()) {
+    // Thread.yield();
+    // }
+    // threadClient.start();
   }
 }

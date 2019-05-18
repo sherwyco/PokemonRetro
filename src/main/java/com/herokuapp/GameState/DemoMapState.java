@@ -7,7 +7,9 @@ import java.io.IOException;
 import com.herokuapp.Panels.GamePanel;
 import com.herokuapp.TileMaps.Tilemap;
 import com.herokuapp.TileMaps.TilemapUtility;
-import com.herokuapp.player.Player;;
+import com.herokuapp.player.DummyPlayer;
+import com.herokuapp.player.Player;
+import com.herokuapp.server.ClientThread;;
 
 public class DemoMapState extends GameState {
 
@@ -17,6 +19,7 @@ public class DemoMapState extends GameState {
   // spawn player halfway into tile + spawn location
 
   Player player;
+  DummyPlayer player2;
   TilemapUtility tilemapUtility = new TilemapUtility();
   Tilemap tilemap;
 
@@ -34,7 +37,15 @@ public class DemoMapState extends GameState {
   int spawnX;
   int spawnY;
 
+  Thread threadClient = null;
+  ClientThread client = null;
+
   public DemoMapState(GameStateManager gsm, int spawnX, int spawnY) {
+    client = new ClientThread();
+    threadClient = new Thread(client);
+    threadClient.setName("Client");
+    threadClient.setDaemon(true);
+    threadClient.start();
     this.gsm = gsm;
     this.spawnX = spawnX;
     this.spawnY = spawnY;
@@ -49,7 +60,9 @@ public class DemoMapState extends GameState {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    System.out.println(spawnX + ":" + spawnY);
     player = new Player(spawnX, spawnY, this.gsm);
+    player2 = new DummyPlayer(spawnX, spawnY);
     player.setLevel(tilemap);
   }
 
@@ -62,17 +75,29 @@ public class DemoMapState extends GameState {
 
   @Override
   public void update() {
+    player2.update();
     player.update();
-    if (W_pressed)
+    if (W_pressed) {
       player.moveUp();
-    if (A_pressed)
+      player2.moveUp();
+    }
+    if (A_pressed) {
       player.moveLeft();
-    if (S_pressed)
+      player2.moveLeft();
+
+    }
+    if (S_pressed) {
       player.moveDown();
-    if (D_pressed)
-      player.moveRight();
-    if (enter_pressed && player.hasEncounteredPokemon())
-      System.out.println("go to battle state nowww");
+      player2.moveDown();
+    }
+    if (D_pressed) {
+      player.moveLeft();
+      player2.moveLeft();
+
+    }
+    if (enter_pressed && player.hasEncounteredPokemon()) {
+      System.out.println("go to battle state now");
+    }
     // GSM switch to battle state pass in pokemon found as parameter
   }
 
@@ -87,8 +112,10 @@ public class DemoMapState extends GameState {
     tilemap.draw(g);
     tilemap.drawSpritesAbove(g, player.getY());
     player.draw(g);
+    player2.draw(g);
     tilemap.drawSpritesBelow(g, player.getY());
     player.drawHUD(g);
+
   }
 
 
