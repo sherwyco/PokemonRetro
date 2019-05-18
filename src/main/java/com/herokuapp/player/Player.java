@@ -15,8 +15,8 @@ import com.herokuapp.sprite.Spritesheet;
 
 public class Player {
   public final String username = "admin";
-  int x; // actual position
-  private int y;
+  public int x; // actual position
+  public int y;
   int spriteX; // visual position
   int spriteY;
   int width = 15;
@@ -254,9 +254,10 @@ public class Player {
     return y;
   }
 
-  public void setY(int y) {
-    this.y = y;
+  public int getX() {
+    return x;
   }
+
 
 }
 

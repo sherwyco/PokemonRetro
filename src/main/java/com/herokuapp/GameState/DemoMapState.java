@@ -4,12 +4,14 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 import com.herokuapp.Panels.GamePanel;
 import com.herokuapp.TileMaps.Tilemap;
 import com.herokuapp.TileMaps.TilemapUtility;
 import com.herokuapp.player.DummyPlayer;
 import com.herokuapp.player.Player;
-import com.herokuapp.server.ClientThread;;
+import com.herokuapp.server.ClientThread;
+import com.herokuapp.server.Ping;
 
 public class DemoMapState extends GameState {
 
@@ -38,11 +40,12 @@ public class DemoMapState extends GameState {
   int spawnY;
 
   Thread threadClient = null;
-  ClientThread client = null;
+  ClientThread clientThread = null;
+  ArrayList<DummyPlayer> otherPlayers;
 
   public DemoMapState(GameStateManager gsm, int spawnX, int spawnY) {
-    client = new ClientThread();
-    threadClient = new Thread(client);
+    clientThread = new ClientThread();
+    threadClient = new Thread(clientThread);
     threadClient.setName("Client");
     threadClient.setDaemon(true);
     threadClient.start();
@@ -62,7 +65,7 @@ public class DemoMapState extends GameState {
     }
     System.out.println(spawnX + ":" + spawnY);
     player = new Player(spawnX, spawnY, this.gsm);
-    player2 = new DummyPlayer(spawnX, spawnY);
+    // send my player to server
     player.setLevel(tilemap);
   }
 
@@ -75,29 +78,26 @@ public class DemoMapState extends GameState {
 
   @Override
   public void update() {
-    player2.update();
     player.update();
     if (W_pressed) {
       player.moveUp();
-      player2.moveUp();
     }
     if (A_pressed) {
       player.moveLeft();
-      player2.moveLeft();
 
     }
     if (S_pressed) {
       player.moveDown();
-      player2.moveDown();
     }
     if (D_pressed) {
-      player.moveLeft();
-      player2.moveLeft();
+      player.moveRight();
 
     }
     if (enter_pressed && player.hasEncounteredPokemon()) {
       System.out.println("go to battle state now");
     }
+    // client.sendDummy(new DummyPlayer(spawnX, spawnY));
+    clientThread.client.sendUDP(new Ping());
     // GSM switch to battle state pass in pokemon found as parameter
   }
 
@@ -105,6 +105,9 @@ public class DemoMapState extends GameState {
 
   @Override
   public void draw(Graphics2D g) {
+    // get all dummy players
+    otherPlayers = clientThread.getAllPlayers();
+
     // clear screen
     g.setColor(Color.WHITE);
     g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
@@ -112,10 +115,12 @@ public class DemoMapState extends GameState {
     tilemap.draw(g);
     tilemap.drawSpritesAbove(g, player.getY());
     player.draw(g);
-    player2.draw(g);
+    for (DummyPlayer p : otherPlayers) {
+      p.draw(g);
+    }
     tilemap.drawSpritesBelow(g, player.getY());
     player.drawHUD(g);
-
+    // render dummy players
   }
 
 

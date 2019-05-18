@@ -45,20 +45,24 @@ public class DummyPlayer {
 
   }
 
-  public int getSpriteX() {
-    return spriteX;
+  public int getX() {
+    return x;
   }
 
-  public void setSpriteX(int spriteX) {
-    this.spriteX = spriteX;
+  public void setX(int x) {
+    this.x = x;
   }
 
-  public int getSpriteY() {
-    return spriteY;
+  public int getY() {
+    return y;
   }
 
-  public void setSpriteY(int spriteY) {
-    this.spriteY = spriteY;
+  public void setY(int y) {
+    this.y = y;
+  }
+
+  public int getTileSize() {
+    return tileSize;
   }
 
   public void setTile(int x, int y) {
@@ -87,7 +91,7 @@ public class DummyPlayer {
     if (spriteX == x && spriteY == y) {
       isMoving = false;
     }
-    System.out.println(x + " | " + spriteX); // logical position and visual position
+    // System.out.println(x + " | " + spriteX); // logical position and visual position
   }
 
 
