@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.herokuapp.player.DummyPlayer;
 
 public class ServerThread implements Runnable {
 
@@ -21,6 +22,7 @@ public class ServerThread implements Runnable {
     listener = new ServerListener();
     server = new Server();
     // register the class
+    server.getKryo().register(DummyPlayer.class);
     server.getKryo().register(Ping.class);
     server.getKryo().register(Pong.class);
     server.addListener(listener);
@@ -45,6 +47,16 @@ public class ServerThread implements Runnable {
     public void received(Connection connection, Object object) {
       System.out.println("Recived from client: " + connection.getID() + " object: " + object);
       connection.sendTCP(new Pong());
+    }
+
+    @Override
+    public void connected(Connection c) {
+      System.out.println("client " + c.getID() + " has connected");
+    }
+
+    @Override
+    public void disconnected(Connection c) {
+      System.out.println("client " + c.getID() + " has disconnected!");
     }
   }
 }
