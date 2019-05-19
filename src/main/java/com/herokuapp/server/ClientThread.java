@@ -20,6 +20,10 @@ public class ClientThread implements Runnable {
   @Override
   public void run() {
     Log.set(Log.LEVEL_DEBUG);
+    Log.set(Log.LEVEL_TRACE);
+    Log.set(Log.LEVEL_ERROR);
+
+
     listener = new ClientListener();
     client = new Client();
     Network.register(client);

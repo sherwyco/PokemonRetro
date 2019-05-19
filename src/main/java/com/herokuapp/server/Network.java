@@ -22,10 +22,10 @@ public class Network {
 
   public static class PlayerList {
 
-    public HashMap<Integer, DummyPlayer> players = new HashMap<Integer, DummyPlayer>();
+    public HashMap<Integer, DummyPlayer> players = null;
 
-    public PlayerList() {
-
+    public PlayerList(HashMap<Integer, DummyPlayer> map) {
+      this.players = new HashMap<Integer, DummyPlayer>(map);
     }
   }
 

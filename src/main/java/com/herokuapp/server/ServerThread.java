@@ -25,6 +25,8 @@ public class ServerThread implements Runnable {
   @Override
   public void run() {
     Log.set(Log.LEVEL_DEBUG);
+    Log.set(Log.LEVEL_TRACE);
+    Log.set(Log.LEVEL_ERROR);
     listener = new ServerListener();
     server = new Server();
     // register the class
@@ -64,11 +66,9 @@ public class ServerThread implements Runnable {
       ol.totalUsers++; // increment by 1
       System.out.println("total users connected: " + ol.totalUsers);
       map.put(c.getID(), new DummyPlayer(50, 30));
-      PlayerList pl = new PlayerList();
-      pl.players = new HashMap<Integer, DummyPlayer>(map);
-      System.out.println(pl.players.get(c.getID()));
+      System.out.println(map.get(c.getID()));
       // send an updated map to all except the newly connected client;
-      server.sendToAllUDP(pl);
+      server.sendToAllUDP(new PlayerList(map));
     }
 
     @Override
