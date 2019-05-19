@@ -19,8 +19,8 @@ public class ServerThread implements Runnable {
   private AtomicBoolean ready = new AtomicBoolean(false);
   private Server server;
   private Listener listener;
-  HashMap<Integer, DummyPlayer> map = new HashMap<Integer, DummyPlayer>();
-  OnlineUsers ol = new OnlineUsers();
+  private HashMap<Integer, DummyPlayer> map = new HashMap<Integer, DummyPlayer>();
+  private OnlineUsers ol = new OnlineUsers();
 
   @Override
   public void run() {
@@ -68,7 +68,10 @@ public class ServerThread implements Runnable {
       map.put(c.getID(), new DummyPlayer(50, 30));
       System.out.println(map.get(c.getID()));
       // send an updated map to all except the newly connected client;
-      server.sendToAllUDP(new PlayerList(map));
+      PlayerList test = new PlayerList();
+      test.players = map;
+      server.sendToAllUDP(new PlayerList());
+      return;
     }
 
     @Override
@@ -76,6 +79,7 @@ public class ServerThread implements Runnable {
       System.out.println("client " + c.getID() + " has disconnected!");
       map.remove(c.getID());
       ol.totalUsers--;// reduce by one
+      return;
     }
   }
 }

@@ -22,8 +22,6 @@ public class ClientThread implements Runnable {
     Log.set(Log.LEVEL_DEBUG);
     Log.set(Log.LEVEL_TRACE);
     Log.set(Log.LEVEL_ERROR);
-
-
     listener = new ClientListener();
     client = new Client();
     Network.register(client);

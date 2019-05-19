@@ -13,10 +13,10 @@ public class Network {
 
   public static void register(EndPoint endPoint) {
     Kryo kryo = endPoint.getKryo();
+    kryo.register(HashMap.class);
     kryo.register(PlayerList.class);
     kryo.register(PingServer.class);
     kryo.register(OnlineUsers.class);
-    kryo.register(HashMap.class);
     kryo.register(DummyPlayer.class);
   }
 
@@ -25,9 +25,6 @@ public class Network {
 
     public HashMap<Integer, DummyPlayer> players;
 
-    public PlayerList(HashMap<Integer, DummyPlayer> map) {
-      this.players = new HashMap<Integer, DummyPlayer>(map);
-    }
   }
 
   public static class OnlineUsers {
