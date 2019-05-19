@@ -54,8 +54,6 @@ public class DemoMapState extends GameState {
     threadClient.setName("Client");
     threadClient.setDaemon(true);
     threadClient.start();
-    myClientId = clientThread.clientId;
-    System.out.println("my Id: " + myClientId);
     this.gsm = gsm;
     this.spawnX = spawnX;
     this.spawnY = spawnY;
@@ -70,9 +68,10 @@ public class DemoMapState extends GameState {
       e.printStackTrace();
       System.exit(1);
     }
-    System.out.println("spawnx: " + spawnX + "\nspawny: " + spawnY);
     player = new Player(spawnX, spawnY, this.gsm);
     player.setLevel(tilemap);
+    myClientId = clientThread.clientId;
+    System.out.println("my Id: " + myClientId);
   }
 
 

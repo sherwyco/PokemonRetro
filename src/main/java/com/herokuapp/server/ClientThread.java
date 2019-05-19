@@ -63,6 +63,7 @@ public class ClientThread implements Runnable {
       if (obj instanceof ConnectionId) {
         ConnectionId connId = (ConnectionId) obj;
         clientId = connId.clientId;
+        System.out.println("got my id from server: " + clientId);
         return;
       }
     }
