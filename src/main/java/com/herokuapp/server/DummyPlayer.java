@@ -20,9 +20,15 @@ public class DummyPlayer {
   private final int SPRITE_CATCH_UP_SPEED = 2;
   private int tileSize = 32;
   final int INITIAL_MOVE_DELAY = 12;
+  public int myClientId;
 
-
-  public DummyPlayer(int x, int y) {
+  /**
+   * 
+   * @param x Starting X position.
+   * @param y Starting Y position.
+   * @param id Connection Id.
+   */
+  public DummyPlayer(int x, int y, int id) {
     spritesheet = new Spritesheet(x, y, 15, 22, 6, 4, 15,
         "src/main/resources/sprites/pokemonPlayerWalking.png");
     anims[0] = new Animation(spritesheet, 0, 4, 10);

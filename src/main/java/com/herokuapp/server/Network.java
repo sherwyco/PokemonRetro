@@ -41,10 +41,15 @@ public class Network {
       Left, Right, Down, Up
     }
 
-    public UpdateCoords(int x, int y, movement type) {
+    public UpdateCoords() {
+
+    }
+
+    public UpdateCoords(int x, int y, movement type, int clientId) {
       this.x = x;
       this.y = y;
       this.type = type;
+      this.clientId = clientId;
     }
   }
 

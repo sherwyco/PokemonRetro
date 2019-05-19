@@ -1,14 +1,9 @@
 package com.herokuapp.server;
 
-import com.esotericsoftware.minlog.Log;
-
 public class Main {
 
   public static void main(String[] args) {
     new Main().run();
-    Log.set(Log.LEVEL_DEBUG);
-    Log.set(Log.LEVEL_TRACE);
-    Log.set(Log.LEVEL_ERROR);
   }
 
   private void run() {

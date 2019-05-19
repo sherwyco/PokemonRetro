@@ -16,6 +16,8 @@ public class ClientThread implements Runnable {
 
   public Client client;
   private Listener listener;
+  public int clientId;
+  public PlayerList playerList = new PlayerList();
 
   @Override
   public void run() {
@@ -45,28 +47,28 @@ public class ClientThread implements Runnable {
     }
   }
 
-}
-
-
-
-class ClientListener extends Listener {
-  @Override
-  public void received(Connection c, Object obj) {
-    if (obj instanceof PingServer) {
-      System.out.println("Server: " + obj);
+  class ClientListener extends Listener {
+    @Override
+    public void received(Connection c, Object obj) {
+      if (obj instanceof PingServer) {
+        System.out.println("Server: " + obj);
+        return;
+      }
+      if (obj instanceof PlayerList) {
+        System.out.println("hashmap received from server: " + obj);
+        playerList = (PlayerList) obj;
+        return;
+      }
     }
-    if (obj instanceof PlayerList) {
-      System.out.println("hashmap received from server: " + obj);
+
+    @Override
+    public void disconnected(Connection c) {
+      System.out.println("Connection to server " + c.getID() + " has been lost!");
+
+      JOptionPane.showMessageDialog(null, "Server is down!", "Server error",
+          JOptionPane.ERROR_MESSAGE);
     }
   }
-
-  @Override
-  public void disconnected(Connection c) {
-    System.out.println("Connection to server " + c.getID() + " has been lost!");
-
-    JOptionPane.showMessageDialog(null, "Server is down!", "Server error",
-        JOptionPane.ERROR_MESSAGE);
-  }
-
 }
+
 

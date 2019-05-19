@@ -62,14 +62,14 @@ public class ServerThread implements Runnable {
 
     @Override
     public void connected(Connection c) {
-      System.out.println("client " + c.getID() + " has connected");
+      int id = c.getID();
+      System.out.println("client " + id + " has connected");
       ol.totalUsers++; // increment by 1
       System.out.println("total users connected: " + ol.totalUsers);
-      map.put(c.getID(), new DummyPlayer(50, 30));
-      System.out.println(map.get(c.getID()));
+      map.put(c.getID(), new DummyPlayer(50, 30, id));
       // send an updated map to all except the newly connected client;
-      PlayerList test = new PlayerList();
-      test.players = map;
+      PlayerList plist = new PlayerList();
+      plist.players = map;
       server.sendToAllUDP(new PlayerList());
       return;
     }
