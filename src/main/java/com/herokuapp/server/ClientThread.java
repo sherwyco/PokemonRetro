@@ -7,6 +7,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
+import com.herokuapp.server.Network.ConnectionId;
 import com.herokuapp.server.Network.PingServer;
 import com.herokuapp.server.Network.PlayerList;
 
@@ -16,8 +17,8 @@ public class ClientThread implements Runnable {
 
   public Client client;
   private Listener listener;
-  public int clientId;
   public PlayerList playerList = new PlayerList();
+  public int clientId = 0;
 
   @Override
   public void run() {
@@ -57,6 +58,11 @@ public class ClientThread implements Runnable {
       if (obj instanceof PlayerList) {
         System.out.println("hashmap received from server: " + obj);
         playerList = (PlayerList) obj;
+        return;
+      }
+      if (obj instanceof ConnectionId) {
+        ConnectionId connId = (ConnectionId) obj;
+        clientId = connId.clientId;
         return;
       }
     }

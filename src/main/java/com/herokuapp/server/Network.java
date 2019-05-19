@@ -13,6 +13,7 @@ public class Network {
 
   public static void register(EndPoint endPoint) {
     Kryo kryo = endPoint.getKryo();
+    kryo.register(ConnectionId.class);
     kryo.register(HashMap.class);
     kryo.register(PlayerList.class);
     kryo.register(PingServer.class);
@@ -49,6 +50,18 @@ public class Network {
       this.x = x;
       this.y = y;
       this.type = type;
+      this.clientId = clientId;
+    }
+  }
+
+  public static class ConnectionId {
+    public int clientId;
+
+    public ConnectionId() {
+
+    }
+
+    public ConnectionId(int clientId) {
       this.clientId = clientId;
     }
   }

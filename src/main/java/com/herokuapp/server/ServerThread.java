@@ -7,6 +7,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
+import com.herokuapp.server.Network.ConnectionId;
 import com.herokuapp.server.Network.OnlineUsers;
 import com.herokuapp.server.Network.PingServer;
 import com.herokuapp.server.Network.PlayerList;
@@ -63,6 +64,7 @@ public class ServerThread implements Runnable {
     @Override
     public void connected(Connection c) {
       int id = c.getID();
+      c.sendUDP(new ConnectionId(id));
       System.out.println("client " + id + " has connected");
       ol.totalUsers++; // increment by 1
       System.out.println("total users connected: " + ol.totalUsers);

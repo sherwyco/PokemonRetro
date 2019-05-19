@@ -54,6 +54,8 @@ public class DemoMapState extends GameState {
     threadClient.setName("Client");
     threadClient.setDaemon(true);
     threadClient.start();
+    myClientId = clientThread.clientId;
+    System.out.println("my Id: " + myClientId);
     this.gsm = gsm;
     this.spawnX = spawnX;
     this.spawnY = spawnY;
