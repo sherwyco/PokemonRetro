@@ -9,7 +9,6 @@ import com.herokuapp.TileMaps.Tilemap;
 import com.herokuapp.TileMaps.TilemapUtility;
 import com.herokuapp.player.Player;
 import com.herokuapp.server.ClientThread;
-import com.herokuapp.server.Network.PingServer;
 
 public class DemoMapState extends GameState {
 
@@ -75,10 +74,6 @@ public class DemoMapState extends GameState {
 
   @Override
   public void update() {
-    // ping server
-    PingServer test = new PingServer();
-    test.msg = "Pinging server!";
-    clientThread.client.sendTCP(test);
     player.update();
     if (W_pressed) {
       player.moveUp();

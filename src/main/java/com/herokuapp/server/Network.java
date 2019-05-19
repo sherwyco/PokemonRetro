@@ -2,7 +2,6 @@ package com.herokuapp.server;
 
 import java.util.HashMap;
 import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.EndPoint;
 
 /**
@@ -21,12 +20,28 @@ public class Network {
   }
 
 
-  public static class UpdatePlayers {
-    public HashMap<Connection, DummyPlayer> players;
+  public static class PlayerList {
+    public HashMap<Integer, DummyPlayer> players;
   }
 
   public static class OnlineUsers {
     public int total;
+  }
+
+  public static class UpdateCoords {
+    public int x;
+    public int y;
+    public movement type;
+
+    public enum movement {
+      Left, Right, Down, Up
+    }
+
+    public UpdateCoords(int x, int y, movement type) {
+      this.x = x;
+      this.y = y;
+      this.type = type;
+    }
   }
 
   public static class PingServer {

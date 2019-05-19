@@ -1,11 +1,14 @@
 package com.herokuapp.server;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.herokuapp.server.Network.OnlineUsers;
 import com.herokuapp.server.Network.PingServer;
+import com.herokuapp.server.Network.PlayerList;
 
 public class ServerThread implements Runnable {
 
@@ -15,6 +18,8 @@ public class ServerThread implements Runnable {
   private AtomicBoolean ready = new AtomicBoolean(false);
   private Server server;
   private Listener listener;
+  HashMap<Integer, DummyPlayer> map = new HashMap<Integer, DummyPlayer>();
+  OnlineUsers ol = new OnlineUsers();
 
   @Override
   public void run() {
@@ -47,17 +52,27 @@ public class ServerThread implements Runnable {
         test.msg = "Pong";
         // send pong back to sender of ping
         c.sendTCP(test);
+        return;
       }
+
     }
 
     @Override
     public void connected(Connection c) {
       System.out.println("client " + c.getID() + " has connected");
+      ol.total++; // increment by 1
+      System.out.println("total users connected: " + ol.total);
+      map.put(c.getID(), new DummyPlayer(50, 30));
+      PlayerList pl = new PlayerList();
+      pl.players = map;
+      // send an updated map to all except the newly connected client;
+      server.sendToAllExceptUDP(c.getID(), pl);
     }
 
     @Override
     public void disconnected(Connection c) {
       System.out.println("client " + c.getID() + " has disconnected!");
+      map.remove(c.getID());
     }
   }
 }

@@ -2,6 +2,7 @@ package com.herokuapp.server;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
@@ -49,6 +50,9 @@ class ClientListener extends Listener {
   public void received(Connection c, Object obj) {
     if (obj instanceof PingServer) {
       System.out.println("Server: " + obj);
+    }
+    if (obj instanceof HashMap) {
+      System.out.println("hashmap received from server!");
     }
   }
 
