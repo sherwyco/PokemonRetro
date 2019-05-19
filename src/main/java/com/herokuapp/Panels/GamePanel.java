@@ -41,6 +41,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
   private MouseManager mouseManager;
   private Handler handler;
 
+  public static String name = "admin";
+
   public GamePanel() {
     super();
     setPreferredSize(new Dimension(screenWidth, screenHeight));

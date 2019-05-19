@@ -2,37 +2,29 @@ package com.herokuapp.server;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import com.herokuapp.player.DummyPlayer;
+import com.herokuapp.server.Network.PingServer;
 
 public class ClientThread implements Runnable {
   public final static String HOST = "127.0.0.1";
   public final static int TIMEOUT = 1000;
 
-  public final static int PORT_TCP = 56555;
-  public final static int PORT_UDP = 56777;
-
   public Client client;
   private Listener listener;
-  public PlayerList otherPlayers = new PlayerList();
 
   @Override
   public void run() {
     listener = new ClientListener();
     client = new Client();
-    client.getKryo().register(PlayerList.class);
-    client.getKryo().register(DummyPlayer.class);
-    client.getKryo().register(UpdateCoords.class);
-    client.getKryo().register(Ping.class);
-    client.getKryo().register(Pong.class);
+    Network.register(client);
     client.addListener(listener);
     client.start();
     System.out.println("finding server...");
-    InetAddress adr = client.discoverHost(56777, 5000);
+    // scan udp port servers
+    InetAddress adr = client.discoverHost(Network.PORT_UDP, 5000);
     if (adr == null) {
       System.out.println("No server found!");
       System.exit(-1);
@@ -40,7 +32,7 @@ public class ClientThread implements Runnable {
       System.out.println("found server at " + adr);
     }
     try {
-      client.connect(TIMEOUT, adr.getHostAddress(), PORT_TCP, PORT_UDP);
+      client.connect(TIMEOUT, adr.getHostAddress(), Network.PORT_TCP, Network.PORT_UDP);
     } catch (IOException ex) {
       ex.printStackTrace();
     } finally {
@@ -48,28 +40,25 @@ public class ClientThread implements Runnable {
     }
   }
 
-  public ArrayList<DummyPlayer> getAllPlayers() {
-    return otherPlayers.getList();
-
-  }
-
-  class ClientListener extends Listener {
-    @Override
-    public void received(Connection c, Object obj) {
-      System.out.println("Server response: " + obj);
-      if (obj instanceof PlayerList) {
-        System.out.println("got playerlist from server!");
-        otherPlayers = (PlayerList) obj;
-        System.out.println("check list: " + otherPlayers);
-      }
-    }
-
-    @Override
-    public void disconnected(Connection c) {
-      System.out.println("Connection to server " + c.getID() + " has been lost!");
-
-      JOptionPane.showMessageDialog(null, "Server is down!", "Server error",
-          JOptionPane.ERROR_MESSAGE);
-    }
-  }
 }
+
+
+
+class ClientListener extends Listener {
+  @Override
+  public void received(Connection c, Object obj) {
+    if (obj instanceof PingServer) {
+      System.out.println("Server: " + obj);
+    }
+  }
+
+  @Override
+  public void disconnected(Connection c) {
+    System.out.println("Connection to server " + c.getID() + " has been lost!");
+
+    JOptionPane.showMessageDialog(null, "Server is down!", "Server error",
+        JOptionPane.ERROR_MESSAGE);
+  }
+
+}
+

@@ -1,7 +1,8 @@
-package com.herokuapp.player;
+package com.herokuapp.server;
 
 import java.awt.Graphics;
 import com.herokuapp.misc.GlobalVariables;
+import com.herokuapp.player.Camera;
 import com.herokuapp.sprite.Animation;
 import com.herokuapp.sprite.Spritesheet;
 

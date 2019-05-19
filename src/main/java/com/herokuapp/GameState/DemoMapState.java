@@ -4,14 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.util.ArrayList;
 import com.herokuapp.Panels.GamePanel;
 import com.herokuapp.TileMaps.Tilemap;
 import com.herokuapp.TileMaps.TilemapUtility;
-import com.herokuapp.player.DummyPlayer;
 import com.herokuapp.player.Player;
 import com.herokuapp.server.ClientThread;
-import com.herokuapp.server.UpdateCoords;
+import com.herokuapp.server.Network.PingServer;
 
 public class DemoMapState extends GameState {
 
@@ -34,13 +32,14 @@ public class DemoMapState extends GameState {
   boolean W_pressed = false;
   boolean space_pressed = false;
   boolean enter_pressed = false;
-
   int spawnX;
   int spawnY;
 
-  Thread threadClient = null;
-  ClientThread clientThread = null;
-  ArrayList<DummyPlayer> otherPlayers;
+  Thread threadClient;
+  // client thread for connecting to server
+  ClientThread clientThread;
+  // player's name
+  String playerName = GamePanel.name;
 
   public DemoMapState(GameStateManager gsm, int spawnX, int spawnY) {
     clientThread = new ClientThread();
@@ -56,11 +55,11 @@ public class DemoMapState extends GameState {
 
 
   public void init() {
-
     try {
       tilemap = tilemapUtility.loadMap("src/main/resources/tilemaps/tilemap1.txt");
     } catch (IOException e) {
       e.printStackTrace();
+      System.exit(1);
     }
     System.out.println("spawnx: " + spawnX + "\nspawny: " + spawnY);
     player = new Player(spawnX, spawnY, this.gsm);
@@ -76,45 +75,27 @@ public class DemoMapState extends GameState {
 
   @Override
   public void update() {
-    otherPlayers = clientThread.getAllPlayers();
-    System.out.println("update: " + otherPlayers);
+    // ping server
+    PingServer test = new PingServer();
+    test.msg = "Pinging server!";
+    clientThread.client.sendTCP(test);
     player.update();
     if (W_pressed) {
       player.moveUp();
-      UpdateCoords test = new UpdateCoords();
-      test.setX(player.getX());
-      test.setY(player.getY());
-      clientThread.client.sendUDP(test);
     }
     if (A_pressed) {
       player.moveLeft();
-      UpdateCoords coord = new UpdateCoords();
-      coord.setX(player.getX());
-      coord.setY(player.getY());
-      clientThread.client.sendUDP(coord);
     }
     if (S_pressed) {
       player.moveDown();
-      UpdateCoords coord = new UpdateCoords();
-      coord.setX(player.getX());
-      coord.setY(player.getY());
-      clientThread.client.sendUDP(coord);
     }
     if (D_pressed) {
       player.moveRight();
-      UpdateCoords coord = new UpdateCoords();
-      coord.setX(player.getX());
-      coord.setY(player.getY());
-      clientThread.client.sendUDP(coord);
     }
     if (enter_pressed && player.hasEncounteredPokemon()) {
       System.out.println("go to battle state now");
     }
-    if (otherPlayers != null) {
-      for (DummyPlayer p : otherPlayers) {
-        p.update();
-      }
-    }
+
   }
 
 
@@ -128,11 +109,6 @@ public class DemoMapState extends GameState {
     tilemap.draw(g);
     tilemap.drawSpritesAbove(g, player.getY());
     player.draw(g);
-    if (otherPlayers != null) {
-      for (DummyPlayer p : otherPlayers) {
-        p.draw(g);
-      }
-    }
     tilemap.drawSpritesBelow(g, player.getY());
     player.drawHUD(g);
     // render dummy players

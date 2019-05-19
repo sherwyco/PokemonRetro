@@ -1,0 +1,40 @@
+package com.herokuapp.server;
+
+import java.util.HashMap;
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.EndPoint;
+
+/**
+ * This class is for conveniently placing all classes common to client and server.
+ */
+public class Network {
+  public final static int PORT_TCP = 56555;
+  public final static int PORT_UDP = 56777;
+
+  public static void register(EndPoint endPoint) {
+    Kryo kryo = endPoint.getKryo();
+    kryo.register(PingServer.class);
+    kryo.register(OnlineUsers.class);
+    kryo.register(HashMap.class);
+    kryo.register(DummyPlayer.class);
+  }
+
+
+  public static class UpdatePlayers {
+    public HashMap<Connection, DummyPlayer> players;
+  }
+
+  public static class OnlineUsers {
+    public int total;
+  }
+
+  public static class PingServer {
+    public String msg;
+
+    @Override
+    public String toString() {
+      return msg;
+    }
+  }
+}

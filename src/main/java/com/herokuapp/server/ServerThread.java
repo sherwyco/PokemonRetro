@@ -1,15 +1,11 @@
 package com.herokuapp.server;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicBoolean;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
-import com.herokuapp.player.DummyPlayer;
+import com.herokuapp.server.Network.PingServer;
 
 public class ServerThread implements Runnable {
 
@@ -19,25 +15,18 @@ public class ServerThread implements Runnable {
   private AtomicBoolean ready = new AtomicBoolean(false);
   private Server server;
   private Listener listener;
-  private PlayerList pl = new PlayerList();
-
-  private HashMap<Integer, DummyPlayer> map = new HashMap<Integer, DummyPlayer>();
 
   @Override
   public void run() {
     listener = new ServerListener();
     server = new Server();
     // register the class
-    server.getKryo().register(PlayerList.class);
-    server.getKryo().register(DummyPlayer.class);
-    server.getKryo().register(UpdateCoords.class);
-    server.getKryo().register(Ping.class);
-    server.getKryo().register(Pong.class);
+    Network.register(server);
     server.addListener(listener);
     System.out.println("Server started!");
     server.start();
     try {
-      server.bind(PORT_TCP, PORT_UDP);
+      server.bind(Network.PORT_TCP, Network.PORT_UDP);
       ready.set(true);
     } catch (IOException e) {
       e.printStackTrace();
@@ -52,35 +41,23 @@ public class ServerThread implements Runnable {
   class ServerListener extends Listener {
     @Override
     public void received(Connection c, Object obj) {
-      System.out.println(obj);
-      if (obj instanceof UpdateCoords) {
-        UpdateCoords coords = (UpdateCoords) obj;
-        map.replace(c.getID(), new DummyPlayer(coords.getX(), coords.getY()));
+      if (obj instanceof PingServer) {
+        System.out.println("Client: " + obj);
+        PingServer test = new PingServer();
+        test.msg = "Pong";
+        // send pong back to sender of ping
+        c.sendTCP(test);
       }
-      ArrayList<DummyPlayer> al = new ArrayList<DummyPlayer>();
-      for (Entry<Integer, DummyPlayer> entry : map.entrySet()) {
-        // only send other Player's info to clients
-        if (c.getID() != entry.getKey()) {
-          System.out.println(entry.getKey() + " /" + entry.getValue());
-          al.add(entry.getValue());
-        }
-      }
-      System.out.println("al: " + Arrays.toString(al.toArray()));
-      c.sendUDP(pl);
     }
 
     @Override
     public void connected(Connection c) {
       System.out.println("client " + c.getID() + " has connected");
-      map.put(c.getID(), new DummyPlayer(50, 30));
-      System.out.println(map.get(c.getID()));
     }
 
     @Override
     public void disconnected(Connection c) {
       System.out.println("client " + c.getID() + " has disconnected!");
-      System.out.println("removing : " + c.getID());
-      map.remove(c.getID());
     }
   }
 }
