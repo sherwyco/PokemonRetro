@@ -2,12 +2,13 @@ package com.herokuapp.server;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.HashMap;
 import javax.swing.JOptionPane;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.esotericsoftware.minlog.Log;
 import com.herokuapp.server.Network.PingServer;
+import com.herokuapp.server.Network.PlayerList;
 
 public class ClientThread implements Runnable {
   public final static String HOST = "127.0.0.1";
@@ -18,6 +19,7 @@ public class ClientThread implements Runnable {
 
   @Override
   public void run() {
+    Log.set(Log.LEVEL_DEBUG);
     listener = new ClientListener();
     client = new Client();
     Network.register(client);
@@ -51,8 +53,8 @@ class ClientListener extends Listener {
     if (obj instanceof PingServer) {
       System.out.println("Server: " + obj);
     }
-    if (obj instanceof HashMap) {
-      System.out.println("hashmap received from server!");
+    if (obj instanceof PlayerList) {
+      System.out.println("hashmap received from server: " + obj);
     }
   }
 

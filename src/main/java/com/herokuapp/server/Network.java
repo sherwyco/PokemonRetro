@@ -21,17 +21,23 @@ public class Network {
 
 
   public static class PlayerList {
-    public HashMap<Integer, DummyPlayer> players;
+
+    public HashMap<Integer, DummyPlayer> players = new HashMap<Integer, DummyPlayer>();
+
+    public PlayerList() {
+
+    }
   }
 
   public static class OnlineUsers {
-    public int total;
+    public int totalUsers;
   }
 
   public static class UpdateCoords {
     public int x;
     public int y;
     public movement type;
+    public int clientId;
 
     public enum movement {
       Left, Right, Down, Up

@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.esotericsoftware.minlog.Log;
 import com.herokuapp.server.Network.OnlineUsers;
 import com.herokuapp.server.Network.PingServer;
 import com.herokuapp.server.Network.PlayerList;
@@ -23,6 +24,7 @@ public class ServerThread implements Runnable {
 
   @Override
   public void run() {
+    Log.set(Log.LEVEL_DEBUG);
     listener = new ServerListener();
     server = new Server();
     // register the class
@@ -54,25 +56,26 @@ public class ServerThread implements Runnable {
         c.sendTCP(test);
         return;
       }
-
     }
 
     @Override
     public void connected(Connection c) {
       System.out.println("client " + c.getID() + " has connected");
-      ol.total++; // increment by 1
-      System.out.println("total users connected: " + ol.total);
+      ol.totalUsers++; // increment by 1
+      System.out.println("total users connected: " + ol.totalUsers);
       map.put(c.getID(), new DummyPlayer(50, 30));
       PlayerList pl = new PlayerList();
-      pl.players = map;
+      pl.players = new HashMap<Integer, DummyPlayer>(map);
+      System.out.println(pl.players.get(c.getID()));
       // send an updated map to all except the newly connected client;
-      server.sendToAllExceptUDP(c.getID(), pl);
+      server.sendToAllUDP(pl);
     }
 
     @Override
     public void disconnected(Connection c) {
       System.out.println("client " + c.getID() + " has disconnected!");
       map.remove(c.getID());
+      ol.totalUsers--;// reduce by one
     }
   }
 }
