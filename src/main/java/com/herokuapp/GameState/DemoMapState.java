@@ -44,8 +44,9 @@ public class DemoMapState extends GameState {
   private ClientThread clientThread;
   // player's name
   public String playerName = GamePanel.name;
-  private int myClientId;
-  private ArrayList<DummyPlayer> dummyPlayers;
+  public int myClientId;
+  private ArrayList<DummyPlayer> dummyPlayers = new ArrayList<DummyPlayer>();
+  private Thread updateThread;
   // private UpdateCoords updateDummy = new UpdateCoords();
 
   public DemoMapState(GameStateManager gsm, int spawnX, int spawnY) {
@@ -72,8 +73,6 @@ public class DemoMapState extends GameState {
     player.setLevel(tilemap);
     myClientId = clientThread.myClientId;
     System.out.println("my Id: " + myClientId);
-    Thread updateThread = new Thread(new playerUpdater());
-    updateThread.start();
   }
 
 
@@ -110,47 +109,54 @@ public class DemoMapState extends GameState {
     if (enter_pressed && player.hasEncounteredPokemon()) {
       System.out.println("go to battle state now");
     }
+    if (dummyPlayers.size() > 1) {
+
+      java.awt.EventQueue.invokeLater(new Runnable() {
+        public void run() {
+          System.out.println("updating players!");
+          for (DummyPlayer p : dummyPlayers) {
+            // if its not my character
+            if (p.myClientId != clientThread.myClientId) {
+              if (clientThread.coords != null) {
+                // if new coords are not for me
+                System.out
+                    .println("getting new coords for client: " + clientThread.coords.clientId);
+                while ((p.getX() != clientThread.coords.x) || (p.getY() != clientThread.coords.y)) {
+                  switch (clientThread.coords.type) {
+                    case Left:
+                      p.moveLeft();
+                      break;
+                    case Right:
+                      p.moveRight();
+                      break;
+                    case Up:
+                      p.moveUp();
+                      break;
+                    case Down:
+                      p.moveDown();
+                      break;
+                    default:
+                      break;
+                  }
+                  p.update();
+                }
+              }
+              p.update();
+            }
+            clientThread.coords = null;
+          }
+        }
+      });
+
+
+    }
+
   }
 
 
   public class playerUpdater implements Runnable {
-
-
     @Override
     public void run() {
-      if (dummyPlayers.size() > 1) {
-        for (DummyPlayer p : dummyPlayers) {
-          // if its not my character
-          if (p.myClientId != clientThread.myClientId) {
-
-            if (clientThread.coords != null) {
-              // if new coords are not for me
-              System.out.println("getting new coords for client: " + clientThread.coords.clientId);
-              while ((p.getX() != clientThread.coords.x) || (p.getY() != clientThread.coords.y)) {
-                switch (clientThread.coords.type) {
-                  case Left:
-                    p.moveLeft();
-                    break;
-                  case Right:
-                    p.moveRight();
-                    break;
-                  case Up:
-                    p.moveUp();
-                    break;
-                  case Down:
-                    p.moveDown();
-                    break;
-                  default:
-                    break;
-                }
-                p.update();
-              }
-            }
-            p.update();
-          }
-          clientThread.coords = null;
-        }
-      }
 
     }
   }
@@ -170,7 +176,8 @@ public class DemoMapState extends GameState {
     if (dummyPlayers.size() > 1) {
       for (DummyPlayer p : dummyPlayers) {
         // if its not my character
-        if (p.myClientId != this.myClientId) {
+        if (p.myClientId != myClientId) {
+          System.out.println("p client: " + p.myClientId + " myClient: " + myClientId);
           // render
           p.draw(g);
         }

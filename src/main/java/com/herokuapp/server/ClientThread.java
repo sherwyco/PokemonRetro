@@ -72,7 +72,7 @@ public class ClientThread implements Runnable {
         for (Entry<Integer, PlayerCoords> entry : map.entrySet()) {
           int x = entry.getValue().x;
           int y = entry.getValue().y;
-          int id = entry.getValue().clientId;
+          int id = entry.getKey();
           System.out.println(String.format("x: %d, y: %d id: %d", x, y, id));
           playerList.add(new DummyPlayer(x, y, id));
           System.out.println(Arrays.toString(playerList.toArray()));
