@@ -64,7 +64,9 @@ public class ServerThread implements Runnable {
       }
       if (obj instanceof UpdateCoords) {
         int id = c.getID();
+        System.out.println("receied object from client: " + id);
         UpdateCoords coords = (UpdateCoords) obj;
+        map.put(id, new PlayerCoords(coords.x, coords.y, id)); // update map
         server.sendToAllExceptUDP(id, coords); // send to all except the sender of the object
         return;
       }
