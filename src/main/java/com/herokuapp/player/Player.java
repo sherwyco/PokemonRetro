@@ -45,7 +45,7 @@ public class Player {
   Animation down;
   Animation up;
   Animation left;
-  boolean isMoving = false;
+  public boolean isMoving = false;
   int pose = 0;
   Animation[] anims = new Animation[4];
 
