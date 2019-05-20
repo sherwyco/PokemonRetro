@@ -41,6 +41,7 @@ public class DummyPlayer {
     spriteY = this.y;
     Camera.x = this.x;
     Camera.y = this.y;
+    myClientId = id;
   }
 
   public int getX() {
