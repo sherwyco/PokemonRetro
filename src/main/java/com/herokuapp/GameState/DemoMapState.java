@@ -111,42 +111,36 @@ public class DemoMapState extends GameState {
     }
     if (dummyPlayers.size() > 1) {
 
-      java.awt.EventQueue.invokeLater(new Runnable() {
-        public void run() {
-          for (DummyPlayer p : dummyPlayers) {
-            // if its not my character
-            if (p.myClientId != clientThread.myClientId) {
-              if (clientThread.coords != null) {
-                // if new coords are not for me
-                System.out
-                    .println("getting new coords for client: " + clientThread.coords.clientId);
-                while ((p.getX() != clientThread.coords.x) || (p.getY() != clientThread.coords.y)) {
-                  switch (clientThread.coords.type) {
-                    case Left:
-                      p.moveLeft();
-                      break;
-                    case Right:
-                      p.moveRight();
-                      break;
-                    case Up:
-                      p.moveUp();
-                      break;
-                    case Down:
-                      p.moveDown();
-                      break;
-                    default:
-                      break;
-                  }
-                }
-                clientThread.coords = null;
+      for (DummyPlayer p : dummyPlayers) {
+        // if its not my character
+        if (p.myClientId != clientThread.myClientId) {
+          if (clientThread.coords != null) {
+            // if new coords are not for me
+            System.out.println("getting new coords for client: " + clientThread.coords.clientId);
+            while ((p.getX() != clientThread.coords.x) || (p.getY() != clientThread.coords.y)) {
+              switch (clientThread.coords.type) {
+                case Left:
+                  p.moveLeft();
+                  break;
+                case Right:
+                  p.moveRight();
+                  break;
+                case Up:
+                  p.moveUp();
+                  break;
+                case Down:
+                  p.moveDown();
+                  break;
+                default:
+                  break;
               }
               p.update();
             }
+            clientThread.coords = null;
           }
+          p.update();
         }
-      });
-
-
+      }
     }
 
   }
