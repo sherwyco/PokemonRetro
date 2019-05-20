@@ -26,6 +26,7 @@ public class ClientThread implements Runnable {
   public HashMap<Integer, PlayerCoords> map = null;
   public ArrayList<DummyPlayer> playerList = null;
   public int myClientId = 0;
+  public UpdateCoords coords = null;
 
   @Override
   public void run() {
@@ -84,8 +85,10 @@ public class ClientThread implements Runnable {
       if (obj instanceof UpdateCoords) {
         UpdateCoords newCoords = (UpdateCoords) obj;
         if (newCoords.clientId != myClientId) {
-          // update the player with this coord
-          System.out.println("update this user with clientid: " + newCoords.clientId);
+          // update the map with new coords
+          map.replace(newCoords.clientId,
+              new PlayerCoords(newCoords.x, newCoords.y, newCoords.clientId));
+          coords = newCoords;
         }
         return;
       }

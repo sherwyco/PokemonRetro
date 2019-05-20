@@ -50,9 +50,6 @@ public class ServerThread implements Runnable {
     return ready.get();
   }
 
-  public void updateMap() {
-    server.sendToAllUDP(map);
-  }
 
   class ServerListener extends Listener {
     @Override
@@ -70,9 +67,6 @@ public class ServerThread implements Runnable {
         UpdateCoords coords = (UpdateCoords) obj;
         map.replace(id, new PlayerCoords(coords.x, coords.y, id)); // update the sender's coords
         server.sendToAllExceptUDP(id, coords); // send to all except the sender of the object
-
-        // update the map to everyone
-        updateMap();
         return;
       }
     }
