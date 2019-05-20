@@ -3,6 +3,7 @@ package com.herokuapp.server;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -69,6 +70,7 @@ public class ClientThread implements Runnable {
           int id = entry.getValue().clientId;
           System.out.println(String.format("x: %d, y: %d id: %d", x, y, id));
           playerList.add(new DummyPlayer(x, y, id));
+          System.out.println(Arrays.toString(playerList.toArray()));
         }
         return;
       }

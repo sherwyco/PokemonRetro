@@ -100,6 +100,7 @@ public class DemoMapState extends GameState {
     }
 
     if (dummyPlayers.size() < 1) {
+      System.out.println("updating dummy players");
       for (DummyPlayer p : dummyPlayers) {
         // if its not my character
         if (p.myClientId != this.myClientId) {
@@ -125,6 +126,7 @@ public class DemoMapState extends GameState {
     player.drawHUD(g);
     // render dummy players
     if (dummyPlayers.size() < 1) {
+      System.out.println("rendering dummy players");
       for (DummyPlayer p : dummyPlayers) {
         // if its not my character
         if (p.myClientId != this.myClientId) {
