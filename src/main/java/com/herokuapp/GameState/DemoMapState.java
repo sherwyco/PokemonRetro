@@ -121,19 +121,23 @@ public class DemoMapState extends GameState {
           // if new coords are not for me
           if (p.myClientId != clientThread.myClientId) {
             System.out.println("getting new coords for client: " + clientThread.coords.clientId);
-            while ((p.getX() != clientThread.coords.x) && (p.getY() != clientThread.coords.y)) {
+            while ((p.getX() != clientThread.coords.x) || (p.getY() != clientThread.coords.y)) {
               switch (clientThread.coords.type) {
                 case Left:
                   p.moveLeft();
+                  p.update();
                   break;
                 case Right:
                   p.moveRight();
+                  p.update();
                   break;
                 case Up:
                   p.moveUp();
+                  p.update();
                   break;
                 case Down:
                   p.moveDown();
+                  p.update();
                   break;
                 default:
                   break;
