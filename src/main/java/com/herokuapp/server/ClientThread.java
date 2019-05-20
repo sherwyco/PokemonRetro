@@ -83,9 +83,10 @@ public class ClientThread implements Runnable {
         UpdateCoords newCoords = (UpdateCoords) obj;
         if (newCoords.clientId != myClientId) {
           // update the map with new coords
+          System.out.println("got new coordinates for client: " + newCoords.clientId);
           map.replace(newCoords.clientId,
               new PlayerCoords(newCoords.x, newCoords.y, newCoords.clientId));
-          coords = newCoords;
+          coords = (UpdateCoords) newCoords;
         }
         return;
       }
