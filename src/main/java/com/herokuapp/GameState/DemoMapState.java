@@ -88,35 +88,23 @@ public class DemoMapState extends GameState {
     player.update();
     if (W_pressed) {
       player.moveUp();
-      if (!player.isMoving) {
-        System.out.println("seding packet movement up!");
-        clientThread.client
-            .sendUDP(new UpdateCoords(player.getX(), player.getY(), myClientId, movement.Up));
-      }
+      clientThread.client
+          .sendUDP(new UpdateCoords(player.getX(), player.getY(), myClientId, movement.Up));
     }
     if (A_pressed) {
       player.moveLeft();
-      if (!player.isMoving) {
-        System.out.println("seding packet movement left!");
-        clientThread.client
-            .sendUDP(new UpdateCoords(player.getX(), player.getY(), myClientId, movement.Left));
-      }
+      clientThread.client
+          .sendUDP(new UpdateCoords(player.getX(), player.getY(), myClientId, movement.Left));
     }
     if (S_pressed) {
       player.moveDown();
-      if (!player.isMoving) {
-        System.out.println("seding packet movement down!");
-        clientThread.client
-            .sendUDP(new UpdateCoords(player.getX(), player.getY(), myClientId, movement.Down));
-      }
+      clientThread.client
+          .sendUDP(new UpdateCoords(player.getX(), player.getY(), myClientId, movement.Down));
     }
     if (D_pressed) {
       player.moveRight();
-      if (!player.isMoving) {
-        System.out.println("seding packet movement right!");
-        clientThread.client
-            .sendUDP(new UpdateCoords(player.getX(), player.getY(), myClientId, movement.Right));
-      }
+      clientThread.client
+          .sendUDP(new UpdateCoords(player.getX(), player.getY(), myClientId, movement.Right));
     }
     if (enter_pressed && player.hasEncounteredPokemon()) {
       System.out.println("go to battle state now");
