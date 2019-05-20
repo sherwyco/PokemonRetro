@@ -86,15 +86,12 @@ public class ClientThread implements Runnable {
       }
       if (obj instanceof UpdateCoords) {
         UpdateCoords newCoords = (UpdateCoords) obj;
-        if (!newCoords.equals(obj)) {
-          System.out.println("not same packet");
-          if (newCoords.clientId != myClientId) {
-            // update the map with new coords
-            System.out.println("got new coordinates for client: " + newCoords.clientId);
-            map.replace(newCoords.clientId,
-                new PlayerCoords(newCoords.x, newCoords.y, newCoords.clientId));
-            coords = (UpdateCoords) newCoords;
-          }
+        if (newCoords.clientId != myClientId) {
+          // update the map with new coords
+          System.out.println("got new coordinates for client: " + newCoords.clientId);
+          map.replace(newCoords.clientId,
+              new PlayerCoords(newCoords.x, newCoords.y, newCoords.clientId));
+          coords = (UpdateCoords) newCoords;
         }
         return;
       }
