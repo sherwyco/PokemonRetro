@@ -82,6 +82,7 @@ public class ServerThread implements Runnable {
       System.out.println("client " + c.getID() + " has disconnected!");
       map.remove(c.getID());
       ol.totalUsers--;
+      server.sendToAllUDP(map);// send updated map whenever someone quits.
       return;
     }
   }

@@ -82,6 +82,7 @@ public class DemoMapState extends GameState {
   @Override
   public void update() {
     dummyPlayers = new ArrayList<DummyPlayer>(clientThread.playerList);
+    System.out.println("total players: " + dummyPlayers.size());
     player.update();
     if (W_pressed) {
       player.moveUp();
@@ -100,7 +101,6 @@ public class DemoMapState extends GameState {
     }
 
     if (dummyPlayers.size() > 1) {
-      System.out.println("updating dummy players");
       for (DummyPlayer p : dummyPlayers) {
         // if its not my character
         if (p.myClientId != this.myClientId) {
@@ -126,7 +126,6 @@ public class DemoMapState extends GameState {
     player.drawHUD(g);
     // render dummy players
     if (dummyPlayers.size() > 1) {
-      System.out.println("rendering dummy players");
       for (DummyPlayer p : dummyPlayers) {
         // if its not my character
         if (p.myClientId != this.myClientId) {
