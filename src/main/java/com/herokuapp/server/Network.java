@@ -16,6 +16,7 @@ public class Network {
     kryo.register(ConnectionId.class);
     kryo.register(OnlineUsers.class);
     kryo.register(PlayerCoords.class);
+    kryo.register(Enum.class);
     kryo.register(UpdateCoords.class);
     kryo.register(HashMap.class);
     kryo.register(PingServer.class);
