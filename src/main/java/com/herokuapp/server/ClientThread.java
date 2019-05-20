@@ -53,6 +53,11 @@ public class ClientThread implements Runnable {
   }
 
   class ClientListener extends Listener {
+    @Override
+    public void connected(Connection c) {
+      System.out.println("connected to server with ping: " + c.getReturnTripTime());
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public void received(Connection c, Object obj) {
@@ -95,7 +100,6 @@ public class ClientThread implements Runnable {
     @Override
     public void disconnected(Connection c) {
       System.out.println("Connection to server " + c.getID() + " has been lost!");
-
       JOptionPane.showMessageDialog(null, "Server is down!", "Server error",
           JOptionPane.ERROR_MESSAGE);
     }
