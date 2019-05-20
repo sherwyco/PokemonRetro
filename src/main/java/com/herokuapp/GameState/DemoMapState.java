@@ -138,12 +138,11 @@ public class DemoMapState extends GameState {
                     default:
                       break;
                   }
-                  p.update();
                 }
+                clientThread.coords = null;
               }
               p.update();
             }
-            clientThread.coords = null;
           }
         }
       });
