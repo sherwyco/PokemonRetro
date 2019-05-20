@@ -99,7 +99,7 @@ public class DemoMapState extends GameState {
       System.out.println("go to battle state now");
     }
 
-    if (dummyPlayers.size() < 1) {
+    if (dummyPlayers.size() > 1) {
       System.out.println("updating dummy players");
       for (DummyPlayer p : dummyPlayers) {
         // if its not my character
@@ -125,7 +125,7 @@ public class DemoMapState extends GameState {
     tilemap.drawSpritesBelow(g, player.getY());
     player.drawHUD(g);
     // render dummy players
-    if (dummyPlayers.size() < 1) {
+    if (dummyPlayers.size() > 1) {
       System.out.println("rendering dummy players");
       for (DummyPlayer p : dummyPlayers) {
         // if its not my character
