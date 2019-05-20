@@ -67,10 +67,8 @@ public class DummyPlayer {
   public void setTile(int x, int y) {
     this.x = x * 16 * GlobalVariables.GAME_SCALE + 16;
     this.spriteX = this.x;
-    Camera.x = this.x;
     this.y = y * 16 * GlobalVariables.GAME_SCALE + 22;
     this.spriteY = this.y;
-    Camera.y = this.y;
   }
 
 
