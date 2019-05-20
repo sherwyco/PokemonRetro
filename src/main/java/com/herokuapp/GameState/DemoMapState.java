@@ -113,7 +113,6 @@ public class DemoMapState extends GameState {
 
       java.awt.EventQueue.invokeLater(new Runnable() {
         public void run() {
-          System.out.println("updating players!");
           for (DummyPlayer p : dummyPlayers) {
             // if its not my character
             if (p.myClientId != clientThread.myClientId) {
@@ -176,7 +175,6 @@ public class DemoMapState extends GameState {
       for (DummyPlayer p : dummyPlayers) {
         // if its not my character
         if (p.myClientId != myClientId) {
-          System.out.println("p client: " + p.myClientId + " myClient: " + myClientId);
           // render
           p.draw(g);
         }
