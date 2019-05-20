@@ -118,7 +118,27 @@ public class DemoMapState extends GameState {
         }
 
         if (clientThread.coords != null) {
-          System.out.println("getting new coords for client: " + clientThread.coords.clientId);
+          if (p.myClientId == clientThread.myClientId) {
+            System.out.println("getting new coords for client: " + clientThread.coords.clientId);
+            while ((p.getX() != clientThread.coords.x) && (p.getY() != clientThread.coords.y)) {
+              switch (clientThread.coords.type) {
+                case Left:
+                  p.moveLeft();
+                  break;
+                case Right:
+                  p.moveRight();
+                  break;
+                case Up:
+                  p.moveUp();
+                  break;
+                case Down:
+                  p.moveDown();
+                  break;
+                default:
+                  break;
+              }
+            }
+          }
         }
         clientThread.coords = null;
       }

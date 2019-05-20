@@ -11,7 +11,6 @@ import javax.swing.JOptionPane;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import com.esotericsoftware.minlog.Log;
 import com.herokuapp.server.Network.ConnectionId;
 import com.herokuapp.server.Network.PingServer;
 import com.herokuapp.server.Network.PlayerCoords;
@@ -30,8 +29,6 @@ public class ClientThread implements Runnable {
 
   @Override
   public void run() {
-    Log.set(Log.LEVEL_DEBUG);
-    Log.set(Log.LEVEL_TRACE);
     listener = new ClientListener();
     client = new Client();
     Network.register(client);
