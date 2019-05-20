@@ -13,12 +13,23 @@ public class Network {
 
   public static void register(EndPoint endPoint) {
     Kryo kryo = endPoint.getKryo();
+    kryo.register(ConnectionId.class);
+    kryo.register(OnlineUsers.class);
     kryo.register(PlayerCoords.class);
+    kryo.register(UpdateCoords.class);
     kryo.register(HashMap.class);
     kryo.register(PingServer.class);
-    kryo.register(OnlineUsers.class);
   }
 
+
+  public static class ConnectionId {
+    public int clientId;
+
+    public ConnectionId(int id) {
+      clientId = id;
+    }
+
+  }
 
   public static class OnlineUsers {
     public int totalUsers;

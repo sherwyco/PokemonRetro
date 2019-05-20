@@ -12,6 +12,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
+import com.herokuapp.server.Network.ConnectionId;
 import com.herokuapp.server.Network.PingServer;
 import com.herokuapp.server.Network.PlayerCoords;
 import com.herokuapp.server.Network.UpdateCoords;
@@ -59,6 +60,10 @@ public class ClientThread implements Runnable {
       if (obj instanceof PingServer) {
         System.out.println("Server: " + obj);
         return;
+      }
+      if (obj instanceof ConnectionId) {
+        ConnectionId connId = (ConnectionId) obj;
+        myClientId = connId.clientId; // get my id from server
       }
       if (obj instanceof HashMap) {
         System.out.println("Its a hashmap!");
