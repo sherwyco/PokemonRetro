@@ -11,6 +11,7 @@ import com.herokuapp.server.Network.ConnectionId;
 import com.herokuapp.server.Network.OnlineUsers;
 import com.herokuapp.server.Network.PingServer;
 import com.herokuapp.server.Network.PlayerCoords;
+import com.herokuapp.server.Network.UpdateCoords;
 
 public class ServerThread implements Runnable {
 
@@ -58,6 +59,13 @@ public class ServerThread implements Runnable {
         test.msg = "Pong";
         // send pong back to sender of ping
         c.sendTCP(test);
+        return;
+      }
+      if (obj instanceof UpdateCoords) {
+        int id = c.getID();
+        UpdateCoords coords = (UpdateCoords) obj;
+        map.replace(id, new PlayerCoords(coords.x, coords.y, id)); // update the sender's coords
+        server.sendToAllExceptUDP(id, coords); // send to all except the sender of the object
         return;
       }
     }

@@ -84,6 +84,7 @@ public class ClientThread implements Runnable {
         UpdateCoords newCoords = (UpdateCoords) obj;
         if (newCoords.clientId != myClientId) {
           // update the player with this coord
+          System.out.println("update this user with clientid: " + newCoords.clientId);
         }
       }
     }

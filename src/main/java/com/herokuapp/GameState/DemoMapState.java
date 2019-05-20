@@ -11,6 +11,8 @@ import com.herokuapp.TileMaps.TilemapUtility;
 import com.herokuapp.player.Player;
 import com.herokuapp.server.ClientThread;
 import com.herokuapp.server.DummyPlayer;
+import com.herokuapp.server.Network.UpdateCoords;
+import com.herokuapp.server.Network.UpdateCoords.movement;
 
 public class DemoMapState extends GameState {
 
@@ -82,19 +84,26 @@ public class DemoMapState extends GameState {
   @Override
   public void update() {
     dummyPlayers = new ArrayList<DummyPlayer>(clientThread.playerList);
-    System.out.println("total players: " + dummyPlayers.size());
     player.update();
     if (W_pressed) {
       player.moveUp();
+      clientThread.client
+          .sendUDP(new UpdateCoords(player.getX(), player.getY(), myClientId, movement.Up));
     }
     if (A_pressed) {
       player.moveLeft();
+      clientThread.client
+          .sendUDP(new UpdateCoords(player.getX(), player.getY(), myClientId, movement.Left));
     }
     if (S_pressed) {
       player.moveDown();
+      clientThread.client
+          .sendUDP(new UpdateCoords(player.getX(), player.getY(), myClientId, movement.Down));
     }
     if (D_pressed) {
       player.moveRight();
+      clientThread.client
+          .sendUDP(new UpdateCoords(player.getX(), player.getY(), myClientId, movement.Right));
     }
     if (enter_pressed && player.hasEncounteredPokemon()) {
       System.out.println("go to battle state now");
