@@ -72,6 +72,8 @@ public class DemoMapState extends GameState {
     player.setLevel(tilemap);
     myClientId = clientThread.myClientId;
     System.out.println("my Id: " + myClientId);
+    Thread updateThread = new Thread(new playerUpdater());
+    updateThread.start();
   }
 
 
@@ -108,49 +110,50 @@ public class DemoMapState extends GameState {
     if (enter_pressed && player.hasEncounteredPokemon()) {
       System.out.println("go to battle state now");
     }
-
-    if (dummyPlayers.size() > 1) {
-      for (DummyPlayer p : dummyPlayers) {
-        // if its not my character
-        if (p.myClientId != this.myClientId) {
-          // render
-          p.update();
-        }
-
-        if (clientThread.coords != null) {
-          // if new coords are not for me
-          if (p.myClientId != clientThread.myClientId) {
-            System.out.println("getting new coords for client: " + clientThread.coords.clientId);
-            while ((p.getX() != clientThread.coords.x) || (p.getY() != clientThread.coords.y)) {
-              switch (clientThread.coords.type) {
-                case Left:
-                  p.moveLeft();
-                  p.update();
-                  break;
-                case Right:
-                  p.moveRight();
-                  p.update();
-                  break;
-                case Up:
-                  p.moveUp();
-                  p.update();
-                  break;
-                case Down:
-                  p.moveDown();
-                  p.update();
-                  break;
-                default:
-                  break;
-              }
-            }
-          }
-        }
-        clientThread.coords = null;
-      }
-    }
   }
 
 
+  public class playerUpdater implements Runnable {
+
+
+    @Override
+    public void run() {
+      if (dummyPlayers.size() > 1) {
+        for (DummyPlayer p : dummyPlayers) {
+          // if its not my character
+          if (p.myClientId != clientThread.myClientId) {
+
+            if (clientThread.coords != null) {
+              // if new coords are not for me
+              System.out.println("getting new coords for client: " + clientThread.coords.clientId);
+              while ((p.getX() != clientThread.coords.x) || (p.getY() != clientThread.coords.y)) {
+                switch (clientThread.coords.type) {
+                  case Left:
+                    p.moveLeft();
+                    break;
+                  case Right:
+                    p.moveRight();
+                    break;
+                  case Up:
+                    p.moveUp();
+                    break;
+                  case Down:
+                    p.moveDown();
+                    break;
+                  default:
+                    break;
+                }
+                p.update();
+              }
+            }
+            p.update();
+          }
+          clientThread.coords = null;
+        }
+      }
+
+    }
+  }
 
   @Override
   public void draw(Graphics2D g) {
