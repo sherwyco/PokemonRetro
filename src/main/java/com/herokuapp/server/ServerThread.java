@@ -7,10 +7,9 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
-import com.herokuapp.server.Network.ConnectionId;
 import com.herokuapp.server.Network.OnlineUsers;
 import com.herokuapp.server.Network.PingServer;
-import com.herokuapp.server.Network.PlayerList;
+import com.herokuapp.server.Network.PlayerCoords;
 
 public class ServerThread implements Runnable {
 
@@ -20,14 +19,15 @@ public class ServerThread implements Runnable {
   private AtomicBoolean ready = new AtomicBoolean(false);
   private Server server;
   private Listener listener;
-  private HashMap<Integer, DummyPlayer> map = new HashMap<Integer, DummyPlayer>();
+  private HashMap<Integer, PlayerCoords> map = new HashMap<Integer, PlayerCoords>();
   private OnlineUsers ol = new OnlineUsers();
+  private final int defaultX = 50;
+  private final int defaultY = 30;
 
   @Override
   public void run() {
     Log.set(Log.LEVEL_DEBUG);
     Log.set(Log.LEVEL_TRACE);
-    Log.set(Log.LEVEL_ERROR);
     listener = new ServerListener();
     server = new Server();
     // register the class
@@ -64,15 +64,14 @@ public class ServerThread implements Runnable {
     @Override
     public void connected(Connection c) {
       int id = c.getID();
-      c.sendUDP(new ConnectionId(id));
       System.out.println("client " + id + " has connected");
       ol.totalUsers++; // increment by 1
       System.out.println("total users connected: " + ol.totalUsers);
-      map.put(c.getID(), new DummyPlayer(50, 30, id));
-      // send an updated map to all except the newly connected client;
-      PlayerList plist = new PlayerList();
-      plist.players = map;
-      server.sendToAllUDP(new PlayerList());
+
+      // add player to map
+      map.put(id, new PlayerCoords(defaultX, defaultY, id));
+      // send the map to all;
+      server.sendToAllUDP(map);//
       return;
     }
 
@@ -80,7 +79,7 @@ public class ServerThread implements Runnable {
     public void disconnected(Connection c) {
       System.out.println("client " + c.getID() + " has disconnected!");
       map.remove(c.getID());
-      ol.totalUsers--;// reduce by one
+      ol.totalUsers--;
       return;
     }
   }

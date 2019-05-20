@@ -13,30 +13,38 @@ public class Network {
 
   public static void register(EndPoint endPoint) {
     Kryo kryo = endPoint.getKryo();
-    kryo.register(ConnectionId.class);
+    kryo.register(PlayerCoords.class);
     kryo.register(HashMap.class);
-    kryo.register(PlayerList.class);
     kryo.register(PingServer.class);
     kryo.register(OnlineUsers.class);
-    kryo.register(DummyPlayer.class);
   }
 
-
-  public static class PlayerList {
-
-    public HashMap<Integer, DummyPlayer> players;
-
-  }
 
   public static class OnlineUsers {
     public int totalUsers;
   }
 
+  public static class PlayerCoords {
+    public int x;
+    public int y;
+    public int clientId;
+
+    public PlayerCoords() {
+
+    }
+
+    public PlayerCoords(int x, int y, int clientId) {
+      this.x = x;
+      this.y = y;
+      this.clientId = clientId;
+    }
+
+  }
   public static class UpdateCoords {
     public int x;
     public int y;
-    public movement type;
     public int clientId;
+    public movement type;
 
     public enum movement {
       Left, Right, Down, Up
@@ -46,23 +54,11 @@ public class Network {
 
     }
 
-    public UpdateCoords(int x, int y, movement type, int clientId) {
+    public UpdateCoords(int x, int y, int clientId, movement type) {
       this.x = x;
       this.y = y;
+      this.clientId = clientId;
       this.type = type;
-      this.clientId = clientId;
-    }
-  }
-
-  public static class ConnectionId {
-    public int clientId;
-
-    public ConnectionId() {
-
-    }
-
-    public ConnectionId(int clientId) {
-      this.clientId = clientId;
     }
   }
 

@@ -2,14 +2,18 @@ package com.herokuapp.server;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import javax.swing.JOptionPane;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
-import com.herokuapp.server.Network.ConnectionId;
 import com.herokuapp.server.Network.PingServer;
-import com.herokuapp.server.Network.PlayerList;
+import com.herokuapp.server.Network.PlayerCoords;
+import com.herokuapp.server.Network.UpdateCoords;
 
 public class ClientThread implements Runnable {
   public final static String HOST = "127.0.0.1";
@@ -17,14 +21,13 @@ public class ClientThread implements Runnable {
 
   public Client client;
   private Listener listener;
-  public PlayerList playerList = new PlayerList();
-  public int clientId = 0;
+  public ArrayList<DummyPlayer> playerList = new ArrayList<DummyPlayer>();
+  public int myClientId = 0;
 
   @Override
   public void run() {
     Log.set(Log.LEVEL_DEBUG);
     Log.set(Log.LEVEL_TRACE);
-    Log.set(Log.LEVEL_ERROR);
     listener = new ClientListener();
     client = new Client();
     Network.register(client);
@@ -49,22 +52,31 @@ public class ClientThread implements Runnable {
   }
 
   class ClientListener extends Listener {
+    @SuppressWarnings("unchecked")
     @Override
     public void received(Connection c, Object obj) {
       if (obj instanceof PingServer) {
         System.out.println("Server: " + obj);
         return;
       }
-      if (obj instanceof PlayerList) {
-        System.out.println("hashmap received from server: " + obj);
-        playerList = (PlayerList) obj;
+      if (obj instanceof HashMap) {
+        System.out.println("Its a hashmap!");
+        HashMap<Integer, PlayerCoords> map = new HashMap<Integer, PlayerCoords>();
+        map.putAll((Map<? extends Integer, ? extends PlayerCoords>) obj);
+        for (Entry<Integer, PlayerCoords> entry : map.entrySet()) {
+          int x = entry.getValue().x;
+          int y = entry.getValue().y;
+          int id = entry.getValue().clientId;
+          System.out.println(String.format("x: %d, y: %d id: %d", x, y, id));
+          playerList.add(new DummyPlayer(x, y, id));
+        }
         return;
       }
-      if (obj instanceof ConnectionId) {
-        ConnectionId connId = (ConnectionId) obj;
-        clientId = connId.clientId;
-        System.out.println("got my id from server: " + clientId);
-        return;
+      if (obj instanceof UpdateCoords) {
+        UpdateCoords newCoords = (UpdateCoords) obj;
+        if (newCoords.clientId != myClientId) {
+          // update the player with this coord
+        }
       }
     }
 

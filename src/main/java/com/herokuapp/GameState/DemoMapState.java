@@ -4,15 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.util.Map.Entry;
+import java.util.ArrayList;
 import com.herokuapp.Panels.GamePanel;
 import com.herokuapp.TileMaps.Tilemap;
 import com.herokuapp.TileMaps.TilemapUtility;
 import com.herokuapp.player.Player;
 import com.herokuapp.server.ClientThread;
 import com.herokuapp.server.DummyPlayer;
-import com.herokuapp.server.Network.PlayerList;
-import com.herokuapp.server.Network.UpdateCoords;
 
 public class DemoMapState extends GameState {
 
@@ -44,9 +42,9 @@ public class DemoMapState extends GameState {
   private ClientThread clientThread;
   // player's name
   public String playerName = GamePanel.name;
-  public int myClientId;
-  public PlayerList dummyPlayers = new PlayerList();
-  public UpdateCoords updateDummy = new UpdateCoords();
+  private int myClientId;
+  private ArrayList<DummyPlayer> dummyPlayers;
+  // private UpdateCoords updateDummy = new UpdateCoords();
 
   public DemoMapState(GameStateManager gsm, int spawnX, int spawnY) {
     clientThread = new ClientThread();
@@ -70,7 +68,7 @@ public class DemoMapState extends GameState {
     }
     player = new Player(spawnX, spawnY, this.gsm);
     player.setLevel(tilemap);
-    myClientId = clientThread.clientId;
+    myClientId = clientThread.myClientId;
     System.out.println("my Id: " + myClientId);
   }
 
@@ -83,7 +81,7 @@ public class DemoMapState extends GameState {
 
   @Override
   public void update() {
-    dummyPlayers = (PlayerList) clientThread.playerList;
+    dummyPlayers = new ArrayList<DummyPlayer>(clientThread.playerList);
     player.update();
     if (W_pressed) {
       player.moveUp();
@@ -100,16 +98,16 @@ public class DemoMapState extends GameState {
     if (enter_pressed && player.hasEncounteredPokemon()) {
       System.out.println("go to battle state now");
     }
-    if (dummyPlayers.players != null) {
-      for (Entry<Integer, DummyPlayer> map : dummyPlayers.players.entrySet()) {
-        // update other players
-        if (myClientId != map.getKey()) {
-          map.getValue().update();
+
+    if (dummyPlayers.size() < 1) {
+      for (DummyPlayer p : dummyPlayers) {
+        // if its not my character
+        if (p.myClientId != this.myClientId) {
+          // render
+          p.update();
         }
       }
     }
-
-
   }
 
 
@@ -126,11 +124,12 @@ public class DemoMapState extends GameState {
     tilemap.drawSpritesBelow(g, player.getY());
     player.drawHUD(g);
     // render dummy players
-    if (dummyPlayers.players != null) {
-      for (Entry<Integer, DummyPlayer> map : dummyPlayers.players.entrySet()) {
-        // only render other players.
-        if (myClientId != map.getKey()) {
-          map.getValue().draw(g);
+    if (dummyPlayers.size() < 1) {
+      for (DummyPlayer p : dummyPlayers) {
+        // if its not my character
+        if (p.myClientId != this.myClientId) {
+          // render
+          p.draw(g);
         }
       }
     }
