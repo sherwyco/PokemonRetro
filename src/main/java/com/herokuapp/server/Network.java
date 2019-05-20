@@ -3,6 +3,7 @@ package com.herokuapp.server;
 import java.util.HashMap;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
+import com.herokuapp.server.Network.UpdateCoords.movement;
 
 /**
  * This class is for conveniently placing all classes common to client and server.
@@ -16,7 +17,7 @@ public class Network {
     kryo.register(ConnectionId.class);
     kryo.register(OnlineUsers.class);
     kryo.register(PlayerCoords.class);
-    kryo.register(Enum.class);
+    kryo.register(movement.class);
     kryo.register(UpdateCoords.class);
     kryo.register(HashMap.class);
     kryo.register(PingServer.class);
@@ -54,6 +55,7 @@ public class Network {
     }
 
   }
+
   public static class UpdateCoords {
     public int x;
     public int y;

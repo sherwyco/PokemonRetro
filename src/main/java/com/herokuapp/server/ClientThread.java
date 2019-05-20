@@ -86,6 +86,7 @@ public class ClientThread implements Runnable {
           // update the player with this coord
           System.out.println("update this user with clientid: " + newCoords.clientId);
         }
+        return;
       }
     }
 
