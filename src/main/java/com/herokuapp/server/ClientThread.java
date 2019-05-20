@@ -23,6 +23,7 @@ public class ClientThread implements Runnable {
 
   public Client client;
   private Listener listener;
+  public HashMap<Integer, PlayerCoords> map = null;
   public ArrayList<DummyPlayer> playerList = null;
   public int myClientId = 0;
 
@@ -68,7 +69,7 @@ public class ClientThread implements Runnable {
       if (obj instanceof HashMap) {
         playerList = new ArrayList<DummyPlayer>(); // initialize a new arraylist
         System.out.println("Its a hashmap!");
-        HashMap<Integer, PlayerCoords> map = new HashMap<Integer, PlayerCoords>();
+        map = new HashMap<Integer, PlayerCoords>();
         map.putAll((Map<? extends Integer, ? extends PlayerCoords>) obj);
         for (Entry<Integer, PlayerCoords> entry : map.entrySet()) {
           int x = entry.getValue().x;
