@@ -25,6 +25,8 @@ public class Network {
   public static class ConnectionId {
     public int clientId;
 
+    public ConnectionId() {}
+
     public ConnectionId(int id) {
       clientId = id;
     }
