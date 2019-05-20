@@ -120,6 +120,7 @@ public class DemoMapState extends GameState {
         if (clientThread.coords != null) {
           System.out.println("getting new coords for client: " + clientThread.coords.clientId);
         }
+        clientThread.coords = null;
       }
     }
   }
