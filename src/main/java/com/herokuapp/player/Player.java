@@ -27,9 +27,9 @@ public class Player {
   final int SPRITE_CATCH_UP_SPEED = 2;
   Tilemap level;
   GameStateManager gsm;
-  private String[] hostAttacks = {"WATER", "FIRE", "WIND"};
-  private String[] enemyAttacks = {"ELECTRIC", "ICE", "GRASS"};
-  private String[] Pokemons = {"Pikachu", "Dragonite", "Snorlax", "Charizard"};
+  // private String[] hostAttacks = {"WATER", "FIRE", "WIND"};
+  // private String[] enemyAttacks = {"ELECTRIC", "ICE", "GRASS"};
+  // private String[] Pokemons = {"Pikachu", "Dragonite", "Snorlax", "Charizard"};
 
 
   // private Pokemon[] pokemons =
@@ -137,7 +137,6 @@ public class Player {
       }
     }
   }
-
 
   public void moveDown() {
     // y += speed;
