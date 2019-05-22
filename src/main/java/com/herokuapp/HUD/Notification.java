@@ -31,8 +31,8 @@ public class Notification {
   String message;
   BufferedImage pokemon;
 
-  public Notification() {
-    foundPokemon = pokemonz[random.nextInt(pokemonz.length)];
+  public Notification(String foundPokemonName) {
+    foundPokemon = foundPokemonName;
     message = "You encountered a " + foundPokemon + "!";
 
     try {
