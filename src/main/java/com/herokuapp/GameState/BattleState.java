@@ -5,17 +5,19 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Random;
 import com.herokuapp.Panels.GamePanel;
 import com.herokuapp.TileMaps.Background;
+import com.herokuapp.database.Database;
 import com.herokuapp.misc.GlobalVariables;
 import com.herokuapp.misc.Handler;
 import com.herokuapp.player.Player;
 import com.herokuapp.player.Pokemon;
+import com.herokuapp.player.PokemonMoves;
 import com.herokuapp.sprite.SpriteAnimated;
 import com.herokuapp.utils.ClickListener;
 import com.herokuapp.utils.ImageManager;
@@ -35,6 +37,9 @@ public class BattleState extends GameState {
   //
   // }
 
+  private Database databse;
+  private ArrayList<Pokemon> PokemonArr, PokemonArr2;
+  String users;
 
 
   private int currentChoice = 0, pokemon1, pokemon2;
@@ -54,6 +59,8 @@ public class BattleState extends GameState {
   private UIManager buttons;
   private Handler handler;
   private ImageManager imageUtil;
+  private Pokemon userPokemons[];
+  private ImageManager imageManager;
 
   // For Battle
   private static final int DEFAULT_HEALTH = 20;
@@ -69,14 +76,14 @@ public class BattleState extends GameState {
   public BattleState(GameStateManager gsm) {
 
     this.gsm = gsm;
+    databse = new Database();
+    this.imageManager = new ImageManager();
 
     hostTurnToAttack = true;
     criticalAttack = false;
     weackAttack = false;
     BattleState.base_damage = 0;
-    this.enemyHealth = DEFAULT_HEALTH;
-    System.out.println(enemyHealth);
-    this.hostHealth = DEFAULT_HEALTH;
+
     // opponent.setTurnToAttack(false);
 
     this.pokemon1 = rand.nextInt(3);
@@ -84,13 +91,26 @@ public class BattleState extends GameState {
     // System.out.println(Player.sendPokemons());
 
     addBackground();
+    users = databse.getUsers();
+    PokemonArr = databse.getPlayerPokemon(1);
+    PokemonArr2 = databse.getPlayerPokemon(2);
+    int index = rand.nextInt(PokemonArr.size() - 1);
+    pok1 = PokemonArr.get(index);
+    index = rand.nextInt(PokemonArr2.size() - 1);
+    pok2 = PokemonArr2.get(index);
+    System.out.println(users);
+    System.out.println("User 1 Pokemons");
+    DisplayPlayerPokemons(PokemonArr);
+    System.out.println("User 2 Pokemons");
+    DisplayPlayerPokemons(PokemonArr2);
+    this.enemyHealth = pok2.getHealth();
 
-    // pok1 = new Pokemon(getPokemonImage("jolteon"), Pokemons[pokemon1], hostAttacks,
-    // hostAttacks[0],
-    // DEFAULT_HEALTH);
-    // pok2 = new Pokemon(getPokemonImage("jolteon"), Pokemons[pokemon2], enemyAttacks,
-    // enemyAttacks[0], DEFAULT_HEALTH);
-    // hostpokemon = new SpriteSingle(40, 40, "src/main/resources/Pokemon/charmander.png");
+    this.hostHealth = pok1.getHealth();
+
+    System.out.println("User 1 Curr Pokemon");
+    System.out.println(pok1.getName());
+    System.out.println("User 2  curr Pokemon");
+    System.out.println(pok2.getName());
 
     buttons = new UIManager(handler);
     buttons.addObject(new UIImageButton((GlobalVariables.screenWidth / 2) - 120,
@@ -105,7 +125,53 @@ public class BattleState extends GameState {
 
   }
 
+  public void DisplayPlayerPokemons(ArrayList<Pokemon> pks) {
 
+    for (int i = 0; i < pks.size(); i++) {
+
+      System.out.println(pks.get(i).getName());
+
+    }
+  }
+
+
+
+  public Pokemon[] generatePokemons(ArrayList<Pokemon> pokemons) {
+    Pokemon[] arr = new Pokemon[pokemons.size()];
+    ArrayList<PokemonMoves> moves = new ArrayList<PokemonMoves>();
+    String pokId;
+    String pokName;
+    int defense, level, xp;
+    String pokType;
+    int pokAttack;
+    String pokCurrMove;
+    int pokHealth = 0;
+    pokemons.size();
+    for (int index = 0; index < pokemons.size(); index++) {
+      System.out.println(pokemons.get(index));
+      // pokId = pokemons.get(index).getCurrent_move();
+      pokName = pokemons.get(index).getName();
+      pokType = pokemons.get(index).getType();
+      pokAttack = pokemons.get(index).getAttack();
+      pokCurrMove = pokemons.get(index).getCurrent_move();
+      pokHealth = pokemons.get(index).getHealth();
+      level = pokemons.get(index).getLevel();
+      xp = pokemons.get(index).getExp();
+      defense = pokemons.get(index).getDefense();
+      System.out.println(pokName);
+      System.out.println(pokType);
+      System.out.println(pokCurrMove);
+      System.out.println(pokHealth);
+      System.out.println(pokAttack);
+      System.out.println(pokemons.get(index).getDefense());
+      System.out.println(pokemons.get(index).getMoveName(index));
+
+      arr[index] = new Pokemon(pokName, pokType, pokAttack, defense, pokHealth, level, xp, moves);
+
+    }
+    return arr;
+
+  }
 
   public void addBackground() {
 
@@ -170,12 +236,7 @@ public class BattleState extends GameState {
     g.setColor(titleColor);
     g.setFont(titleFont);
     drawCenteredString(g, "BATTLE", 100);
-
-    // selectPokemon();
-
     drawAttackTurn(g);
-
-
   }
 
 
@@ -199,47 +260,33 @@ public class BattleState extends GameState {
   }
 
   public void drawAttackTurn(Graphics g) {
-    Rectangle host = new Rectangle();
-    host.height = 100;
-    host.width = 100;
-    host.x = 50;
-    host.y = GamePanel.HEIGHT - 500;
-    Rectangle opponent = new Rectangle();
-    opponent.height = 100;
-    opponent.width = 100;
-    opponent.x = GamePanel.WIDTH - 200;
-    opponent.y = GamePanel.HEIGHT - 500;
-    int spacing = 100;
+    g.setColor(Color.YELLOW);
+    g.drawString(pok1.getName(), 50, GamePanel.HEIGHT - 600);
+    g.drawImage(imageManager.getPokemonImage("charmander"), 100, GamePanel.HEIGHT - 650, 300, 300,
+        null);
+    drawHealthBar(g, (int) pok1.getHealth(), 100, GamePanel.HEIGHT - 1000);
 
+    g.drawImage(imageManager.getPokemonImage("jolteon"), GamePanel.WIDTH - 500, 150, 300, 300,
+        null);
+    drawHealthBar(g, (int) pok2.getHealth(), GamePanel.WIDTH - 500, GamePanel.HEIGHT - 1000);
+
+    g.drawString(Pokemons[pokemon2], GamePanel.WIDTH - 400, GamePanel.HEIGHT - 900);
 
     for (int i = 0; i < hostAttacks.length; i++) {
-      g.setColor(Color.YELLOW);
-      g.drawString(Pokemons[pokemon1], host.x, host.y - 20);
-      g.drawImage(imageUtil.getPokemonImage("charmander"), host.x + 50, GamePanel.HEIGHT - 800, 300,
-          300, null);
-      drawHealthBar(g, (int) pok1.getHealth(), host.x + 50, GamePanel.HEIGHT - 1000);
-      // temp for opponent
-
-      // g.setColor(Color.GREEN);
-      g.drawString(Pokemons[pokemon2], opponent.x - 200, opponent.y - 20);
-      // g.drawRect(GamePanel.WIDTH - 200, GamePanel.HEIGHT - 500, 100, 100);
-      g.setColor(Color.black);
-      g.drawImage(imageUtil.getPokemonImage("jolteon"), opponent.x - 300, 150, 300, 300, null);
-      drawHealthBar(g, (int) pok2.getHealth(), opponent.x - 150, GamePanel.HEIGHT - 1000);
-
       if (hostTurnToAttack) {
-        pok1.setCurrentMove(hostAttacks[currentChoice]);
+        g.setColor(Color.BLACK);
+
         if (i == currentChoice) {
           g.setColor(Color.RED);
         } else {
-          g.setColor(Color.BLACK);
+          g.setColor(Color.BLUE);
         }
+
         drawAttacks(g, hostAttacks[i], 100 + i * 200, GamePanel.HEIGHT - 300);
 
       }
       // Opponents turn
       else if (!hostTurnToAttack) {
-        pok2.setCurrentMove(hostAttacks[currentChoice]);
         if (i == currentChoice) {
           g.setColor(Color.RED);
         } else {
@@ -349,8 +396,9 @@ public class BattleState extends GameState {
   }
 
   public void drawHealthBar(Graphics g, int health, int x, int y) {
-    g.setColor(Color.GREEN.darker());
-    g.drawRect(x, y, DEFAULT_HEALTH * 10, 40);
+
+    g.setColor(Color.GRAY.darker());
+    g.fillRect(x, y, enemyHealth * 10, 40);
     g.setColor(Color.GREEN.brighter());
     g.fillRect(x, y, health * 10, 40);
 
@@ -358,18 +406,8 @@ public class BattleState extends GameState {
 
   public void gameOverScreen() {
     if (pok1.getHealth() <= 0 || pok2.getHealth() <= 0)
-      System.exit(0);
+      gsm.setState(GameStateManager.DemoMapState);
 
-  }
-
-  public Pokemon[] randomizePokemons(Pokemon[] a) {
-    Pokemon arr[] = new Pokemon[3];
-    int val = rand.nextInt(a.length - 1);
-    for (int i = 0; i < arr.length; i++) {
-      arr[i] = a[val];
-      val = rand.nextInt(a.length - 1);
-    }
-    return arr;
   }
 
 
