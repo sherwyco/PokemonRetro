@@ -253,7 +253,7 @@ public class DatabaseTest {
     // System.out.println(checkUser("user1", "helloworld123"));
     Database db = new Database();
 
-    System.out.println(db.getUserNick("user1"));
+    System.out.println(db.viewPokedex());
 
   }
 
