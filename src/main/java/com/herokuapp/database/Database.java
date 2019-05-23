@@ -311,7 +311,7 @@ public class Database {
   }
 
 
-  public void insertMovePokemon(int PokeId, int MoveId) {
+  public static void insertMovePokemon(int PokeId, int MoveId) {
     Connection c = null;
     Statement stmt = null;
 
