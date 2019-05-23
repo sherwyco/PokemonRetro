@@ -69,8 +69,6 @@ public class DemoMapState extends GameState {
     }
     player = new Player(spawnX, spawnY, this.gsm);
     player.setLevel(tilemap);
-    myClientId = clientThread.myClientId;
-    System.out.println("my Id: " + myClientId);
   }
 
 
@@ -86,23 +84,23 @@ public class DemoMapState extends GameState {
     player.update();
     if (W_pressed) {
       player.moveUp();
-      clientThread.client
-          .sendUDP(new UpdateCoords(player.getX(), player.getY(), myClientId, movement.Up));
+      clientThread.client.sendUDP(
+          new UpdateCoords(player.getX(), player.getY(), clientThread.myClientId, movement.Up));
     }
     if (A_pressed) {
       player.moveLeft();
-      clientThread.client
-          .sendUDP(new UpdateCoords(player.getX(), player.getY(), myClientId, movement.Left));
+      clientThread.client.sendUDP(
+          new UpdateCoords(player.getX(), player.getY(), clientThread.myClientId, movement.Left));
     }
     if (S_pressed) {
       player.moveDown();
-      clientThread.client
-          .sendUDP(new UpdateCoords(player.getX(), player.getY(), myClientId, movement.Down));
+      clientThread.client.sendUDP(
+          new UpdateCoords(player.getX(), player.getY(), clientThread.myClientId, movement.Down));
     }
     if (D_pressed) {
       player.moveRight();
-      clientThread.client
-          .sendUDP(new UpdateCoords(player.getX(), player.getY(), myClientId, movement.Right));
+      clientThread.client.sendUDP(
+          new UpdateCoords(player.getX(), player.getY(), clientThread.myClientId, movement.Right));
     }
     if (enter_pressed && player.hasEncounteredPokemon()) {
       System.out.println("go to battle state now");
@@ -114,10 +112,10 @@ public class DemoMapState extends GameState {
         if (p.myClientId != clientThread.myClientId) {
           if (clientThread.coords != null) {
             // if new coords are not for me
-            System.out.println("getting new coords for client: " + clientThread.coords.clientId);
+            System.out.println("getting new coords for client: " + clientThread.coords.clientId
+                + " my client id: " + clientThread.myClientId);
             if (clientThread.coords.clientId == p.myClientId) {
               // if new coords matches its id to the player
-              System.out.println(clientThread.coords.x + ":" + clientThread.coords.y);
               if ((p.getX() != clientThread.coords.x) || (p.getY() != clientThread.coords.y)) {
                 switch (clientThread.coords.type) {
                   case Left:
@@ -155,14 +153,6 @@ public class DemoMapState extends GameState {
 
   }
 
-
-  public class playerUpdater implements Runnable {
-    @Override
-    public void run() {
-
-    }
-  }
-
   @Override
   public void draw(Graphics2D g) {
     // clear screen
@@ -178,7 +168,7 @@ public class DemoMapState extends GameState {
     if (dummyPlayers.size() > 1) {
       for (DummyPlayer p : dummyPlayers) {
         // if its not my character
-        if (p.myClientId != myClientId) {
+        if (p.myClientId != clientThread.myClientId) {
           // render
           p.draw(g);
         }
