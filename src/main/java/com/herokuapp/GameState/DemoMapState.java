@@ -117,7 +117,8 @@ public class DemoMapState extends GameState {
           if (clientThread.coords != null) {
             // if new coords are not for me
             System.out.println("getting new coords for client: " + clientThread.coords.clientId);
-            if (clientThread.coords.clientId == p.myClientId) {
+            if (clientThread.coords.clientId == p.myClientId) { // if new coords matches its id to
+                                                                // the player
               if ((p.getX() != clientThread.coords.x) || (p.getY() != clientThread.coords.y)) {
                 switch (clientThread.coords.type) {
                   case Left:
