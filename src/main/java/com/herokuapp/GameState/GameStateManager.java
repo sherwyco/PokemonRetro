@@ -28,6 +28,13 @@ public class GameStateManager {
 
   }
 
+  public void switchToBattleState(int encounteredPokemonId) {
+    // cast to battle state to use method battlestate method, since they get treated as gamestate
+    // instances while in our gamestate arraylist
+    ((BattleState) gameStates.get(BattleState)).startBattleState(encounteredPokemonId);
+    setState(BattleState);
+  }
+
   public void setState(int state) {
     currentState = state;
     gameStates.get(currentState).init();

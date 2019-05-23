@@ -24,6 +24,9 @@ import com.herokuapp.utils.UIManager;
 
 public class BattleState extends GameState {
 
+  // transitioning from map to battle stuff
+  int encounteredPokemonId;
+
   private Background bg;
   private SpriteAnimated lugia;
   private Database databse;
@@ -61,6 +64,7 @@ public class BattleState extends GameState {
    * @param gsm GameStateManager class
    */
   public BattleState(GameStateManager gsm) {
+    this.encounteredPokemonId = rand.nextInt(27) + 1;
 
     this.gsm = gsm;
     databse = new Database();
@@ -73,7 +77,7 @@ public class BattleState extends GameState {
 
     addBackground();
     users = databse.getUsers();
-    pupulatePokemons();
+    populatePokemons();
 
     System.out.println("Pokemon 1 Damage = " + pok1.getAttack() + " health = "
         + pok1.getCurrent_health() + " defense = " + pok1.getDefense());
@@ -84,18 +88,52 @@ public class BattleState extends GameState {
 
   }
 
-  private void pupulatePokemons() {
+
+  public BattleState(GameStateManager gsm, int encounteredPokemonId) {
+    this.encounteredPokemonId = encounteredPokemonId;
+
+    this.gsm = gsm;
+    databse = new Database();
+    this.imageManager = new ImageManager();
+
+    hostTurnToAttack = true;
+    criticalAttack = false;
+    weackAttack = false;
+    BattleState.base_damage = 0;
+
+    addBackground();
+    users = databse.getUsers();
+    populatePokemons();
+
+    System.out.println("Pokemon 1 Damage = " + pok1.getAttack() + " health = "
+        + pok1.getCurrent_health() + " defense = " + pok1.getDefense());
+    System.out.println("Pokemon 2 Damage = " + pok2.getAttack() + " health = "
+        + pok2.getCurrent_health() + " defense = " + pok2.getDefense());
+  }
+
+  public void startBattleState(int id) {
+    this.encounteredPokemonId = id;
+    hostTurnToAttack = true;
+    enemyTurnToAttack = false;
+    populatePokemons();
+    pok2 = databse.getPokemon(encounteredPokemonId);
+    System.out.println(encounteredPokemonId);
+  }
+
+
+  private void populatePokemons() {
     user1Poks = databse.getPlayerPokemon(1);
-    user2Poks = databse.getPlayerPokemon(2);
+    // user2Poks = databse.getPlayerPokemon(2);
     int index = rand.nextInt(user1Poks.size() - 1);
     pok1 = user1Poks.get(index);
-    index = rand.nextInt(user2Poks.size() - 1);
-    pok2 = user2Poks.get(index);
+    // index = rand.nextInt(user2Poks.size() - 1);
+    // pok2 = user2Poks.get(index);
+    pok2 = databse.getPokemon(encounteredPokemonId);
     System.out.println(users);
     System.out.println("User 1 Pokemons");
     DisplayPlayerPokemons(user1Poks);
     System.out.println("User 2 Pokemons");
-    DisplayPlayerPokemons(user2Poks);
+    // DisplayPlayerPokemons(user2Poks);
     this.enemyHealth = pok2.getCurrent_health();
 
     this.hostHealth = pok1.getCurrent_health();

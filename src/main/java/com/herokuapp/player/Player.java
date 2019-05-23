@@ -110,6 +110,10 @@ public class Player {
     }
   }
 
+  public int getEncounteredPokemonId() {
+    return encounteredPokemonId;
+  }
+
   // public Pokemon[] sendPokemons() {
   // return pokemons;
   //
