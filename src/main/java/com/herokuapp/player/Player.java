@@ -17,8 +17,8 @@ public class Player {
   public final String username = "admin";
   public int x; // actual position
   public int y;
-  int spriteX; // visual position
-  int spriteY;
+  public int spriteX; // visual position
+  public int spriteY;
   int width = 15;
   int height = 22;
   int speed = 3;
@@ -131,6 +131,7 @@ public class Player {
       pose = 1;
       if (!level.tiles[xTile()][yTile() - 1].hasCollision) {
         y -= tileSize;
+
         isMoving = true;
         level.tiles[xTile()][yTile()].steppedOn(this);
         findPokemon();
@@ -251,11 +252,11 @@ public class Player {
   }
 
   public int getY() {
-    return y;
+    return y / 16 / GlobalVariables.GAME_SCALE;
   }
 
   public int getX() {
-    return x;
+    return x / 16 / GlobalVariables.GAME_SCALE;
   }
 
 

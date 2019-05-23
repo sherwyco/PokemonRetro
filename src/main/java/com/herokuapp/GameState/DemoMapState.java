@@ -22,6 +22,7 @@ public class DemoMapState extends GameState {
   // spawn player halfway into tile + spawn location
 
   Player player;
+  DummyPlayer testPlayer = new DummyPlayer(50, 30, 3);
   TilemapUtility tilemapUtility = new TilemapUtility();
   Tilemap tilemap;
 
@@ -46,8 +47,6 @@ public class DemoMapState extends GameState {
   public String playerName = GamePanel.name;
   public int myClientId;
   private ArrayList<DummyPlayer> dummyPlayers = new ArrayList<DummyPlayer>();
-  private Thread updateThread;
-  // private UpdateCoords updateDummy = new UpdateCoords();
 
   public DemoMapState(GameStateManager gsm, int spawnX, int spawnY) {
     clientThread = new ClientThread();
@@ -86,6 +85,7 @@ public class DemoMapState extends GameState {
   public void update() {
     dummyPlayers = new ArrayList<DummyPlayer>(clientThread.playerList);
     player.update();
+    System.out.println("origin x: " + player.getX() + " origin y: " + player.getY());
     if (W_pressed) {
       player.moveUp();
       clientThread.client
@@ -175,6 +175,7 @@ public class DemoMapState extends GameState {
     player.draw(g);
     tilemap.drawSpritesBelow(g, player.getY());
     player.drawHUD(g);
+    testPlayer.draw(g);
     // render dummy players
     if (dummyPlayers.size() > 1) {
       for (DummyPlayer p : dummyPlayers) {

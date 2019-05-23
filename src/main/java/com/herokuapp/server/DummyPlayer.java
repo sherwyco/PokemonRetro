@@ -22,6 +22,7 @@ public class DummyPlayer {
   final int INITIAL_MOVE_DELAY = 12;
   public int myClientId;
 
+
   /**
    * 
    * @param x Starting X position.
@@ -45,19 +46,19 @@ public class DummyPlayer {
   }
 
   public int getX() {
-    return x;
+    return x / 16 / GlobalVariables.GAME_SCALE + 16;
   }
 
   public void setX(int x) {
-    this.x = x;
+    this.x = x * 16 * GlobalVariables.GAME_SCALE + 16;
   }
 
   public int getY() {
-    return y;
+    return y / 16 / GlobalVariables.GAME_SCALE + 22;
   }
 
   public void setY(int y) {
-    this.y = y;
+    this.y = y * 16 * GlobalVariables.GAME_SCALE + 22;
   }
 
   public int getTileSize() {
