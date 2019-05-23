@@ -71,9 +71,11 @@ public class DemoMapState extends GameState {
       player.moveDown();
     if (D_pressed)
       player.moveRight();
-    if (enter_pressed && player.hasEncounteredPokemon())
+    if (enter_pressed && player.hasEncounteredPokemon()) {
       System.out.println("go to battle state nowww");
-    // GSM switch to battle state pass in pokemon found as parameter
+      // GSM switch to battle state pass in pokemon found as parameter
+      gsm.switchToBattleState(player.getEncounteredPokemonId());
+    }
   }
 
 
