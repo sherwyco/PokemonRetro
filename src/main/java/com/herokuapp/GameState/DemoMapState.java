@@ -112,8 +112,8 @@ public class DemoMapState extends GameState {
         if (p.myClientId != clientThread.myClientId) {
           if (clientThread.coords != null) {
             // if new coords are not for me
-            System.out.println("getting new coords for client: " + clientThread.coords.clientId
-                + " my client id: " + clientThread.myClientId);
+            System.out.println(
+                "coords Id: " + clientThread.coords.clientId + "player Id: " + p.myClientId);
             if (clientThread.coords.clientId == p.myClientId) {
               // if new coords matches its id to the player
               if ((p.getX() != clientThread.coords.x) || (p.getY() != clientThread.coords.y)) {
@@ -144,7 +144,6 @@ public class DemoMapState extends GameState {
                 p.update();
               }
             }
-            clientThread.coords = null;
           }
           p.update();
         }

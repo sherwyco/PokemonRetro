@@ -64,9 +64,9 @@ public class ServerThread implements Runnable {
       }
       if (obj instanceof UpdateCoords) {
         int id = c.getID();
-        System.out.println("receied object from client: " + id);
         UpdateCoords coords = (UpdateCoords) obj;
-        System.out.println(coords.x + ":" + coords.y + " client id: " + coords.clientId);
+        System.out
+            .println("replacing " + coords.x + ":" + coords.y + " client id: " + coords.clientId);
         int x = coords.x / 16 / 2;
         int y = coords.y / 16 / 2;
         map.replace(id, new PlayerCoords(x, y, id)); // update map
