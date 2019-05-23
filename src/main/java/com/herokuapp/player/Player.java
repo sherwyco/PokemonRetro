@@ -252,11 +252,11 @@ public class Player {
   }
 
   public int getY() {
-    return y / 16 / GlobalVariables.GAME_SCALE;
+    return y;
   }
 
   public int getX() {
-    return x / 16 / GlobalVariables.GAME_SCALE;
+    return x;
   }
 
 
