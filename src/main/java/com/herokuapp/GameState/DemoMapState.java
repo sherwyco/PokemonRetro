@@ -22,7 +22,6 @@ public class DemoMapState extends GameState {
   // spawn player halfway into tile + spawn location
 
   Player player;
-  DummyPlayer testPlayer = new DummyPlayer(50, 30, 3);
   TilemapUtility tilemapUtility = new TilemapUtility();
   Tilemap tilemap;
 
@@ -175,7 +174,6 @@ public class DemoMapState extends GameState {
     player.draw(g);
     tilemap.drawSpritesBelow(g, player.getY());
     player.drawHUD(g);
-    testPlayer.draw(g);
     // render dummy players
     if (dummyPlayers.size() > 1) {
       for (DummyPlayer p : dummyPlayers) {
