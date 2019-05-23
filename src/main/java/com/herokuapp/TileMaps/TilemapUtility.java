@@ -8,7 +8,7 @@ import com.herokuapp.misc.GlobalVariables;
 import com.herokuapp.sprite.SpriteSingle;
 
 public class TilemapUtility {
-  // private LinkedList tiles = new LinkedList();
+  private ArrayList<Tile> tiles = new ArrayList<Tile>();
 
   public Tilemap loadMap(String filename) throws IOException {
     ArrayList<String> lines = new ArrayList<String>();
@@ -31,150 +31,162 @@ public class TilemapUtility {
 
     // create Tile Map
     height = lines.size();
+
+    // Make instances of tiles to be referenced to later on, doing this instead of making new
+    // instance for each tile to boost performance
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/grass.png", false));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/grass-water-right.png", true));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/grass-water-left.png", true));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/water.png", true));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/border.png", true));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/sand-TL.png", false));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/sand-T.png", false));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/sand-TR.png", false));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/sand-R.png", false));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/sand-BR.png", false));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/sand-B.png", false));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/sand-BL.png", false));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/sand-L.png", false));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/sand-center.png", false));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/grass.png", true));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/cave/mountain-TL.png", true));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/cave/mountain-T.png", true));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/cave/mountain-TR.png", true));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/cave/mountain-R.png", true));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/cave/mountain-BR.png", true));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/cave/mountain-B.png", true));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/cave/mountain-BL.png", true));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/cave/mountain-L.png", true));
+    tiles.add(new Tile(0, 0, "src/main/resources/sprites/cave/mountain-center.png", true));
+    tiles.add(new Tile_LevelChange(0, 0, "src/main/resources/sprites/cave/cave-entrance.png", false,
+        20, 15, 3));
+
     Tilemap newMap = new Tilemap(width, height);
     for (int y = 0; y < height; y++) {
       String line = (String) lines.get(y);
       for (int x = 0; x < line.length(); x++) {
         char ch = line.charAt(x);
-        // int tile = ch - 'A';
-        // && tile < tiles.size() ?????
-        // if(tile >=0 && tile < 5) {
-        // newMap.setTile(x, y, (Image) tiles.get(tile));;
-        // }
+
+
 
         if (ch == 'A') {
-          Tile grass = new Tile(x * 32, y * 32, "src/main/resources/sprites/grass.png", false);
-          newMap.setTile(x, y, grass);
+          // normal grass
+          newMap.setTile(x, y, tiles.get(0));
         }
         if (ch == '>') {
-          Tile grass =
-              new Tile(x * 32, y * 32, "src/main/resources/sprites/grass-water-right.png", true);
-          newMap.setTile(x, y, grass);
+          // water border right
+          newMap.setTile(x, y, tiles.get(1));
         }
         if (ch == '<') {
-          Tile grass =
-              new Tile(x * 32, y * 32, "src/main/resources/sprites/grass-water-left.png", true);
-          newMap.setTile(x, y, grass);
+          // water border left
+          newMap.setTile(x, y, tiles.get(2));
         }
         if (ch == 'W') {
-          Tile grass = new Tile(x * 32, y * 32, "src/main/resources/sprites/water-right.png", true);
-          newMap.setTile(x, y, grass);
+          // water
+          newMap.setTile(x, y, tiles.get(3));
         }
-        if (ch == 'V') {
-          Tile grass = new Tile(x * 32, y * 32, "src/main/resources/sprites/water-left.png", true);
-          newMap.setTile(x, y, grass);
-        }
+
         if (ch == 'X') {
-          Tile grass = new Tile(x * 32, y * 32, "src/main/resources/sprites/border.png", true);
-          newMap.setTile(x, y, grass);
+          // border
+          newMap.setTile(x, y, tiles.get(4));
         }
+
         if (ch == 'B') {
-          Tile_TallGrass grass = new Tile_TallGrass(x * 32, y * 32,
-              "src/main/resources/sprites/PokemonGrassAnimation.png", false);
-          newMap.setTile(x, y, grass);
+          // tall grass
+          newMap.setTile(x, y, new Tile_TallGrass(0, 0,
+              "src/main/resources/sprites/PokemonGrassAnimation.png", false));
         }
 
-
+        // sand path---------------------------------
         if (ch == '1') {
-          Tile grass = new Tile(x * 32, y * 32, "src/main/resources/sprites/sand-TL.png", false);
-          newMap.setTile(x, y, grass);
+          // sand top left
+          newMap.setTile(x, y, tiles.get(5));
         }
         if (ch == '2') {
-          Tile grass = new Tile(x * 32, y * 32, "src/main/resources/sprites/sand-T.png", false);
-          newMap.setTile(x, y, grass);
+          // sand top
+          newMap.setTile(x, y, tiles.get(6));
         }
         if (ch == '3') {
-          Tile grass = new Tile(x * 32, y * 32, "src/main/resources/sprites/sand-TR.png", false);
-          newMap.setTile(x, y, grass);
+          // sand tr
+          newMap.setTile(x, y, tiles.get(7));
         }
         if (ch == '4') {
-          Tile grass = new Tile(x * 32, y * 32, "src/main/resources/sprites/sand-R.png", false);
-          newMap.setTile(x, y, grass);
+          // sand r
+          newMap.setTile(x, y, tiles.get(8));
         }
         if (ch == '5') {
-          Tile grass = new Tile(x * 32, y * 32, "src/main/resources/sprites/sand-BR.png", false);
-          newMap.setTile(x, y, grass);
+          // sand br
+          newMap.setTile(x, y, tiles.get(9));
         }
         if (ch == '6') {
-          Tile grass = new Tile(x * 32, y * 32, "src/main/resources/sprites/sand-B.png", false);
-          newMap.setTile(x, y, grass);
+          // sand b
+          newMap.setTile(x, y, tiles.get(10));
         }
         if (ch == '7') {
-          Tile grass = new Tile(x * 32, y * 32, "src/main/resources/sprites/sand-BL.png", false);
-          newMap.setTile(x, y, grass);
+          // sand bl
+          newMap.setTile(x, y, tiles.get(11));
         }
         if (ch == '8') {
-          Tile grass = new Tile(x * 32, y * 32, "src/main/resources/sprites/sand-L.png", false);
-          newMap.setTile(x, y, grass);
+          // sand l
+          newMap.setTile(x, y, tiles.get(12));
         }
         if (ch == '9') {
-          Tile grass =
-              new Tile(x * 32, y * 32, "src/main/resources/sprites/sand-center.png", false);
-          newMap.setTile(x, y, grass);
+          // sand center
+          newMap.setTile(x, y, tiles.get(13));
         }
+        // sand path end----------------------------------
 
         if (ch == 'T') {
-          Tile grass = new Tile(x * 32, y * 32, "src/main/resources/sprites/grass.png", true);
-          newMap.setTile(x, y, grass);
+          // tree on top of grass
+          newMap.setTile(x, y, tiles.get(14));
           SpriteSingle sprite = new SpriteSingle(x * 32, y * 32, 16 * GlobalVariables.GAME_SCALE,
               33 * GlobalVariables.GAME_SCALE, 0, -1 * 16 * GlobalVariables.GAME_SCALE,
               "src/main/resources/sprites/tree.png");
           newMap.addSprite(sprite);
         }
 
-
-
+        // mountain and cave---------------------
         if (ch == 'q') {
-          Tile grass =
-              new Tile(x * 32, y * 32, "src/main/resources/sprites/cave/mountain-TL.png", true);
-          newMap.setTile(x, y, grass);
+          // mountain tl
+          newMap.setTile(x, y, tiles.get(15));
         }
         if (ch == 'w') {
-          Tile grass =
-              new Tile(x * 32, y * 32, "src/main/resources/sprites/cave/mountain-T.png", true);
-          newMap.setTile(x, y, grass);
+          // mountain t
+          newMap.setTile(x, y, tiles.get(16));
         }
         if (ch == 'e') {
-          Tile grass =
-              new Tile(x * 32, y * 32, "src/main/resources/sprites/cave/mountain-TR.png", true);
-          newMap.setTile(x, y, grass);
+          // mountain tr
+          newMap.setTile(x, y, tiles.get(17));
         }
         if (ch == 'r') {
-          Tile grass =
-              new Tile(x * 32, y * 32, "src/main/resources/sprites/cave/mountain-R.png", true);
-          newMap.setTile(x, y, grass);
+          // mountain r
+          newMap.setTile(x, y, tiles.get(18));
         }
         if (ch == 't') {
-          Tile grass =
-              new Tile(x * 32, y * 32, "src/main/resources/sprites/cave/mountain-BR.png", true);
-          newMap.setTile(x, y, grass);
+          // mountain br
+          newMap.setTile(x, y, tiles.get(19));
         }
         if (ch == 'y') {
-          Tile grass =
-              new Tile(x * 32, y * 32, "src/main/resources/sprites/cave/mountain-B.png", true);
-          newMap.setTile(x, y, grass);
+          // mountain b
+          newMap.setTile(x, y, tiles.get(20));
         }
         if (ch == 'u') {
-          Tile grass =
-              new Tile(x * 32, y * 32, "src/main/resources/sprites/cave/mountain-BL.png", true);
-          newMap.setTile(x, y, grass);
+          // mountain bl
+          newMap.setTile(x, y, tiles.get(21));
         }
         if (ch == 'i') {
-          Tile grass =
-              new Tile(x * 32, y * 32, "src/main/resources/sprites/cave/mountain-L.png", true);
-          newMap.setTile(x, y, grass);
+          // mountain l
+          newMap.setTile(x, y, tiles.get(22));
         }
         if (ch == 'o') {
-          Tile grass =
-              new Tile(x * 32, y * 32, "src/main/resources/sprites/cave/mountain-center.png", true);
-          newMap.setTile(x, y, grass);
+          // mountain center
+          newMap.setTile(x, y, tiles.get(23));
         }
         if (ch == 'p') {
-          Tile grass = new Tile_LevelChange(x * 32, y * 32,
-              "src/main/resources/sprites/cave/cave-entrance.png", false, 20, 15, 3);
-          newMap.setTile(x, y, grass);
+          // cave entrance
+          newMap.setTile(x, y, tiles.get(24));
         }
-
+        // mountain and cave end----------------------
 
 
       }

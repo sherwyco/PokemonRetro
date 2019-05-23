@@ -40,8 +40,8 @@ public class Tile {
     System.out.println("stepped on");
   }
 
-  public void draw(Graphics g) {
-    sprite.draw(g);
+  public void draw(Graphics g, int positionX, int positionY) {
+    sprite.drawAtPosition(g, positionX, positionY);
   }
 
 }

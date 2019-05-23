@@ -48,8 +48,8 @@ public class Tile_TallGrass extends Tile {
   }
 
 
-  public void draw(Graphics g) {
-    spritesheet.drawSpecificFrame(g, frame);
+  public void draw(Graphics g, int positionX, int positionY) {
+    spritesheet.drawSpecificFrameAtPosition(g, frame, positionX, positionY);
     if (steppedOn) {
       animationDelay--;
       if (animationDelay <= 0) {
