@@ -110,12 +110,22 @@ public class SpriteAnimated {
         (int) (height * scaleY), null);
   }
 
-  public void draw(Graphics g) {
+  public void drawSpecificFrameAtPosition(Graphics g, int frame, int positionX, int positionY) {
+    g.drawImage(sprites[frame], positionX - Camera.x + GlobalVariables.screenWidth / 2,
+        positionY - Camera.y + GlobalVariables.screenHeight / 2, (int) (width * scaleX),
+        (int) (height * scaleY), null);
+  }
 
+  public void draw(Graphics g) {
     g.drawImage(sprites[currentFrame], x - Camera.x + GlobalVariables.screenWidth / 2,
         y - Camera.y + GlobalVariables.screenHeight / 2, (int) (width * scaleX),
         (int) (height * scaleY), null);
+  }
 
+  public void drawAtPosition(Graphics g, int positionX, int positionY) {
+    g.drawImage(sprites[currentFrame], positionX - Camera.x + GlobalVariables.screenWidth / 2,
+        positionY - Camera.y + GlobalVariables.screenHeight / 2, (int) (width * scaleX),
+        (int) (height * scaleY), null);
   }
 
   public void drawScreenSpace(Graphics g) {

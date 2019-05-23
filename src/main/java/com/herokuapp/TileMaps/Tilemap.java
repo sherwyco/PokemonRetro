@@ -40,19 +40,19 @@ public class Tilemap {
   public void addSprite(SpriteSingle sprite) {
     sprites.add(sprite);
   }
-  // public Iterator getSprites() {
-  // return sprites.iterator();
-  // }
 
 
   public void draw(Graphics g) {
+    // ((Tile_Animated) tiles[1][1]).update(); // for animated water, uncomment, change tile to
+    // tile_animated in tilemap utility class, and image filename to water_animation, too laggy for
+    // now
     g.setColor(Color.BLACK);
     g.clearRect(0, 0, 5000, 50000);
     g.fillRect(0, 0, 5000, 5000);
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         if (tiles[x][y] != null) {
-          tiles[x][y].draw(g);
+          tiles[x][y].draw(g, x * 32, y * 32);
         }
       }
     }
