@@ -35,6 +35,10 @@ public class Pokemon {
 
   }
 
+  public ArrayList<PokemonMoves> getMoves() {
+    return moves;
+  }
+
   public int getAttack() {
     return attack;
   }
