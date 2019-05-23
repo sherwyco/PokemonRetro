@@ -309,10 +309,11 @@ public class BattleState extends GameState {
       // Opponents turn
       else if (!hostTurnToAttack) {
 
-        g.setColor(Color.BLUE);
-        MenuState.drawCenteredString(g,
-            pok2.getMoveName(randomAttack) + " was selected by " + pok2.getName(),
-            GamePanel.HEIGHT - 250);
+        g.setColor(Color.RED);
+        MenuState.drawCenteredString(g, pok2.getMoveName(randomAttack), GamePanel.HEIGHT - 350);
+        g.setColor(Color.BLACK);
+        MenuState.drawCenteredString(g, " was selected by " + pok2.getName(),
+            GamePanel.HEIGHT - 300);
       }
     }
 
