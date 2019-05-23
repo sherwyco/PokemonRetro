@@ -38,7 +38,7 @@ public class BattleState extends GameState {
   private String[] hostAttacks = {"WATER", "FIRE", "WIND"};
   private String[] enemyAttacks = {"ELECTRIC", "ICE", "GRASS"};
   private String[] Pokemons = {"Pikachu", "Dragonite", "Snorlax", "Charizard"};
-  private int len = hostAttacks.length;
+  private int len = 0;
   private boolean hostTurnToAttack, enemyTurnToAttack, criticalAttack, weackAttack;
   private Color titleColor;
   private Font titleFont;
@@ -58,6 +58,7 @@ public class BattleState extends GameState {
   public static final int DEFAULT_DAMAGE = 4;
 
   public static int base_damage;
+  private int randomAttack = 0;
 
   /**
    * 
@@ -75,6 +76,8 @@ public class BattleState extends GameState {
     weackAttack = false;
     BattleState.base_damage = 0;
 
+
+
     addBackground();
     users = databse.getUsers();
     populatePokemons();
@@ -84,7 +87,7 @@ public class BattleState extends GameState {
     System.out.println("Pokemon 2 Damage = " + pok2.getAttack() + " health = "
         + pok2.getCurrent_health() + " defense = " + pok2.getDefense());
 
-
+    len = pok1.getMoves().size();
 
   }
 
@@ -147,13 +150,9 @@ public class BattleState extends GameState {
   public void DisplayPlayerPokemons(ArrayList<Pokemon> pks) {
 
     for (int i = 0; i < pks.size(); i++) {
-
       System.out.println(pks.get(i).getName());
-
     }
   }
-
-
 
   public Pokemon[] generatePokemons(ArrayList<Pokemon> pokemons) {
     Pokemon[] arr = new Pokemon[pokemons.size()];
@@ -224,9 +223,6 @@ public class BattleState extends GameState {
     if (lugia.getX() < -300) {
       lugia.setX(2300);
     }
-
-
-
   }
 
   public void drawCenteredString(Graphics g, String text, int y) {
@@ -260,7 +256,6 @@ public class BattleState extends GameState {
 
 
   private void select() {
-
     if (currentChoice == 0) {
       // start
 
@@ -275,7 +270,9 @@ public class BattleState extends GameState {
 
       switchAttacker(2);
     }
-
+    if (currentChoice == 3) {
+      switchAttacker(3);
+    }
   }
 
   public void drawAttackTurn(Graphics g) {
@@ -293,7 +290,7 @@ public class BattleState extends GameState {
 
     g.drawString(pok2.getName(), GamePanel.WIDTH - 400, GamePanel.HEIGHT - 900);
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < pok1.getMoves().size(); i++) {
       if (hostTurnToAttack) {
         g.setColor(Color.BLACK);
 
@@ -303,23 +300,25 @@ public class BattleState extends GameState {
           g.setColor(Color.BLUE);
         }
 
-        drawAttacks(g, pok1.getMoveName(i), 100 + i * 200, GamePanel.HEIGHT - 300);
-
+        if (i > 1) {
+          drawAttacks(g, pok1.getMoveName(i), 100 + (i - 2) * 350, GamePanel.HEIGHT - 200);
+        } else {
+          drawAttacks(g, pok1.getMoveName(i), 100 + i * 350, GamePanel.HEIGHT - 300);
+        }
       }
       // Opponents turn
       else if (!hostTurnToAttack) {
-        if (i == currentChoice) {
-          g.setColor(Color.RED);
-        } else {
-          g.setColor(Color.BLACK);
-        }
-        drawAttacks(g, pok2.getMoveName(i), 1000 + i * 300, GamePanel.HEIGHT - 350);
+
+        g.setColor(Color.BLUE);
+        MenuState.drawCenteredString(g,
+            pok2.getMoveName(randomAttack) + " was selected by " + pok2.getName(),
+            GamePanel.HEIGHT - 250);
       }
     }
+
   }
 
   private void switchAttacker(int attack) {
-    // System.out.println(enemyHealth);
     if (hostTurnToAttack) {
       System.out.println("Before Attack: Pokemon 2, Current Health = " + pok2.getCurrent_health());
       pok2.setCurrent_health(pok2.getCurrent_health() - attackDamage(pok1, pok2));
@@ -328,19 +327,21 @@ public class BattleState extends GameState {
       hostTurnToAttack = false;
       enemyTurnToAttack = true;
     } else if (enemyTurnToAttack) {
+      randomAttack = rand.nextInt(pok2.getMoves().size());
+
       System.out.print("Before Attack: Pokemon 1, Current Health = " + hostHealth);
       pok1.setCurrent_health(pok1.getCurrent_health() - attackDamage(pok2, pok1));
       System.out.println(" Pokemon 2 Attack " + pok2.getCurrent_move() + " Pokemon 1 Health "
           + pok1.getCurrent_health());
       // System.out.println(enemyAttacks[attack]);
+      // select();
       hostTurnToAttack = true;
       enemyTurnToAttack = false;
     }
-
-
   }
 
   public void keyPressed(int k) {
+    // if (hostTurnToAttack) {
     if (k == KeyEvent.VK_ENTER) {
       select();
     }
@@ -357,6 +358,7 @@ public class BattleState extends GameState {
       currentChoice %= len;
 
     }
+
   }
 
   public void keyReleased(int k) {
@@ -439,6 +441,21 @@ public class BattleState extends GameState {
 
   }
 
+
+  public void automateAttack() {
+
+    // select();
+    // switchAttacker(rand.nextInt(pok2.getMoves().size()));
+    switchAttacker(1);
+    System.out.print("Before Attack: Pokemon 1, Current Health = " + hostHealth);
+    pok1.setCurrent_health(pok1.getCurrent_health() - attackDamage(pok2, pok1));
+    System.out.println(" Pokemon 2 Attack " + pok2.getCurrent_move() + " Pokemon 1 Health "
+        + pok1.getCurrent_health());
+    // System.out.println(enemyAttacks[attack]);
+    hostTurnToAttack = true;
+    enemyTurnToAttack = false;
+
+
+  }
+
 }
-
-

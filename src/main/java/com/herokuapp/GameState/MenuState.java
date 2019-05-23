@@ -60,7 +60,7 @@ public class MenuState extends GameState {
     }
   }
 
-  public void drawCenteredString(Graphics g, String text, int y) {
+  public static void drawCenteredString(Graphics g, String text, int y) {
     Graphics2D g2d = (Graphics2D) g;
     FontMetrics fm = g2d.getFontMetrics();
     Rectangle2D r = fm.getStringBounds(text, g2d);
