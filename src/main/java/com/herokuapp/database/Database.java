@@ -155,6 +155,36 @@ public class Database {
   }
 
   /**
+   * 
+   * @param pokemonId Id of the pokemon.
+   * @return Pokemon object.
+   */
+  public Pokemon getPokemon(int pokemonId) {
+    Pokemon pokemon = null;
+    String sql = "select * from Pokedex where PokemonId=" + pokemonId;
+    ArrayList<PokemonMoves> pm = null;
+
+    try {
+      Connection conn = DriverManager.getConnection(url);
+      PreparedStatement pstmt = conn.prepareStatement(sql);
+
+      ResultSet rs = pstmt.executeQuery();
+      pm = getPokemonMoves(rs.getInt(1)); // get moves of pokemon based on id
+
+      pokemon = new Pokemon(rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5),
+          rs.getInt(6), 0, 0, pm);
+
+      pstmt.close();
+      conn.close();
+    } catch (Exception e) {
+      System.err.println("Got an exception! ");
+      System.err.println(e.getMessage());
+    }
+
+    return pokemon;
+  }
+
+  /**
    * This function is used for getting all the moves of a pokemon encapsulated in PokemonMoves
    * class.
    * 
@@ -225,6 +255,37 @@ public class Database {
   }
 
 
+  /**
+   * View of Pokedex table
+   * 
+   * @return List of all pokemon in the database.
+   */
+  public String viewPokedex() {
+    StringBuilder result = new StringBuilder();
+    try {
+      Connection conn = DriverManager.getConnection(url);
+      Statement stmt = conn.createStatement();
+      ResultSet rs = stmt.executeQuery("SELECT * FROM Pokedex");
+
+      while (rs.next()) {
+        result.append("\nPokemon id: " + rs.getInt(1));
+        result.append("\nPokemon name: " + rs.getString(2));
+        result.append("\ntype: " + rs.getString(3));
+        result.append("\nattack: " + rs.getString(4));
+        result.append("\ndef: " + rs.getString(5));
+        result.append("\nhp: " + rs.getString(6) + "\n");
+      }
+
+      stmt.close();
+      conn.close();
+    } catch (Exception e) {
+      System.err.println("Got an exception! ");
+      System.err.println(e.getMessage());
+    }
+    return result.toString();
+
+  }
+
   public String getUsers() {
     StringBuilder result = new StringBuilder();
     try {
@@ -250,7 +311,7 @@ public class Database {
   }
 
 
-  public void insertMovePokemon(int PokeId, int MoveId) {
+  public static void insertMovePokemon(int PokeId, int MoveId) {
     Connection c = null;
     Statement stmt = null;
 

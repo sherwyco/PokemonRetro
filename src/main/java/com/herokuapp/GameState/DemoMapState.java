@@ -102,9 +102,6 @@ public class DemoMapState extends GameState {
       clientThread.client.sendUDP(
           new UpdateCoords(player.getX(), player.getY(), clientThread.myClientId, movement.Right));
     }
-    if (enter_pressed && player.hasEncounteredPokemon()) {
-      System.out.println("go to battle state now");
-    }
     if (dummyPlayers.size() > 1) {
 
       for (DummyPlayer p : dummyPlayers) {
@@ -149,7 +146,12 @@ public class DemoMapState extends GameState {
         }
       }
     }
-
+    if (enter_pressed && player.hasEncounteredPokemon()) {
+      System.out.println("go to battle state nowww");
+      // GSM switch to battle state pass in pokemon found as parameter
+      gsm.switchToBattleState(player.getEncounteredPokemonId());
+    }
+  }
   }
 
   @Override

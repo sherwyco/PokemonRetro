@@ -125,11 +125,11 @@ public class DatabaseTest {
     // insertMovePokemon(8, 12);
     // insertMovePokemon(8, 18);
     //
-    // // // blastoise
-    // // insertMovePokemon(9, 12);
-    // // insertMovePokemon(9, 13);
-    // // insertMovePokemon(9, 14);
-    // // insertMovePokemon(9, 15);
+    // // blastoise
+    // insertMovePokemon(9, 12);
+    // insertMovePokemon(9, 13);
+    // insertMovePokemon(9, 14);
+    // insertMovePokemon(9, 15);
     //
     // // caterpie
     // insertMovePokemon(10, 10);
@@ -253,7 +253,7 @@ public class DatabaseTest {
     // System.out.println(checkUser("user1", "helloworld123"));
     Database db = new Database();
 
-    System.out.println(db.getUserNick("user1"));
+    System.out.println(db.viewPokedex());
 
   }
 

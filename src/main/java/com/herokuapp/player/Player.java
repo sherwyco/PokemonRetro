@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import com.herokuapp.GameState.GameStateManager;
 import com.herokuapp.HUD.Notification;
 import com.herokuapp.TileMaps.Tilemap;
+import com.herokuapp.database.Database;
 import com.herokuapp.misc.GlobalVariables;
 import com.herokuapp.sprite.Animation;
 import com.herokuapp.sprite.Spritesheet;
@@ -53,6 +54,8 @@ public class Player {
   Notification notificationTest = null;
   Random random = new Random();
   boolean hasEncounteredPokemon = false;
+  int encounteredPokemonId = -1;
+  Database db = new Database();
 
   public Player(int x, int y, GameStateManager gsm) {
     this.gsm = gsm;
@@ -94,13 +97,21 @@ public class Player {
   public void findPokemon() {
     hasEncounteredPokemon = false;
     if (level.tiles[xTile()][yTile()].hasPokemon) {
-      int hi = random.nextInt(4);
-      System.out.println(hi);
-      if (hi <= 1) {
-        notificationTest = new Notification();
+      int chance = random.nextInt(4);
+      System.out.println(chance);
+      if (chance <= 1) {
+        encounteredPokemonId = random.nextInt(27) + 1;
+        System.out.println(encounteredPokemonId);
+        // Pokemon encounteredPokemon = db.getPokemon(encounteredPokemonId);
+        notificationTest = new Notification(db.getPokemon(encounteredPokemonId).getName());
+
         hasEncounteredPokemon = true;
       }
     }
+  }
+
+  public int getEncounteredPokemonId() {
+    return encounteredPokemonId;
   }
 
   // public Pokemon[] sendPokemons() {

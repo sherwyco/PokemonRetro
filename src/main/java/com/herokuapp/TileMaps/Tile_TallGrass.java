@@ -2,6 +2,7 @@ package com.herokuapp.TileMaps;
 
 import java.awt.Graphics;
 import com.herokuapp.misc.GlobalVariables;
+import com.herokuapp.player.Player;
 import com.herokuapp.sprite.SpriteAnimated;
 
 public class Tile_TallGrass extends Tile {
@@ -18,7 +19,7 @@ public class Tile_TallGrass extends Tile {
     spritesheet.setScale(GlobalVariables.GAME_SCALE, GlobalVariables.GAME_SCALE);
   }
 
-  public void steppedOn() {
+  public void steppedOn(Player player) {
     System.out.println("grass stepped on");
     steppedOn = true;
 
@@ -47,8 +48,8 @@ public class Tile_TallGrass extends Tile {
   }
 
 
-  public void draw(Graphics g) {
-    spritesheet.drawSpecificFrame(g, frame);
+  public void draw(Graphics g, int positionX, int positionY) {
+    spritesheet.drawSpecificFrameAtPosition(g, frame, positionX, positionY);
     if (steppedOn) {
       animationDelay--;
       if (animationDelay <= 0) {

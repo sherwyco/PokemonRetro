@@ -6,6 +6,7 @@ public class Pokemon {
   private String name, type, current_move;
   private ArrayList<PokemonMoves> moves;
   private int attack, defense, health, level, exp;
+  private int current_health;
 
   /**
    * 
@@ -30,6 +31,7 @@ public class Pokemon {
     this.exp = exp;
     this.moves = moves;
     this.current_move = moves.get(0).getMoveName(); // very first attack of pokemon
+    this.current_health = health;
 
   }
 
@@ -119,6 +121,14 @@ public class Pokemon {
 
   public String getMoveName(int index) {
     return moves.get(index).getMoveName();
+  }
+
+  public int getCurrent_health() {
+    return current_health;
+  }
+
+  public void setCurrent_health(int current_health) {
+    this.current_health = current_health;
   }
 
 }

@@ -77,6 +77,13 @@ public class SpriteSingle {
         y - Camera.y + GlobalVariables.screenHeight / 2 + offsetY, width, height, null);
   }
 
+  public void drawAtPosition(Graphics g, int positionX, int positionY) {
+    // System.out.println(fileName);
+    // System.out.println(x);
+    g.drawImage(img, positionX - Camera.x + GlobalVariables.screenWidth / 2 + offsetX,
+        positionY - Camera.y + GlobalVariables.screenHeight / 2 + offsetY, width, height, null);
+  }
+
   public int getY() {
     return y;
   }
