@@ -152,7 +152,7 @@ public class DemoMapState extends GameState {
       gsm.switchToBattleState(player.getEncounteredPokemonId());
     }
   }
-  }
+
 
   @Override
   public void draw(Graphics2D g) {
