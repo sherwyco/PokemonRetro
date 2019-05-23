@@ -75,10 +75,10 @@ public class BattleState extends GameState {
     users = databse.getUsers();
     pupulatePokemons();
 
-    System.out.println("Pokemon 1 Damage = " + pok1.getAttack() + " health = " + pok1.getHealth()
-        + " defense = " + pok1.getDefense());
-    System.out.println("Pokemon 2 Damage = " + pok2.getAttack() + " health = " + pok2.getHealth()
-        + " defense = " + pok2.getDefense());
+    System.out.println("Pokemon 1 Damage = " + pok1.getAttack() + " health = "
+        + pok1.getCurrent_health() + " defense = " + pok1.getDefense());
+    System.out.println("Pokemon 2 Damage = " + pok2.getAttack() + " health = "
+        + pok2.getCurrent_health() + " defense = " + pok2.getDefense());
 
 
 
@@ -96,9 +96,9 @@ public class BattleState extends GameState {
     DisplayPlayerPokemons(user1Poks);
     System.out.println("User 2 Pokemons");
     DisplayPlayerPokemons(user2Poks);
-    this.enemyHealth = pok2.getHealth();
+    this.enemyHealth = pok2.getCurrent_health();
 
-    this.hostHealth = pok1.getHealth();
+    this.hostHealth = pok1.getCurrent_health();
 
     System.out.println("User 1 Curr Pokemon");
     System.out.println(pok1.getName());
@@ -135,7 +135,7 @@ public class BattleState extends GameState {
       pokType = pokemons.get(index).getType();
       pokAttack = pokemons.get(index).getAttack();
       pokCurrMove = pokemons.get(index).getCurrent_move();
-      pokHealth = pokemons.get(index).getHealth();
+      pokHealth = pokemons.get(index).getCurrent_health();
       level = pokemons.get(index).getLevel();
       xp = pokemons.get(index).getExp();
       defense = pokemons.get(index).getDefense();
@@ -283,17 +283,17 @@ public class BattleState extends GameState {
   private void switchAttacker(int attack) {
     // System.out.println(enemyHealth);
     if (hostTurnToAttack) {
-      System.out.println("Before Attack: Pokemon 2, Current Health = " + pok2.getHealth());
-      pok2.setHealth(pok2.getHealth() - attackDamage(pok1, pok2));
-      System.out.println(
-          " Pokemon 1 Attack " + pok1.getCurrent_move() + " Pokemon 2 health  " + pok2.getHealth());
+      System.out.println("Before Attack: Pokemon 2, Current Health = " + pok2.getCurrent_health());
+      pok2.setCurrent_health(pok2.getCurrent_health() - attackDamage(pok1, pok2));
+      System.out.println(" Pokemon 1 Attack " + pok1.getCurrent_move() + " Pokemon 2 health  "
+          + pok2.getCurrent_health());
       hostTurnToAttack = false;
       enemyTurnToAttack = true;
     } else if (enemyTurnToAttack) {
       System.out.print("Before Attack: Pokemon 1, Current Health = " + hostHealth);
-      pok1.setHealth(pok1.getHealth() - attackDamage(pok2, pok1));
-      System.out.println(
-          " Pokemon 2 Attack " + pok2.getCurrent_move() + " Pokemon 1 Health " + pok1.getHealth());
+      pok1.setCurrent_health(pok1.getCurrent_health() - attackDamage(pok2, pok1));
+      System.out.println(" Pokemon 2 Attack " + pok2.getCurrent_move() + " Pokemon 1 Health "
+          + pok1.getCurrent_health());
       // System.out.println(enemyAttacks[attack]);
       hostTurnToAttack = true;
       enemyTurnToAttack = false;
@@ -388,12 +388,12 @@ public class BattleState extends GameState {
     g.setColor(Color.GRAY.darker());
     g.fillRect(x, y, 300, 40);
     g.setColor(Color.RED.brighter());
-    g.fillRect(x, y, (pok.getHealth() / base_h) * 300, 40);
+    g.fillRect(x, y, (int) (((double) pok.getCurrent_health() / (double) base_h) * 300), 40);
 
   }
 
   public void gameOverScreen() {
-    if (pok1.getHealth() <= 0 || pok2.getHealth() <= 0)
+    if (pok1.getCurrent_health() <= 0 || pok2.getCurrent_health() <= 0)
       gsm.setState(GameStateManager.DemoMapState);
 
     // if we win we can update pokemons xp-->level
