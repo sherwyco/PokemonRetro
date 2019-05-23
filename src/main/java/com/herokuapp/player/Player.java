@@ -16,10 +16,10 @@ import com.herokuapp.sprite.Spritesheet;
 
 public class Player {
   public final String username = "admin";
-  int x; // actual position
-  private int y;
-  int spriteX; // visual position
-  int spriteY;
+  public int x; // actual position
+  public int y;
+  public int spriteX; // visual position
+  public int spriteY;
   int width = 15;
   int height = 22;
   int speed = 3;
@@ -46,7 +46,7 @@ public class Player {
   Animation down;
   Animation up;
   Animation left;
-  boolean isMoving = false;
+  public boolean isMoving = false;
   int pose = 0;
   Animation[] anims = new Animation[4];
 
@@ -142,6 +142,7 @@ public class Player {
       pose = 1;
       if (!level.tiles[xTile()][yTile() - 1].hasCollision) {
         y -= tileSize;
+
         isMoving = true;
         level.tiles[xTile()][yTile()].steppedOn(this);
         findPokemon();
@@ -265,9 +266,10 @@ public class Player {
     return y;
   }
 
-  public void setY(int y) {
-    this.y = y;
+  public int getX() {
+    return x;
   }
+
 
 }
 
