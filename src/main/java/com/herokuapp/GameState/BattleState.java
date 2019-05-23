@@ -19,26 +19,15 @@ import com.herokuapp.player.Player;
 import com.herokuapp.player.Pokemon;
 import com.herokuapp.player.PokemonMoves;
 import com.herokuapp.sprite.SpriteAnimated;
-import com.herokuapp.utils.ClickListener;
 import com.herokuapp.utils.ImageManager;
-import com.herokuapp.utils.UIImageButton;
 import com.herokuapp.utils.UIManager;
 
 public class BattleState extends GameState {
 
   private Background bg;
   private SpriteAnimated lugia;
-
-  // string[] pokemonPlayers = database.getPlayerPokemon();
-  // String currpokemon = pokemonPlayers[0];
-  // String[] currPokemonAttack = database.getAttacks(pokemonPlayer[0]);
-  //
-  // for(int i = 0; i<currPokemonAttack.length; i++) {
-  //
-  // }
-
   private Database databse;
-  private ArrayList<Pokemon> PokemonArr, PokemonArr2;
+  private ArrayList<Pokemon> user1Poks, user2Poks;
   String users;
 
 
@@ -58,8 +47,6 @@ public class BattleState extends GameState {
   BufferedImage hostpokemon;
   private UIManager buttons;
   private Handler handler;
-  private ImageManager imageUtil;
-  private Pokemon userPokemons[];
   private ImageManager imageManager;
 
   // For Battle
@@ -84,25 +71,31 @@ public class BattleState extends GameState {
     weackAttack = false;
     BattleState.base_damage = 0;
 
-    // opponent.setTurnToAttack(false);
-
-    this.pokemon1 = rand.nextInt(3);
-    this.pokemon2 = rand.nextInt(3);
-    // System.out.println(Player.sendPokemons());
-
     addBackground();
     users = databse.getUsers();
-    PokemonArr = databse.getPlayerPokemon(1);
-    PokemonArr2 = databse.getPlayerPokemon(2);
-    int index = rand.nextInt(PokemonArr.size() - 1);
-    pok1 = PokemonArr.get(index);
-    index = rand.nextInt(PokemonArr2.size() - 1);
-    pok2 = PokemonArr2.get(index);
+    pupulatePokemons();
+
+    System.out.println("Pokemon 1 Damage = " + pok1.getAttack() + " health = " + pok1.getHealth()
+        + " defense = " + pok1.getDefense());
+    System.out.println("Pokemon 2 Damage = " + pok2.getAttack() + " health = " + pok2.getHealth()
+        + " defense = " + pok2.getDefense());
+
+
+
+  }
+
+  private void pupulatePokemons() {
+    user1Poks = databse.getPlayerPokemon(1);
+    user2Poks = databse.getPlayerPokemon(2);
+    int index = rand.nextInt(user1Poks.size() - 1);
+    pok1 = user1Poks.get(index);
+    index = rand.nextInt(user2Poks.size() - 1);
+    pok2 = user2Poks.get(index);
     System.out.println(users);
     System.out.println("User 1 Pokemons");
-    DisplayPlayerPokemons(PokemonArr);
+    DisplayPlayerPokemons(user1Poks);
     System.out.println("User 2 Pokemons");
-    DisplayPlayerPokemons(PokemonArr2);
+    DisplayPlayerPokemons(user2Poks);
     this.enemyHealth = pok2.getHealth();
 
     this.hostHealth = pok1.getHealth();
@@ -111,18 +104,6 @@ public class BattleState extends GameState {
     System.out.println(pok1.getName());
     System.out.println("User 2  curr Pokemon");
     System.out.println(pok2.getName());
-
-    buttons = new UIManager(handler);
-    buttons.addObject(new UIImageButton((GlobalVariables.screenWidth / 2) - 120,
-        GlobalVariables.screenHeight - 570, 200, 100, "Button1", new ClickListener() {
-          @Override
-          public void onClick() {
-            System.exit(0);
-          }
-        }));
-
-    ImageManager imageUtil = new ImageManager();
-
   }
 
   public void DisplayPlayerPokemons(ArrayList<Pokemon> pks) {
@@ -206,7 +187,7 @@ public class BattleState extends GameState {
       lugia.setX(2300);
     }
 
-    buttons.tick();
+
 
   }
 
@@ -241,7 +222,7 @@ public class BattleState extends GameState {
 
 
   private void select() {
-    System.out.println(enemyHealth);
+
     if (currentChoice == 0) {
       // start
 
@@ -260,19 +241,21 @@ public class BattleState extends GameState {
   }
 
   public void drawAttackTurn(Graphics g) {
+    // drawing pokemon one with name and image
     g.setColor(Color.YELLOW);
     g.drawString(pok1.getName(), 50, GamePanel.HEIGHT - 600);
-    g.drawImage(imageManager.getPokemonImage("charmander"), 100, GamePanel.HEIGHT - 650, 300, 300,
+    g.drawImage(imageManager.getPokemonImage(pok1.getName()), 100, GamePanel.HEIGHT - 650, 300, 300,
         null);
-    drawHealthBar(g, (int) pok1.getHealth(), 100, GamePanel.HEIGHT - 1000);
+    drawHealthBar(g, pok1, 100, GamePanel.HEIGHT - 1000, hostHealth);
 
-    g.drawImage(imageManager.getPokemonImage("jolteon"), GamePanel.WIDTH - 500, 150, 300, 300,
+    // drawing pokemon 2 with name
+    g.drawImage(imageManager.getPokemonImage(pok2.getName()), GamePanel.WIDTH - 500, 150, 300, 300,
         null);
-    drawHealthBar(g, (int) pok2.getHealth(), GamePanel.WIDTH - 500, GamePanel.HEIGHT - 1000);
+    drawHealthBar(g, pok2, GamePanel.WIDTH - 650, GamePanel.HEIGHT - 1000, enemyHealth);
 
-    g.drawString(Pokemons[pokemon2], GamePanel.WIDTH - 400, GamePanel.HEIGHT - 900);
+    g.drawString(pok2.getName(), GamePanel.WIDTH - 400, GamePanel.HEIGHT - 900);
 
-    for (int i = 0; i < hostAttacks.length; i++) {
+    for (int i = 0; i < 3; i++) {
       if (hostTurnToAttack) {
         g.setColor(Color.BLACK);
 
@@ -282,7 +265,7 @@ public class BattleState extends GameState {
           g.setColor(Color.BLUE);
         }
 
-        drawAttacks(g, hostAttacks[i], 100 + i * 200, GamePanel.HEIGHT - 300);
+        drawAttacks(g, pok1.getMoveName(i), 100 + i * 200, GamePanel.HEIGHT - 300);
 
       }
       // Opponents turn
@@ -292,34 +275,30 @@ public class BattleState extends GameState {
         } else {
           g.setColor(Color.BLACK);
         }
-        drawAttacks(g, enemyAttacks[i], 1100 + i * 300, GamePanel.HEIGHT - 350);
-
+        drawAttacks(g, pok2.getMoveName(i), 1000 + i * 300, GamePanel.HEIGHT - 350);
       }
-
     }
-
   }
 
   private void switchAttacker(int attack) {
     // System.out.println(enemyHealth);
     if (hostTurnToAttack) {
       System.out.println("Before Attack: Pokemon 2, Current Health = " + pok2.getHealth());
-      int health = pok2.getHealth() - attackDamage(pok1.getCurrent_move(), pok2.getType());
-      pok2.setHealth(health);
-      System.out.println(" Pokemon 1 Attack " + hostAttacks[currentChoice] + " Pokemon 2 health  "
-          + pok2.getHealth());
+      pok2.setHealth(pok2.getHealth() - attackDamage(pok1, pok2));
+      System.out.println(
+          " Pokemon 1 Attack " + pok1.getCurrent_move() + " Pokemon 2 health  " + pok2.getHealth());
       hostTurnToAttack = false;
       enemyTurnToAttack = true;
     } else if (enemyTurnToAttack) {
       System.out.print("Before Attack: Pokemon 1, Current Health = " + hostHealth);
-      pok1.setHealth(pok1.getHealth() - attackDamage(pok2.getCurrent_move(), pok1.getType()));
-      System.out.println(" Pokemon 2 Attack " + enemyAttacks[currentChoice] + " Pokemon 1 Health "
-          + pok1.getHealth());
+      pok1.setHealth(pok1.getHealth() - attackDamage(pok2, pok1));
+      System.out.println(
+          " Pokemon 2 Attack " + pok2.getCurrent_move() + " Pokemon 1 Health " + pok1.getHealth());
       // System.out.println(enemyAttacks[attack]);
       hostTurnToAttack = true;
       enemyTurnToAttack = false;
     }
-    currentChoice = 0;
+
 
   }
 
@@ -354,53 +333,62 @@ public class BattleState extends GameState {
     this.hostTurnToAttack = turnToAttack;
   }
 
-  public int attackDamage(String attacker, String defender) {
+  public int attackDamage(Pokemon Pattacker, Pokemon Pdefender) {
     // switch statement with int data type
+    base_damage = 0;
+    String attacker = Pattacker.getType().toUpperCase();
+
+    String defender = Pdefender.getType().toUpperCase();
+
     attacker.toUpperCase();
     switch (attacker) {
       case "WATER":
         if (defender == "FIRE") {
-          base_damage = DEFAULT_DAMAGE * 2;
+          base_damage = ((Pattacker.getAttack() / 2) - Pdefender.getDefense()) * 2;
         } else if (defender == "WATER") {
-          base_damage = DEFAULT_DAMAGE / 2;
+          base_damage = ((Pattacker.getAttack() / 2) - Pdefender.getDefense()) / 2;
         } else if (defender == "ELECTRIC") {
-          base_damage = DEFAULT_DAMAGE / 2;
+          base_damage = ((Pattacker.getAttack() / 2) - Pdefender.getDefense()) / 2;
         }
         break;
 
       case "ELECTRIC":
         if (defender == "WATER") {
-          base_damage = DEFAULT_DAMAGE * 2;
+          base_damage = ((Pattacker.getAttack() / 2) - Pdefender.getDefense()) * 2;
         } else if (defender == "GROUND") {
-          base_damage = 0;
+          base_damage = ((Pattacker.getAttack() / 2) - Pdefender.getDefense()) / 4;
         } else if (defender == "ELECTRIC") {
-          base_damage = DEFAULT_DAMAGE / 2;
+          base_damage = ((Pattacker.getAttack() / 2) - Pdefender.getDefense()) / 4;
         }
         break;
       case "FIRE":
         if (defender == "WATER") {
-          base_damage = DEFAULT_DAMAGE / 2;
+          base_damage = ((Pattacker.getAttack() / 2) - Pdefender.getDefense()) / 2;
         } else if (defender == "GROUND") {
-          return 0;
+
+          base_damage = (Pattacker.getAttack() / 2 - Pdefender.getDefense()) / 4;
         } else if (defender == "ELECTRIC") {
-          base_damage = DEFAULT_DAMAGE / 2;
+          base_damage = ((Pattacker.getAttack() / 2) - Pdefender.getDefense()) / 2;
         }
         break;
       default:
-        base_damage = DEFAULT_DAMAGE;
+
+        base_damage = Pattacker.getAttack() / 2;
         break;
     }
 
-    System.out.println(enemyHealth + ", " + hostHealth);
+    if (base_damage <= 0)
+      return 15;
     return base_damage;
   }
 
-  public void drawHealthBar(Graphics g, int health, int x, int y) {
+  public void drawHealthBar(Graphics g, Pokemon pok, int x, int y, int maxHealth) {
 
+    int base_h = pok.getHealth();
     g.setColor(Color.GRAY.darker());
-    g.fillRect(x, y, enemyHealth * 10, 40);
-    g.setColor(Color.GREEN.brighter());
-    g.fillRect(x, y, health * 10, 40);
+    g.fillRect(x, y, 300, 40);
+    g.setColor(Color.RED.brighter());
+    g.fillRect(x, y, (pok.getHealth() / base_h) * 300, 40);
 
   }
 
@@ -408,9 +396,10 @@ public class BattleState extends GameState {
     if (pok1.getHealth() <= 0 || pok2.getHealth() <= 0)
       gsm.setState(GameStateManager.DemoMapState);
 
+    // if we win we can update pokemons xp-->level
+    // also we can add the loser pokemon to our players pokemons
+
   }
-
-
 
 }
 
