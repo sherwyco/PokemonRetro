@@ -84,7 +84,6 @@ public class DemoMapState extends GameState {
   public void update() {
     dummyPlayers = new ArrayList<DummyPlayer>(clientThread.playerList);
     player.update();
-    System.out.println("origin x: " + player.getX() + " origin y: " + player.getY());
     if (W_pressed) {
       player.moveUp();
       clientThread.client
@@ -116,8 +115,9 @@ public class DemoMapState extends GameState {
           if (clientThread.coords != null) {
             // if new coords are not for me
             System.out.println("getting new coords for client: " + clientThread.coords.clientId);
-            if (clientThread.coords.clientId == p.myClientId) { // if new coords matches its id to
-                                                                // the player
+            if (clientThread.coords.clientId == p.myClientId) {
+              // if new coords matches its id to the player
+              System.out.println(clientThread.coords.clientId + ":" + clientThread.coords.y);
               if ((p.getX() != clientThread.coords.x) || (p.getY() != clientThread.coords.y)) {
                 switch (clientThread.coords.type) {
                   case Left:

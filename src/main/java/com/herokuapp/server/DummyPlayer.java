@@ -46,19 +46,19 @@ public class DummyPlayer {
   }
 
   public int getX() {
-    return x / 16 / GlobalVariables.GAME_SCALE + 16;
+    return x;
   }
 
   public void setX(int x) {
-    this.x = x * 16 * GlobalVariables.GAME_SCALE + 16;
+    this.x = x;
   }
 
   public int getY() {
-    return y / 16 / GlobalVariables.GAME_SCALE + 22;
+    return y;
   }
 
   public void setY(int y) {
-    this.y = y * 16 * GlobalVariables.GAME_SCALE + 22;
+    this.y = y;
   }
 
   public int getTileSize() {
@@ -94,6 +94,14 @@ public class DummyPlayer {
     // System.out.println(x + " | " + spriteX); // logical position and visual position
   }
 
+
+  public int getSpriteX() {
+    return spriteX;
+  }
+
+  public void setSpriteX(int spriteX) {
+    this.spriteX = spriteX;
+  }
 
   public void moveRight() {
     // x += speed;
