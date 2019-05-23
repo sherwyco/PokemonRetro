@@ -104,6 +104,10 @@ public class ClientThread implements Runnable {
           JOptionPane.ERROR_MESSAGE);
     }
   }
+
+  public void updateList() {
+
+  }
 }
 
 

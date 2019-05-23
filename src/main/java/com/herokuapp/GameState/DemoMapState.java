@@ -117,32 +117,34 @@ public class DemoMapState extends GameState {
           if (clientThread.coords != null) {
             // if new coords are not for me
             System.out.println("getting new coords for client: " + clientThread.coords.clientId);
-            if ((p.getX() != clientThread.coords.x) || (p.getY() != clientThread.coords.y)) {
-              switch (clientThread.coords.type) {
-                case Left:
-                  p.moveLeft();
-                  p.setX(clientThread.coords.x);
-                  p.setY(clientThread.coords.y);
-                  break;
-                case Right:
-                  p.moveRight();
-                  p.setX(clientThread.coords.x);
-                  p.setY(clientThread.coords.y);
-                  break;
-                case Up:
-                  p.moveUp();
-                  p.setX(clientThread.coords.x);
-                  p.setY(clientThread.coords.y);
-                  break;
-                case Down:
-                  p.moveDown();
-                  p.setX(clientThread.coords.x);
-                  p.setY(clientThread.coords.y);
-                  break;
-                default:
-                  break;
+            if (clientThread.coords.clientId == p.myClientId) {
+              if ((p.getX() != clientThread.coords.x) || (p.getY() != clientThread.coords.y)) {
+                switch (clientThread.coords.type) {
+                  case Left:
+                    p.moveLeft();
+                    p.setX(clientThread.coords.x);
+                    p.setY(clientThread.coords.y);
+                    break;
+                  case Right:
+                    p.moveRight();
+                    p.setX(clientThread.coords.x);
+                    p.setY(clientThread.coords.y);
+                    break;
+                  case Up:
+                    p.moveUp();
+                    p.setX(clientThread.coords.x);
+                    p.setY(clientThread.coords.y);
+                    break;
+                  case Down:
+                    p.moveDown();
+                    p.setX(clientThread.coords.x);
+                    p.setY(clientThread.coords.y);
+                    break;
+                  default:
+                    break;
+                }
+                p.update();
               }
-              p.update();
             }
             clientThread.coords = null;
           }
